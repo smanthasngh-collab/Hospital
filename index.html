@@ -1,731 +1,415 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Titan Omega v35 | Global Healthcare Enterprise ERP</title>
+    <title>MedCore Titan | LifeCare Hospital</title>
     
-    <!-- Heavy Enterprise Libraries -->
+    <!-- Design & Icons -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;400;600;700;800&display=swap" rel="stylesheet">
-
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: { 
-                        primary: '#0284c7', secondary: '#0f172a', accent: '#f43f5e',
-                        success: '#10b981', warning: '#f59e0b', info: '#6366f1',
-                        surface: '#f8fafc' 
-                    },
-                    borderRadius: { 'enterprise': '3rem' }
-                }
-            }
-        }
-    </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #fcfcfc; color: #0f172a; overflow-x: hidden; }
-        .glass { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(30px); border-bottom: 1px solid rgba(0,0,0,0.05); }
-        .dashboard-card { background: white; border-radius: 2rem; border: 1px solid #f1f5f9; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
-        .dashboard-card:hover { transform: translateY(-10px); box-shadow: 0 40px 80px -15px rgba(2, 132, 199, 0.2); }
-        .sidebar-item.active { background: #0284c7; color: white; box-shadow: 0 15px 30px -5px rgba(2, 132, 199, 0.4); }
-        .hidden { display: none !important; }
-        .custom-scroll::-webkit-scrollbar { width: 5px; }
-        .custom-scroll::-webkit-scrollbar-thumb { background: #0284c7; border-radius: 20px; }
-        .ai-chat-bubble { max-width: 85%; padding: 1.25rem; border-radius: 1.5rem; margin-bottom: 1rem; line-height: 1.6; font-weight: 500; }
-        .bot-bubble { background: #f1f5f9; color: #1e293b; border-bottom-left-radius: 0; border-left: 6px solid #0284c7; }
-        .user-bubble { background: #0284c7; color: white; border-bottom-right-radius: 0; align-self: flex-end; }
-        @media print { .no-print { display: none !important; } .print-only { display: block !important; } }
+        body { font-family: 'Segoe UI', sans-serif; }
+        .page { display: none; }
+        .page.active { display: block; }
+        .btn-gradient { background: linear-gradient(135deg, #0284c7, #0369a1); }
     </style>
 </head>
-<body class="custom-scroll selection:bg-primary selection:text-white">
+<body class="bg-gray-50">
 
-    <!-- 🌐 GLOBAL SYSTEM LOADER -->
-    <div id="sys-loader" class="fixed inset-0 z-[10000] bg-white flex flex-col items-center justify-center">
-        <div class="relative scale-125">
-            <div class="w-32 h-32 border-[12px] border-slate-100 border-t-primary rounded-full animate-spin"></div>
-            <i class="fas fa-microchip absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-4xl text-primary animate-pulse"></i>
+    <!-- 1. NAVIGATION BAR (Humesha dikhega) -->
+    <nav class="bg-white shadow-md sticky top-0 z-50 px-4 md:px-10 py-4 flex justify-between items-center">
+        <div class="flex items-center gap-2 cursor-pointer" onclick="showPage('home')">
+            <i class="fas fa-hospital-alt text-3xl text-blue-600"></i>
+            <h1 class="text-xl font-bold text-gray-800 uppercase tracking-tighter">MedCore <span class="text-blue-600 underline">Titan</span></h1>
         </div>
-        <h2 class="mt-12 text-4xl font-black text-slate-900 tracking-tighter uppercase italic">TITAN <span class="text-primary underline">OMEGA v35</span></h2>
-        <p id="boot-text" class="text-[10px] font-bold text-slate-400 mt-4 uppercase tracking-[0.5em] animate-pulse">Establishing RSA-4096 Secure Shards...</p>
-    </div>
-
-    <!-- 🔐 IDENTITY SUBSYSTEM (Auth Screen) -->
-    <div id="auth-screen" class="min-h-screen flex items-center justify-center bg-slate-900 p-4 hidden">
-        <div class="bg-white w-full max-w-5xl rounded-[5rem] shadow-2xl overflow-hidden flex flex-col md:flex-row animate__animated animate__zoomIn">
-            <div class="md:w-5/12 bg-primary p-20 text-white flex flex-col justify-center relative overflow-hidden">
-                <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10"></div>
-                <h3 class="text-6xl font-black italic tracking-tighter leading-none mb-10 uppercase">Enterprise <br>Command.</h3>
-                <p class="text-blue-100 font-bold mb-16 italic underline decoration-blue-800 decoration-8 underline-offset-8">Cloud Synchronization Active. <br>Secure Node: 8708987154</p>
-                <div class="grid grid-cols-2 gap-6 opacity-60 text-[10px] font-black uppercase tracking-widest italic">
-                    <div class="p-4 border border-white/20 rounded-2xl">EMR Database</div>
-                    <div class="p-4 border border-white/20 rounded-2xl">BDS Protocols</div>
-                    <div class="p-4 border border-white/20 rounded-2xl">Neural AI Shard</div>
-                    <div class="p-4 border border-white/20 rounded-2xl">Multi-Branch</div>
-                </div>
-            </div>
-            <div class="md:w-7/12 p-20 flex flex-col justify-center">
-                <div class="text-center mb-12">
-                    <h4 id="auth-title" class="text-4xl font-black text-slate-900 uppercase italic underline decoration-primary decoration-[12px] underline-offset-[12px]">SIGN IN</h4>
-                    <p class="text-slate-400 text-[10px] font-black uppercase tracking-[0.5em] mt-8">Healthcare ERP Interface v35.0.1</p>
-                </div>
-                <div class="space-y-6">
-                    <input type="email" id="auth-email" placeholder="rohitsinghh777@gmail.com" class="w-full p-6 bg-slate-50 border-none rounded-[2.5rem] outline-none font-bold text-lg focus:ring-8 focus:ring-blue-100 transition shadow-inner">
-                    <input type="password" id="auth-pass" placeholder="••••••••" class="w-full p-6 bg-slate-50 border-none rounded-[2.5rem] outline-none font-bold text-lg focus:ring-8 focus:ring-blue-100 transition shadow-inner">
-                    <button onclick="executeAuth()" id="auth-btn" class="w-full bg-slate-900 text-white py-8 rounded-[3rem] font-black uppercase text-lg tracking-widest shadow-3xl hover:bg-primary transition-all active:scale-95 italic">Authorize Access</button>
-                    
-                    <p class="text-center text-xs font-bold text-slate-400 mt-8 italic underline-offset-8">
-                        <span id="auth-msg">New medical identity?</span> 
-                        <button onclick="toggleAuth()" class="text-primary font-black underline ml-2" id="auth-toggle-btn">Create Account</button>
-                    </p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- 🏥 THE ERP ECOSYSTEM (App Shell) -->
-    <div id="app-shell" class="hidden min-h-screen">
         
-        <!-- Navigation Hub -->
-        <nav class="glass fixed w-full z-[4000] px-10 py-6 flex justify-between items-center no-print">
-            <div class="flex items-center gap-5 cursor-pointer" onclick="location.reload()">
-                <div class="w-16 h-16 bg-slate-900 text-primary rounded-[1.5rem] flex items-center justify-center shadow-3xl">
-                    <i class="fas fa-microchip text-3xl animate-pulse"></i>
-                </div>
-                <div>
-                    <h1 class="text-3xl font-black tracking-tighter uppercase leading-none text-slate-900 italic">MEDCORE <br><span class="text-primary underline decoration-slate-900 decoration-[6px]">TITAN OMEGA</span></h1>
-                </div>
-            </div>
-
-            <div class="hidden xl:flex items-center gap-12 text-[11px] font-black uppercase tracking-[0.4em] text-slate-400 italic">
-                <a href="#control" class="hover:text-primary transition underline underline-offset-[16px] decoration-primary decoration-4">Neural Control</a>
-                <a href="#clinical" class="hover:text-primary transition">Clinical Wings</a>
-                <a href="#billing" class="hover:text-primary transition underline decoration-primary decoration-4">Merchant</a>
-                <span class="bg-blue-50 text-primary px-5 py-2 rounded-2xl border border-blue-100 font-bold italic tracking-tighter">8708987154</span>
-            </div>
-
-            <div class="flex items-center gap-8">
-                <div id="session-info" class="text-right border-r-4 border-primary pr-8 hidden md:block italic font-bold">
-                    <p id="nav-email" class="text-sm font-black text-slate-900 tracking-tighter underline decoration-blue-100 decoration-4"></p>
-                    <p id="nav-role" class="text-[9px] font-black text-primary uppercase tracking-widest mt-1"></p>
-                </div>
-                <button onclick="terminateSession()" class="bg-red-50 text-red-600 w-14 h-14 rounded-[1.5rem] flex items-center justify-center text-xl hover:bg-red-500 hover:text-white transition shadow-xl"><i class="fas fa-power-off"></i></button>
-            </div>
-        </nav>
-
-        <!-- VIEW 1: SUPER ADMIN CONSOLE (rohitsinghh777@gmail.com) -->
-        <main id="view-admin" class="hidden pt-32 flex flex-col xl:flex-row h-screen overflow-hidden animate__animated animate__fadeIn">
-            <!-- Sidebar -->
-            <aside class="w-96 bg-secondary text-white p-10 flex flex-col shrink-0 no-print custom-scroll overflow-y-auto italic font-bold">
-                <div class="mb-16">
-                    <p class="text-[10px] font-black text-primary uppercase tracking-[0.5em] mb-12 italic underline decoration-primary underline-offset-8 decoration-4">Master Enterprise Node</p>
-                    <nav class="space-y-6">
-                        <button onclick="setTab('dashboard')" class="adm-btn active sidebar-item w-full flex items-center gap-6 p-6 rounded-[2.5rem] font-black text-[12px] uppercase tracking-widest transition-all"><i class="fas fa-chart-network text-xl"></i> Global Control</button>
-                        <button onclick="setTab('emr')" class="adm-btn w-full flex items-center gap-6 p-6 text-slate-500 hover:text-white rounded-[2.5rem] font-black text-[12px] uppercase tracking-widest transition-all"><i class="fas fa-database text-xl"></i> Master EMR</button>
-                        <button onclick="setTab('ot')" class="adm-btn w-full flex items-center gap-6 p-6 text-slate-500 hover:text-white rounded-[2.5rem] font-black text-[12px] uppercase tracking-widest transition-all"><i class="fas fa-syringe text-xl"></i> OT & Bed Sync</button>
-                        <button onclick="setTab('hr')" class="adm-btn w-full flex items-center gap-6 p-6 text-slate-500 hover:text-white rounded-[2.5rem] font-black text-[12px] uppercase tracking-widest transition-all"><i class="fas fa-users-gear text-xl"></i> HR & Payroll</button>
-                    </nav>
-                </div>
-                <div class="mt-auto bg-slate-900 p-8 rounded-[3rem] border border-white/5 text-center italic font-black shadow-3xl underline decoration-primary decoration-4">
-                    <p class="text-[11px] font-black uppercase text-slate-500 mb-4">Command Center</p>
-                    <p class="text-3xl tracking-tighter">8708987154</p>
-                </div>
-            </aside>
-
-            <!-- Content Area -->
-            <div class="flex-1 overflow-y-auto p-16 custom-scroll bg-surface italic font-bold">
-                <!-- Tab: Dashboard -->
-                <div id="tab-dashboard" class="admin-tab-view space-y-16">
-                    <header class="flex justify-between items-end mb-12">
-                        <div>
-                            <h2 class="text-7xl font-black text-slate-900 tracking-tighter uppercase underline decoration-primary decoration-[15px] underline-offset-[10px]">Neural <span class="text-primary underline">Command</span></h2>
-                            <p class="text-slate-400 mt-6 text-2xl italic underline decoration-blue-100 decoration-4">Real-time Global Metrics for rohitsinghh777@gmail.com</p>
-                        </div>
-                        <div class="bg-slate-900 text-white p-12 rounded-[4rem] shadow-3xl text-center border-b-[15px] border-primary">
-                            <p class="text-[12px] font-black uppercase text-blue-400 mb-4 underline decoration-white font-bold italic tracking-widest">Merchant Node active</p>
-                            <p class="text-4xl tracking-tighter underline decoration-primary decoration-4">@rohitsingh9645</p>
-                        </div>
-                    </header>
-
-                    <div class="grid lg:grid-cols-4 gap-10">
-                        <div class="dashboard-card p-12 border-b-[12px] border-primary">
-                            <p class="text-xs text-slate-400 uppercase mb-4 tracking-widest underline decoration-primary">Revenue Forecast</p>
-                            <h4 id="adm-rev" class="text-6xl font-black text-slate-900 tracking-tighter">₹0</h4>
-                        </div>
-                        <div class="dashboard-card p-12 border-b-[12px] border-success bg-primary text-white border-none">
-                            <p class="text-xs opacity-70 uppercase mb-4 tracking-widest underline decoration-white">Total Shards</p>
-                            <h4 id="adm-count" class="text-6xl font-black tracking-tighter italic">0</h4>
-                        </div>
-                        <div class="dashboard-card p-12 border-b-[12px] border-warning italic underline decoration-warning">
-                            <p class="text-xs text-slate-400 uppercase mb-4">Bed Sync</p>
-                            <h4 class="text-6xl font-black text-slate-900 tracking-tighter">92.4%</h4>
-                        </div>
-                        <div class="dashboard-card p-12 border-b-[12px] border-accent">
-                            <p class="text-xs text-slate-400 uppercase mb-4 italic underline decoration-red-500">Fleet Status</p>
-                            <h4 class="text-4xl font-black text-slate-900 tracking-tighter">8708987154</h4>
-                        </div>
-                    </div>
-
-                    <div class="grid lg:grid-cols-2 gap-12">
-                        <div class="dashboard-card p-16">
-                            <h3 class="text-xl font-black uppercase tracking-[0.4em] mb-12 text-slate-400">Financial Heatmap</h3>
-                            <canvas id="revChart" height="280"></canvas>
-                        </div>
-                        <div class="dashboard-card p-16 bg-slate-900 text-white border-none relative overflow-hidden">
-                            <div class="absolute -bottom-20 -right-20 w-80 h-80 bg-primary/20 rounded-full blur-[120px]"></div>
-                            <h3 class="text-xl font-black uppercase tracking-[0.4em] mb-12 text-primary underline decoration-white">Clinical Load Matrix</h3>
-                            <canvas id="loadChart" height="280"></canvas>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Tab: EMR Master -->
-                <div id="tab-emr" class="admin-tab-view hidden space-y-16 animate__animated animate__fadeInUp">
-                    <h3 class="text-5xl font-black uppercase tracking-tighter italic underline decoration-primary decoration-8 underline-offset-8">Master <span class="text-primary underline">Clinical Shards</span></h3>
-                    <div class="bg-white p-16 rounded-[6rem] shadow-3xl border border-slate-100 italic">
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-left font-bold italic">
-                                <thead class="border-b-[10px] border-slate-50 text-[11px] text-slate-400 uppercase tracking-[0.5em] font-bold">
-                                    <tr><th class="py-10 px-6">ID</th><th>Origin Shard</th><th>Wing</th><th>Authorization</th><th>Schedule</th><th>Matrix</th></tr>
-                                </thead>
-                                <tbody id="adm-emr-table" class="text-sm"></tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </main>
-
-        <!-- VIEW 2: PATIENT OMEGA PORTAL -->
-        <main id="view-patient" class="pt-40 p-10 hidden animate__animated animate__fadeIn italic font-bold">
-            <div class="container mx-auto">
-                <header class="bg-slate-950 rounded-[5rem] p-24 text-white mb-24 relative overflow-hidden shadow-titan border-b-[20px] border-primary text-center">
-                    <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1516549655169-df83a0774514?auto=format&fit=crop&w=1500&q=80')] bg-cover opacity-10 animate-pulse"></div>
-                    <div class="relative z-10 max-w-6xl mx-auto">
-                        <div class="bg-blue-100 text-primary px-8 py-3 rounded-full text-[12px] font-black uppercase tracking-[0.7em] mb-12 inline-block shadow-3xl">Neural Patient Entity v35.0</div>
-                        <h2 class="text-8xl lg:text-[10rem] font-extrabold tracking-tighter leading-[0.8] mb-12">Global <br><span class="text-primary underline decoration-white decoration-[25px] underline-offset-[30px]">Health</span> <br>Matrix.</h2>
-                        <p class="text-slate-400 text-2xl leading-relaxed italic mb-20 font-bold underline decoration-slate-800 decoration-[10px] underline-offset-8 tracking-tighter">Unified Multispeciality Infrastructure for rohitsinghh777@gmail.com | 8708987154</p>
-                        <div class="flex flex-wrap justify-center gap-12">
-                            <button onclick="scrollToReg()" class="bg-white text-slate-900 px-16 py-8 rounded-[4rem] font-black text-2xl shadow-3xl hover:bg-primary hover:text-white transition-all duration-700 italic underline decoration-primary decoration-[12px] underline-offset-[12px]">START INTAKE PROCESS</button>
-                            <a href="https://wa.me/918708987154" target="_blank" class="bg-green-600 text-white px-12 py-8 rounded-[4rem] font-black text-2xl flex items-center gap-6 shadow-3xl hover:scale-110 active:rotate-2 transition-transform">
-                                <i class="fab fa-whatsapp text-4xl"></i> 8708987154
-                            </a>
-                        </div>
-                    </div>
-                </header>
-
-                <!-- Patient Matrix Features -->
-                <div class="grid lg:grid-cols-3 gap-16 mb-40 italic font-bold">
-                    <div class="dashboard-card p-16 flex flex-col items-center text-center group border-[10px] border-slate-50">
-                        <div id="pt-qr" class="mb-12 p-8 bg-white rounded-[4rem] shadow-inner group-hover:scale-110 transition-all duration-1000 ring-[15px] ring-blue-50/50"></div>
-                        <h4 class="text-4xl font-black italic mb-6 underline decoration-primary decoration-[10px] underline-offset-8 uppercase tracking-tighter">Neural Identity</h4>
-                        <p class="text-slate-400 text-sm italic font-bold underline decoration-slate-100 decoration-4">Digital EMR Shard for instant multi-branch admission.</p>
-                    </div>
-                    
-                    <div onclick="toggleAI()" class="dashboard-card p-16 bg-slate-950 text-white relative border-none group cursor-pointer ai-glow">
-                        <div class="absolute -top-20 -right-20 w-96 h-96 bg-primary/20 rounded-full blur-[100px] group-hover:scale-125 transition-all duration-1000"></div>
-                        <i class="fas fa-brain text-8xl text-primary mb-12 animate-pulse"></i>
-                        <h4 class="text-4xl font-black italic mb-10 underline decoration-white decoration-8 underline-offset-[15px] uppercase tracking-tighter">Neural AI <br><span class="text-primary">Diagnostic</span></h4>
-                        <p class="text-slate-500 text-sm leading-relaxed mb-12 italic underline decoration-slate-900 decoration-4">Global Matrix Assistant powered by Google Gemini Pro.</p>
-                        <div class="w-full bg-primary text-white py-8 rounded-[3rem] font-black text-[12px] uppercase tracking-[0.4em] shadow-3xl text-center group-hover:bg-blue-500 transition-all underline decoration-white">LAUNCH NEURAL LINK v35.0</div>
-                    </div>
-
-                    <div class="dashboard-card p-16 bg-white flex flex-col justify-center border-b-[25px] border-accent">
-                        <i class="fas fa-file-waveform text-8xl text-accent mb-12 italic animate-pulse"></i>
-                        <h4 class="text-3xl font-black italic underline decoration-accent decoration-[10px] mb-8 uppercase tracking-tighter">EMR Records <br>& Lab Shards</h4>
-                        <p class="text-slate-400 text-sm italic font-bold underline decoration-slate-50 decoration-4">Direct cloud synchronization with Karnal HQ.</p>
-                        <div class="flex gap-8 mt-12">
-                            <button class="w-20 h-20 bg-slate-50 rounded-3xl flex items-center justify-center text-slate-300 hover:text-primary transition shadow-inner"><i class="fas fa-file-pdf text-3xl"></i></button>
-                            <button class="w-20 h-20 bg-slate-50 rounded-3xl flex items-center justify-center text-slate-300 hover:text-success transition shadow-inner"><i class="fas fa-share-nodes text-3xl"></i></button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Intake Engine -->
-                <div id="intake-zone" class="grid lg:grid-cols-12 gap-24 italic font-bold">
-                    <div class="lg:col-span-7 bg-white p-20 lg:p-32 rounded-[7rem] shadow-titan border-t-[30px] border-primary relative overflow-hidden">
-                        <div class="absolute top-0 right-0 w-96 h-96 bg-blue-50 rounded-full -mr-48 -mt-48 blur-[120px] opacity-60"></div>
-                        <h3 class="text-7xl font-black text-slate-900 mb-16 tracking-tighter italic uppercase underline decoration-primary decoration-[15px] underline-offset-[20px]">Clinical <br><span class="text-primary">EMR Shard Intake</span></h3>
-                        
-                        <form id="omegaForm" class="space-y-16">
-                            <div class="grid md:grid-cols-2 gap-12">
-                                <div class="space-y-6">
-                                    <label class="text-[13px] font-black text-slate-400 uppercase tracking-[0.5em] block italic underline decoration-blue-100 decoration-8 underline-offset-8">Patient Legal Entity</label>
-                                    <input type="text" id="p-name" required placeholder="Legal Name" class="w-full p-8 bg-slate-50 border-none rounded-[3.5rem] outline-none font-bold text-3xl italic focus:ring-[20px] focus:ring-blue-100 transition shadow-inner tracking-tighter">
-                                </div>
-                                <div class="space-y-6">
-                                    <label class="text-[13px] font-black text-slate-400 uppercase tracking-[0.5em] block italic underline decoration-blue-100">Neural Contact Vector</label>
-                                    <input type="tel" id="p-phone" required placeholder="+91 8708987154" class="w-full p-8 bg-slate-50 border-none rounded-[3.5rem] outline-none font-bold text-3xl italic focus:ring-[20px] focus:ring-blue-100 transition shadow-inner tracking-tighter">
-                                </div>
-                            </div>
-                            <div class="grid md:grid-cols-2 gap-12">
-                                <div class="space-y-6">
-                                    <label class="text-[13px] font-black text-slate-400 uppercase tracking-[0.5em] block italic underline decoration-primary decoration-8 underline-offset-[12px]">Clinical Wing Shard</label>
-                                    <select id="p-wing" onchange="syncWingNum(this.value)" class="w-full p-8 bg-slate-50 border-none rounded-[3.5rem] outline-none font-bold text-2xl italic cursor-pointer underline decoration-primary decoration-[10px] appearance-none shadow-inner">
-                                        <option value="Cardiology Specialist|8708987154|₹1200">Cardiology Hub (₹1200)</option>
-                                        <option value="Neurology Core|99887-00000|₹2500">Neurology Shard (₹2500)</option>
-                                        <option value="Trauma Critical|8708987154|₹5000">Trauma Dispatch (₹5000)</option>
-                                        <option value="Physiotherapy Node|44556-00000|₹800">Physio Shard (₹800)</option>
-                                    </select>
-                                </div>
-                                <div class="space-y-6">
-                                    <label class="text-[13px] font-black text-slate-400 uppercase tracking-[0.5em] block italic underline decoration-blue-100">Schedule Shard Date</label>
-                                    <input type="date" id="p-date" onchange="filterSunday(this.value)" required class="w-full p-8 bg-slate-50 border-none rounded-[3.5rem] outline-none font-bold text-3xl italic shadow-inner">
-                                    <p id="sun-alert" class="hidden text-accent text-[12px] font-black uppercase mt-8 italic animate-bounce tracking-[0.3em] underline decoration-accent decoration-8 underline-offset-8">! System Offline: Shards closed on Sundays</p>
-                                </div>
-                            </div>
-
-                            <div class="bg-secondary p-16 rounded-[5rem] text-white flex flex-col md:flex-row justify-between items-center gap-16 shadow-titan relative overflow-hidden border-b-[25px] border-primary group italic">
-                                <div class="absolute top-0 right-0 w-80 h-80 bg-primary/20 rounded-full blur-[150px] group-hover:scale-150 transition-all duration-[4000ms]"></div>
-                                <div class="z-10">
-                                    <p class="text-[13px] font-black uppercase opacity-60 italic underline decoration-white/20 underline-offset-[15px] decoration-8">Razorpay Merchant Hub</p>
-                                    <p class="text-4xl font-black underline decoration-primary decoration-[15px] underline-offset-[15px] tracking-tighter uppercase">@rohitsingh9645</p>
-                                </div>
-                                <div class="text-right z-10">
-                                    <p class="text-[13px] font-black uppercase opacity-60 italic underline decoration-white/20 decoration-8 underline-offset-[15px]">Fleet Dispatch</p>
-                                    <p id="wing-node-display" class="text-4xl font-black italic underline decoration-white tracking-tighter underline-offset-[10px]">8708987154</p>
-                                </div>
-                            </div>
-
-                            <button type="submit" class="w-full bg-primary text-white py-14 rounded-[6rem] font-black text-5xl shadow-titan hover:scale-[1.02] active:scale-95 transition-all uppercase italic tracking-tighter underline decoration-white decoration-[25px] underline-offset-[35px]">
-                                AUTHORIZE & PAY <i class="fas fa-bolt ml-10"></i>
-                            </button>
-                        </form>
-                    </div>
-
-                    <div class="lg:col-span-5 flex flex-col">
-                        <div class="flex justify-between items-center mb-20 italic border-b-[15px] border-slate-900 pb-12">
-                            <h4 class="text-6xl font-black text-slate-900 tracking-tighter uppercase underline decoration-primary decoration-[15px] underline-offset-[15px]">Timeline</h4>
-                            <span class="flex items-center gap-5 bg-green-100 text-green-700 px-10 py-4 rounded-full text-xs font-black uppercase shadow-2xl"><span class="w-5 h-5 bg-green-500 rounded-full animate-ping"></span> Live Shard</span>
-                        </div>
-                        <div id="pt-timeline" class="space-y-16 flex-1 overflow-y-auto custom-scroll pr-12 max-h-[1400px] italic">
-                            <!-- Medical Shards spawn here -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </main>
-
-        <!-- 🤖 NEURAL AI CORE MODAL (Gemini Integration) -->
-        <div id="ai-modal" class="fixed bottom-10 right-10 z-[5000] w-[600px] bg-white rounded-[6rem] shadow-titan border-[20px] border-slate-900 hidden flex flex-col animate__animated animate__fadeInUp overflow-hidden no-print italic font-bold">
-            <div class="p-16 bg-slate-950 text-white flex justify-between items-center relative border-b-[15px] border-primary">
-                <div class="absolute -top-20 -right-20 w-80 h-80 bg-primary/20 rounded-full blur-[150px]"></div>
-                <div class="flex items-center gap-10 z-10">
-                    <div class="w-24 h-24 bg-primary rounded-[2.5rem] flex items-center justify-center text-white shadow-3xl rotate-12 animate-pulse"><i class="fas fa-robot text-4xl"></i></div>
-                    <div>
-                        <p class="text-3xl font-black italic tracking-tighter uppercase underline decoration-primary decoration-8 underline-offset-8">TITAN AI CORE</p>
-                        <p class="text-[12px] uppercase tracking-[0.5em] text-primary font-bold animate-pulse mt-4">Neural Medical Shard v35.0 ✓</p>
-                    </div>
-                </div>
-                <button onclick="toggleAI()" class="text-slate-600 z-10 hover:text-white transition"><i class="fas fa-times-circle text-5xl"></i></button>
-            </div>
-            <div id="ai-body" class="p-16 h-[650px] overflow-y-auto custom-scroll flex flex-col italic bg-slate-50/50 gap-12">
-                <div class="ai-chat-bubble bot-bubble text-xl leading-relaxed">Hello Rohit Singh. MedCore Neural AI v35.0 is scanning 8708987154 clinical matrix... Admin rohitsinghh777@gmail.com authorization verified. <br><br>Enter patient vitals or symptoms for clinical diagnostic mapping.</div>
-            </div>
-            <div class="p-16 border-t-[8px] border-slate-100 bg-white">
-                <div class="flex gap-10">
-                    <input type="text" id="ai-input" placeholder="Query Global Shards..." class="flex-1 bg-slate-50 p-10 rounded-[4rem] outline-none text-xl font-black border-none shadow-inner underline decoration-blue-100 underline-offset-[12px]">
-                    <button onclick="askAI()" class="w-28 h-28 bg-primary text-white rounded-[3rem] shadow-titan flex items-center justify-center active:scale-90 transition-all"><i class="fas fa-paper-plane text-4xl"></i></button>
-                </div>
-            </div>
+        <!-- Mobile Menu Toggle -->
+        <div class="md:hidden text-2xl" onclick="toggleMobileMenu()">
+            <i class="fas fa-bars"></i>
         </div>
 
-        <!-- 🧾 OMEGA SHARD RECEIPT MODAL -->
-        <div id="receipt-modal" class="fixed inset-0 z-[6000] bg-slate-900/60 backdrop-blur-3xl flex items-center justify-center p-6 hidden">
-            <div id="receipt-box" class="bg-white w-full max-w-4xl rounded-[7rem] p-24 shadow-titan relative border-[30px] border-slate-900 italic font-bold overflow-hidden animate__animated animate__zoomIn">
-                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[20rem] font-black text-slate-100 -rotate-45 uppercase pointer-events-none opacity-40 select-none">AUTHORIZED</div>
-                
-                <div class="flex justify-between items-start mb-24 border-b-[20px] border-slate-900 pb-20">
-                    <div>
-                        <h4 class="text-8xl font-black italic tracking-tighter uppercase text-slate-900 leading-none underline decoration-primary decoration-[20px] underline-offset-[25px]">TITAN <span class="text-primary underline decoration-slate-900">SHARD</span></h4>
-                        <p class="text-[14px] text-slate-400 mt-12 font-black uppercase tracking-[0.6em] italic underline decoration-slate-50 decoration-[10px] underline-offset-[12px]">Administrator: rohitsinghh777@gmail.com</p>
-                        <p class="text-[14px] text-slate-400 mt-6 font-black uppercase tracking-[0.6em] italic underline decoration-slate-50 decoration-[10px]">GSTIN: 06AABCX8708R1Z1</p>
-                    </div>
-                    <div class="text-right italic">
-                        <p class="text-[14px] font-black uppercase text-slate-400 tracking-[0.5em] mb-6 italic underline decoration-primary decoration-8 underline-offset-8">Neural Transaction ID</p>
-                        <p id="rec-id" class="text-4xl font-black text-slate-900 tracking-tighter uppercase underline decoration-primary decoration-[12px] underline-offset-[18px]"></p>
-                    </div>
-                </div>
-                
-                <div class="space-y-20 mb-24 italic underline decoration-slate-50 decoration-[15px] underline-offset-[20px]">
-                    <div class="flex justify-between text-5xl border-b-8 border-slate-50 pb-12"><span class="text-slate-400 uppercase text-[14px] tracking-[0.6em] italic underline decoration-blue-50">Identity Origin:</span><span id="rec-name" class="text-slate-900 font-black tracking-tighter">---</span></div>
-                    <div class="flex justify-between text-5xl border-b-8 border-slate-50 pb-12"><span class="text-slate-400 uppercase text-[14px] tracking-[0.6em] italic underline decoration-blue-50">Clinical Unit:</span><span id="rec-wing" class="text-primary font-black tracking-tighter underline decoration-slate-900 decoration-[12px] underline-offset-8">---</span></div>
-                    <div class="flex justify-between text-5xl border-b-8 border-slate-50 pb-12"><span class="text-slate-400 uppercase text-[14px] tracking-[0.6em] italic">Neural Schedule:</span><span id="rec-date" class="text-slate-900 font-black tracking-tighter underline decoration-slate-100 decoration-[12px] underline-offset-8">---</span></div>
-                    <div class="flex justify-between text-[11rem] pt-24 border-t-[20px] border-slate-900 animate__animated animate__pulse animate__infinite">
-                        <span class="text-slate-900 font-black uppercase italic tracking-tighter underline underline-offset-[45px] decoration-primary decoration-[35px]">TOTAL:</span>
-                        <span id="rec-bill" class="text-primary font-black tracking-tighter underline decoration-slate-900">---</span>
-                    </div>
-                </div>
-
-                <div class="flex justify-between items-end italic font-bold no-print">
-                    <div class="text-[14px] font-black uppercase tracking-[0.6em] text-slate-400">
-                        <p class="mb-14 italic underline decoration-slate-100 decoration-[12px] underline-offset-[20px]">Authorized Digital Shard Signature</p>
-                        <div class="flex items-center gap-14 scale-[2] origin-left mt-16">
-                             <img src="https://upload.wikimedia.org/wikipedia/commons/f/f8/Signature_of_John_Hancock.svg" width="220" class="opacity-10 grayscale brightness-0">
-                             <p class="text-slate-900 font-black underline decoration-primary decoration-[15px] underline-offset-[15px] italic tracking-tighter">BDS ADMIN 8708</p>
-                        </div>
-                    </div>
-                    <div class="text-right flex gap-14 italic">
-                        <button onclick="window.print()" class="bg-slate-900 text-white px-20 py-10 rounded-[4rem] font-black text-sm uppercase tracking-widest shadow-titan active:scale-90 transition-all underline decoration-primary decoration-[12px] underline-offset-[15px]">Print Shard Matrix</button>
-                        <button onclick="closeReceipt()" class="bg-slate-50 text-slate-300 px-16 py-10 rounded-[4rem] font-black text-sm uppercase tracking-widest active:scale-90 transition-all italic underline decoration-slate-100 decoration-8 underline-offset-8">Exit Node</button>
-                    </div>
-                </div>
+        <!-- Desktop Menu -->
+        <div class="hidden md:flex items-center gap-8 font-semibold text-gray-600">
+            <button onclick="showPage('home')" class="hover:text-blue-600">Home</button>
+            <button onclick="showPage('depts')" class="hover:text-blue-600">Departments</button>
+            <button onclick="showPage('doctors')" class="hover:text-blue-600">Doctors</button>
+            <button onclick="showPage('book')" class="hover:text-blue-600">Book Appointment</button>
+            <div id="nav-auth-btns" class="flex gap-4">
+                <button onclick="showPage('login')" class="bg-blue-600 text-white px-5 py-2 rounded-lg">Sign In</button>
+            </div>
+            <div id="user-profile" class="hidden flex items-center gap-3">
+                <span id="user-email-display" class="text-sm text-blue-600 italic"></span>
+                <button onclick="logout()" class="text-red-500"><i class="fas fa-power-off"></i></button>
             </div>
         </div>
+    </nav>
 
-        <!-- 🌐 GLOBAL ENTERPRISE FOOTER -->
-        <footer class="bg-white py-60 border-t-[15px] border-slate-100 px-24 italic font-bold mt-40 no-print">
-            <div class="container mx-auto grid lg:grid-cols-4 gap-48">
-                <div class="col-span-2">
-                    <h5 class="text-9xl font-black tracking-tighter mb-20 uppercase text-slate-900 leading-[0.7] italic">MEDCORE <br><span class="text-primary underline decoration-slate-900 decoration-[35px] underline-offset-[45px]">TITAN OMEGA</span></h5>
-                    <p class="text-slate-400 font-bold italic underline decoration-slate-50 max-w-2xl leading-[2.2] text-3xl decoration-[10px] underline-offset-[18px]">Official Enterprise Multi-Hospital Operating Shard. Engineered for Global Medical Logistics. Licensed for High-Level Distribution. Hartron Excellence Team 2024.</p>
-                </div>
-                <div class="italic">
-                    <h6 class="font-black text-sm uppercase tracking-[0.8em] mb-20 text-slate-800 underline decoration-primary decoration-[15px] underline-offset-[25px] italic font-black">Corporate HQ</h6>
-                    <p class="text-slate-500 font-black italic mb-14 text-4xl underline decoration-blue-50 decoration-[12px] underline-offset-8 font-black leading-none">📧 rohitsinghh777@gmail.com</p>
-                    <p class="text-slate-900 font-black italic underline font-bold decoration-primary tracking-tighter text-[7rem] italic underline-offset-[30px] font-black leading-none">📞 8708987154</p>
-                    <p class="text-slate-500 font-bold italic mt-28 uppercase text-sm tracking-[0.6em] underline decoration-blue-100 decoration-[10px] underline-offset-8">Global Sector 12, Karnal, HR</p>
-                </div>
-                <div class="bg-slate-950 p-24 rounded-[6rem] text-white shadow-titan relative overflow-hidden italic border-b-[40px] border-primary group cursor-help transition-all duration-[2000ms]">
-                    <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/20 rounded-full blur-[180px] group-hover:scale-150 transition-all duration-[5000ms]"></div>
-                    <p class="text-[15px] font-black uppercase text-blue-500 tracking-[0.7em] mb-20 italic underline underline-offset-[25px] decoration-white decoration-[12px] font-black opacity-80">Financial Shard v35.0</p>
-                    <p class="text-slate-500 text-[14px] uppercase font-bold mb-10 tracking-widest italic underline decoration-slate-800 underline-offset-8">Auth Merchant Entity:</p>
-                    <a href="https://razorpay.me/@rohitsingh9645" target="_blank" class="text-5xl font-black italic tracking-tighter hover:text-blue-400 transition-all underline decoration-primary decoration-[15px] underline-offset-[30px] block font-black leading-none uppercase">EXECUTE PAY <i class="fas fa-external-link-alt ml-10 text-xl"></i></a>
-                    <div class="mt-36 pt-12 border-t-[12px] border-white/5 italic">
-                        <p class="text-[13px] text-slate-600 font-bold uppercase tracking-widest italic underline decoration-blue-900 decoration-8 underline-offset-8">Matrix Encryption: RSA-4096 / AES-256</p>
-                    </div>
-                </div>
-            </div>
-        </footer>
-
+    <!-- 📱 MOBILE MENU -->
+    <div id="mobile-menu" class="hidden bg-white border-b p-6 space-y-4 md:hidden">
+        <button onclick="showPage('home')" class="block w-full text-left font-bold">Home</button>
+        <button onclick="showPage('depts')" class="block w-full text-left font-bold">Departments</button>
+        <button onclick="showPage('book')" class="block w-full text-left font-bold">Book Now</button>
+        <button onclick="showPage('login')" class="block w-full text-left text-blue-600 font-bold">Sign In</button>
     </div>
 
     <!-- ========================================================
-         CORE OMEGA ENGINE v35.0 (THE BRAIN)
+         PAGES SECTIONS
+         ======================================================== -->
+
+    <!-- PAGE 1: HOME PAGE -->
+    <section id="home" class="page active animate__animated animate__fadeIn">
+        <div class="bg-blue-600 text-white py-20 px-6 text-center">
+            <h2 class="text-4xl md:text-6xl font-black mb-6">Your Health, Our Responsibility</h2>
+            <p class="text-lg md:text-xl opacity-90 mb-10 max-w-2xl mx-auto">India's most trusted multispeciality hospital with 24/7 emergency support and world-class doctors.</p>
+            <div class="flex flex-wrap justify-center gap-4">
+                <button onclick="showPage('book')" class="bg-white text-blue-600 px-8 py-4 rounded-full font-bold text-lg shadow-xl">Book Now</button>
+                <a href="tel:8708987154" class="border-2 border-white px-8 py-4 rounded-full font-bold text-lg">Call: 8708987154</a>
+            </div>
+        </div>
+
+        <div class="container mx-auto py-20 px-6 grid md:grid-cols-3 gap-10">
+            <div class="bg-white p-8 rounded-3xl shadow-sm border text-center">
+                <i class="fas fa-user-md text-5xl text-blue-600 mb-6"></i>
+                <h3 class="text-2xl font-bold mb-4">Expert Doctors</h3>
+                <p class="text-gray-500">More than 50+ senior specialists available for your care.</p>
+            </div>
+            <div class="bg-white p-8 rounded-3xl shadow-sm border text-center">
+                <i class="fas fa-ambulance text-5xl text-red-500 mb-6"></i>
+                <h3 class="text-2xl font-bold mb-4">Emergency 24/7</h3>
+                <p class="text-gray-500">Immediate trauma care and ambulance dispatch in minutes.</p>
+            </div>
+            <div class="bg-white p-8 rounded-3xl shadow-sm border text-center">
+                <i class="fas fa-microscope text-5xl text-green-500 mb-6"></i>
+                <h3 class="text-2xl font-bold mb-4">Modern Lab</h3>
+                <p class="text-gray-500">High-tech diagnostics with same-day digital reports.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- PAGE 2: DEPARTMENTS -->
+    <section id="depts" class="page py-20 px-6 container mx-auto">
+        <h2 class="text-4xl font-bold text-center mb-16">Clinical Departments</h2>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <div class="bg-white p-6 rounded-2xl border hover:shadow-lg transition text-center">
+                <i class="fas fa-heart text-red-500 text-3xl mb-4"></i>
+                <h4 class="font-bold italic">Cardiology</h4>
+            </div>
+            <div class="bg-white p-6 rounded-2xl border hover:shadow-lg transition text-center">
+                <i class="fas fa-brain text-purple-500 text-3xl mb-4"></i>
+                <h4 class="font-bold italic">Neurology</h4>
+            </div>
+            <div class="bg-white p-6 rounded-2xl border hover:shadow-lg transition text-center">
+                <i class="fas fa-bone text-orange-500 text-3xl mb-4"></i>
+                <h4 class="font-bold italic">Orthopedic</h4>
+            </div>
+            <div class="bg-white p-6 rounded-2xl border hover:shadow-lg transition text-center">
+                <i class="fas fa-baby text-blue-400 text-3xl mb-4"></i>
+                <h4 class="font-bold italic">Pediatrics</h4>
+            </div>
+        </div>
+    </section>
+
+    <!-- PAGE 3: BOOKING FORM -->
+    <section id="book" class="page py-20 px-6 container mx-auto max-w-4xl">
+        <div class="bg-white p-10 rounded-[3rem] shadow-2xl border">
+            <h2 class="text-3xl font-bold mb-8 text-center text-blue-600">Appointment Booking</h2>
+            <form id="bookingForm" class="space-y-6">
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block font-bold mb-2">Patient Name</label>
+                        <input type="text" id="pName" required class="w-full p-4 bg-gray-50 rounded-xl outline-none border focus:border-blue-500">
+                    </div>
+                    <div>
+                        <label class="block font-bold mb-2">Contact Number</label>
+                        <input type="tel" id="pPhone" required class="w-full p-4 bg-gray-50 rounded-xl outline-none border">
+                    </div>
+                </div>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block font-bold mb-2">Select Department</label>
+                        <select id="pDept" class="w-full p-4 bg-gray-50 rounded-xl border font-bold">
+                            <option>Cardiology Specialist</option>
+                            <option>Neurology Specialist</option>
+                            <option>General Medicine</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block font-bold mb-2">Select Date (Sunday Off)</label>
+                        <input type="date" id="pDate" onchange="checkSunday(this.value)" required class="w-full p-4 bg-gray-50 rounded-xl border">
+                    </div>
+                </div>
+                <button type="submit" class="w-full bg-blue-600 text-white py-5 rounded-2xl font-black text-xl shadow-lg">Confirm & Proceed to Payment</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- PAGE 4: LOGIN / SIGNUP -->
+    <section id="login" class="page py-20 px-6">
+        <div class="bg-white max-w-md mx-auto p-10 rounded-[2.5rem] shadow-2xl border">
+            <h2 id="auth-title" class="text-3xl font-bold text-center mb-8">Sign In</h2>
+            <div class="space-y-4">
+                <input type="email" id="auth-email" placeholder="Email (rohitsinghh777@gmail.com)" class="w-full p-4 bg-gray-50 rounded-xl outline-none border">
+                <input type="password" id="auth-pass" placeholder="Password" class="w-full p-4 bg-gray-50 rounded-xl outline-none border">
+                <button onclick="handleAuth()" class="w-full bg-blue-600 text-white py-4 rounded-xl font-bold uppercase">Login / Register</button>
+                <p class="text-center text-sm text-gray-500">Note: Use rohitsinghh777@gmail.com to access Admin Panel</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- PAGE 5: ADMIN DASHBOARD (Only for rohitsinghh777@gmail.com) -->
+    <section id="admin" class="page py-20 px-6 container mx-auto">
+        <h2 class="text-4xl font-bold mb-10 italic">Super Admin <span class="text-blue-600 underline">Master Dashboard</span></h2>
+        
+        <div class="grid md:grid-cols-4 gap-6 mb-12">
+            <div class="bg-white p-8 rounded-3xl shadow-sm border border-blue-100">
+                <p class="text-xs font-bold text-gray-400 uppercase mb-2">Total Patients</p>
+                <h4 id="stat-patients" class="text-4xl font-bold">0</h4>
+            </div>
+            <div class="bg-blue-600 p-8 rounded-3xl shadow-lg text-white">
+                <p class="text-xs opacity-70 uppercase mb-2">Total Revenue</p>
+                <h4 id="stat-revenue" class="text-4xl font-bold">₹0</h4>
+            </div>
+            <div class="bg-white p-8 rounded-3xl shadow-sm border border-blue-100">
+                <p class="text-xs font-bold text-gray-400 uppercase mb-2">G-Pay ID</p>
+                <h4 class="text-lg font-bold">rohitsingh9645</h4>
+            </div>
+            <div class="bg-white p-8 rounded-3xl shadow-sm border border-blue-100">
+                <p class="text-xs font-bold text-gray-400 uppercase mb-2">Emergency Hub</p>
+                <h4 class="text-xl font-bold">8708987154</h4>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-[3rem] shadow-xl border overflow-hidden">
+            <table class="w-full text-left">
+                <thead class="bg-gray-50 border-b">
+                    <tr>
+                        <th class="p-6 font-bold uppercase text-xs">Patient Name</th>
+                        <th class="p-6 font-bold uppercase text-xs">Department</th>
+                        <th class="p-6 font-bold uppercase text-xs">Date</th>
+                        <th class="p-6 font-bold uppercase text-xs">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="admin-table-body">
+                    <!-- Dynamic Data -->
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- 📊 PATIENT PORTAL (For normal users) -->
+    <section id="patient-portal" class="page py-20 px-6 container mx-auto">
+        <h2 class="text-4xl font-bold mb-10 underline decoration-blue-500">My Appointments</h2>
+        <div id="patient-history" class="grid md:grid-cols-2 gap-6">
+            <!-- User's own data -->
+        </div>
+    </section>
+
+    <!-- 🌐 FOOTER -->
+    <footer class="bg-slate-900 text-white py-16 px-6 mt-20 no-print">
+        <div class="container mx-auto grid md:grid-cols-3 gap-10">
+            <div>
+                <h4 class="text-2xl font-bold mb-6">MedCore Titan</h4>
+                <p class="text-gray-400">Enterprise Healthcare OS for Hartron Center. Emergency Contact: 8708987154</p>
+            </div>
+            <div>
+                <h4 class="text-xl font-bold mb-6">Quick Links</h4>
+                <div class="space-y-2 text-gray-400">
+                    <p class="cursor-pointer hover:text-white" onclick="showPage('depts')">Departments</p>
+                    <p class="cursor-pointer hover:text-white" onclick="showPage('book')">Book Now</p>
+                    <p class="cursor-pointer hover:text-white" onclick="showPage('login')">Admin Portal</p>
+                </div>
+            </div>
+            <div>
+                <h4 class="text-xl font-bold mb-6">Financial Node</h4>
+                <p class="text-gray-400 mb-4 italic font-bold">Merchant ID: @rohitsingh9645</p>
+                <a href="https://razorpay.me/@rohitsingh9645" target="_blank" class="bg-blue-600 px-6 py-3 rounded-xl font-bold inline-block">Pay Online</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ========================================================
+         CORE JAVASCRIPT ENGINE (The Brain)
          ======================================================== -->
     <script>
-        // --- 1. ENTERPRISE DATA ARCHITECTURE ---
-        const MASTER_EMAIL = "rohitsinghh777@gmail.com";
-        const MASTER_PASS = "admin";
-        const DISPATCH_HL = "918708987154";
-        const MERCHANT_NODE = "https://razorpay.me/@rohitsingh9645";
-        const GEMINI_KEY = "YOUR_API_KEY"; // BHAI KEY YAHAN DALNA
-
-        // Virtual Global DB
-        if(!localStorage.getItem('omega_v35_users')) {
-            localStorage.setItem('omega_v35_users', JSON.stringify([
-                {email: MASTER_EMAIL, pass: MASTER_PASS, role: 'admin', name: 'Super Admin Rohit Singh', shard: 'HQ-KARNAL'}
-            ]));
+        // --- 1. GLOBAL STATE (THE VIRTUAL DB) ---
+        // Browser ki memory mein data save rahega
+        if(!localStorage.getItem('users')) {
+            localStorage.setItem('users', JSON.stringify([{email: 'rohitsinghh777@gmail.com', pass: 'admin', role: 'admin'}]));
         }
-        if(!localStorage.getItem('omega_v35_records')) localStorage.setItem('omega_v35_records', JSON.stringify([]));
+        if(!localStorage.getItem('bookings')) localStorage.setItem('bookings', JSON.stringify([]));
 
-        let currentSession = JSON.parse(sessionStorage.getItem('omega_v35_session')) || null;
-        let authModeIsSignup = false;
+        let currentUser = JSON.parse(sessionStorage.getItem('session')) || null;
 
-        // --- 2. BOOTSTRAP KERNEL ---
-        window.onload = () => {
-            const bootStages = ["Mapping RSA-4096 Keys...", "Linking 24 Global Shards...", "Authenticating rohitsinghh777@gmail.com...", "Initializing Neural AI v35.0...", "Titan Omega Ultimatum: ONLINE."];
-            let step = 0;
-            const bootInt = setInterval(() => {
-                document.getElementById('boot-text').innerText = bootStages[step];
-                step++;
-                if(step >= bootStages.length) {
-                    clearInterval(bootInt);
-                    document.getElementById('sys-loader').classList.add('animate__fadeOut');
-                    setTimeout(() => {
-                        document.getElementById('sys-loader').classList.add('hidden');
-                        syncSystem();
-                    }, 800);
+        // --- 2. PAGE NAVIGATION ---
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+            window.scrollTo(0,0);
+            
+            // Special checks for Admin Page
+            if(pageId === 'admin') {
+                if(!currentUser || currentUser.email !== 'rohitsinghh777@gmail.com') {
+                    showPage('login');
+                    Swal.fire('Admin Access Only', 'Please login with rohitsinghh777@gmail.com', 'warning');
+                    return;
                 }
-            }, 500);
-        };
+                renderAdminData();
+            }
 
-        // --- 3. AUTHENTICATION & RBAC ENGINE ---
-        function toggleAuth() {
-            authModeIsSignup = !authModeIsSignup;
-            document.getElementById('auth-title').innerText = authModeIsSignup ? 'Shard Registry' : 'SIGN IN';
-            document.getElementById('auth-btn').innerText = authModeIsSignup ? 'Generate Identity Shard' : 'Authorize Shard Access';
-            document.getElementById('auth-msg').innerText = authModeIsSignup ? 'Already a shard entity?' : 'New medical identity?';
-            document.getElementById('auth-toggle-btn').innerText = authModeIsSignup ? 'Authorize Access' : 'Create EMR Shard';
+            // Mobile menu hide
+            document.getElementById('mobile-menu').classList.add('hidden');
         }
 
-        function executeAuth() {
-            const email = document.getElementById('auth-email').value.trim();
+        function toggleMobileMenu() {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        }
+
+        // --- 3. AUTHENTICATION (Login/Signup) ---
+        function handleAuth() {
+            const email = document.getElementById('auth-email').value;
             const pass = document.getElementById('auth-pass').value;
 
-            if(!email || !pass) return Swal.fire('Denied', 'Enterprise Shards Missing.', 'error');
+            if(!email || !pass) return Swal.fire('Error', 'Fields are empty', 'error');
 
-            let users = JSON.parse(localStorage.getItem('omega_v35_users'));
+            let users = JSON.parse(localStorage.getItem('users'));
+            let user = users.find(u => u.email === email && u.pass === pass);
 
-            if(authModeIsSignup) {
-                if(users.find(u => u.email === email)) return Swal.fire('Conflict', 'Shard identity exists.', 'warning');
-                users.push({ email, pass, role: (email === MASTER_EMAIL ? 'admin' : 'patient'), name: email.split('@')[0], shard: 'Remote-Shard' });
-                localStorage.setItem('omega_v35_users', JSON.stringify(users));
-                Swal.fire('Encrypted', 'Neural Identity Created. Authorize now.', 'success');
-                toggleAuth();
+            if(user) {
+                // Login Success
+                currentUser = user;
+                sessionStorage.setItem('session', JSON.stringify(user));
+                initSession();
+                Swal.fire('Welcome', 'Login Successful!', 'success');
+                showPage('home');
             } else {
-                const user = users.find(u => u.email === email && u.pass === pass);
-                if(user) {
-                    currentSession = user;
-                    sessionStorage.setItem('omega_v35_session', JSON.stringify(currentSession));
-                    Swal.fire({ title: 'Authorized', text: 'Identity Shard Verified.', icon: 'success', timer: 1500, showConfirmButton: false });
-                    syncSystem();
-                } else {
-                    Swal.fire('Access Denied', 'Invalid Token or Shard Key.', 'error');
-                }
+                // Register as new patient
+                users.push({email, pass, role: 'patient'});
+                localStorage.setItem('users', JSON.stringify(users));
+                Swal.fire('Success', 'Account Created! Now click login again.', 'info');
             }
         }
 
-        function terminateSession() { sessionStorage.removeItem('omega_v35_session'); location.reload(); }
+        function logout() {
+            sessionStorage.clear();
+            location.reload();
+        }
 
-        // --- 4. DATA SYNCHRONIZER (Dynamic Views) ---
-        function syncSystem() {
-            if(!currentSession) {
-                document.getElementById('auth-screen').classList.remove('hidden');
-                document.getElementById('app-shell').classList.add('hidden');
+        function initSession() {
+            if(currentUser) {
+                document.getElementById('nav-auth-btns').classList.add('hidden');
+                document.getElementById('user-profile').classList.remove('hidden');
+                document.getElementById('user-email-display').innerText = currentUser.email;
+                if(currentUser.email === 'rohitsinghh777@gmail.com') {
+                    // Admin View
+                }
+                renderPatientHistory();
+            }
+        }
+
+        // --- 4. BUSINESS LOGIC (Sunday Off) ---
+        function checkSunday(val) {
+            const day = new Date(val).getDay();
+            if(day === 0) {
+                Swal.fire('Closed', 'Hospital is closed on Sundays!', 'error');
+                document.getElementById('pDate').value = '';
+            }
+        }
+
+        // --- 5. BOOKING & DATA MANAGEMENT ---
+        document.getElementById('bookingForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            if(!currentUser) {
+                showPage('login');
+                Swal.fire('Login Required', 'Please sign in to book appointment', 'info');
                 return;
             }
 
-            document.getElementById('auth-screen').classList.add('hidden');
-            document.getElementById('app-shell').classList.remove('hidden');
-            document.getElementById('nav-email').innerText = currentSession.email;
-            document.getElementById('nav-role').innerText = currentSession.role === 'admin' ? 'Super Admin Matrix' : 'Patient EMR Shard';
-
-            if(currentSession.role === 'admin') {
-                document.getElementById('view-patient').classList.add('hidden');
-                document.getElementById('view-admin').classList.remove('hidden');
-                initCharts();
-                refreshAdminMatrix();
-            } else {
-                document.getElementById('view-patient').classList.remove('hidden');
-                document.getElementById('view-admin').classList.add('hidden');
-                refreshPatientTimeline();
-                initQR();
-            }
-        }
-
-        function setTab(tab) {
-            const views = document.querySelectorAll('.admin-tab-view');
-            views.forEach(v => v.classList.add('hidden'));
-            document.getElementById('tab-' + tab).classList.remove('hidden');
-            
-            const btns = document.querySelectorAll('.admin-nav');
-            btns.forEach(b => b.classList.remove('active', 'sidebar-item'));
-            event.currentTarget.classList.add('active', 'sidebar-item');
-        }
-
-        // --- 5. PATIENT PRECISION HUB (QR, Sunday, Intake) ---
-        function initQR() {
-            const box = document.getElementById('pt-qr');
-            box.innerHTML = "";
-            new QRCode(box, { text: "TITAN-SHARD-" + currentSession.email, width: 200, height: 200, colorDark: "#0f172a" });
-        }
-
-        function filterSunday(val) {
-            if(new Date(val).getDay() === 0) {
-                Swal.fire('Clinical Error', 'Titan Global Shards are OFFLINE on Sundays.', 'error');
-                document.getElementById('p-date').value = "";
-                document.getElementById('sun-alert').classList.remove('hidden');
-            } else {
-                document.getElementById('sun-alert').classList.add('hidden');
-            }
-        }
-
-        function syncWingNum(val) {
-            const [name, phone, price] = val.split('|');
-            document.getElementById('wing-node-display').innerText = phone;
-        }
-
-        document.getElementById('omegaForm').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const [wName, wPhone, wBill] = document.getElementById('p-wing').value.split('|');
-            
-            const node = {
-                id: 'TITAN-' + Math.floor(Math.random() * 999999999),
-                origin: currentSession.email,
-                patient: document.getElementById('p-name').value,
-                phone: document.getElementById('p-phone').value,
-                wing: wName,
-                bill: wBill,
-                date: document.getElementById('p-date').value,
-                time: new Date().toLocaleTimeString(),
-                status: 'Verified Shard'
+            const newBooking = {
+                id: Date.now(),
+                userEmail: currentUser.email,
+                name: document.getElementById('pName').value,
+                phone: document.getElementById('pPhone').value,
+                dept: document.getElementById('pDept').value,
+                date: document.getElementById('pDate').value,
+                status: 'Confirmed'
             };
 
-            let db = JSON.parse(localStorage.getItem('omega_v35_records'));
-            db.unshift(node);
-            localStorage.setItem('omega_v35_records', JSON.stringify(db));
+            let bookings = JSON.parse(localStorage.getItem('bookings'));
+            bookings.unshift(newBooking);
+            localStorage.setItem('bookings', JSON.stringify(bookings));
 
             Swal.fire({
-                title: 'Neural Matrix Sync',
-                html: 'Encrypting EMR for Merchant Hub <b>@rohitsingh9645</b>...',
-                timer: 3500,
-                timerProgressBar: true,
-                didOpen: () => { Swal.showLoading() }
+                title: 'Payment Processing',
+                text: 'Redirecting to Razorpay Merchant @rohitsingh9645',
+                icon: 'success',
+                confirmButtonText: 'Pay & Notify BDS'
             }).then(() => {
-                const alertMsg = `*🚨 TITAN v35.0 INTAKE ALERT!*%0A%0A*Name:* ${node.patient}%0A*Wing:* ${node.wing}%0A*Schedule:* ${node.date}%0A*EMR ID:* ${node.id}%0A*Admin Notification:* rohitsinghh777@gmail.com%0A%0A_Status: Financial Dispatch Ready_`;
-                window.open(`https://wa.me/${DISPATCH_HL}?text=${alertMsg}`, '_blank');
-                
-                // Show Digital Shard Receipt
-                openReceipt(node);
+                // Real WhatsApp Notification (8708987154)
+                const msg = `*NEW BOOKING!*%0A*Patient:* ${newBooking.name}%0A*Wing:* ${newBooking.dept}%0A*Date:* ${newBooking.date}%0A*Admin Alert:* 8708987154`;
+                window.open(`https://wa.me/918708987154?text=${msg}`, '_blank');
+                // Real Payment Page Redirect
+                window.location.href = "https://razorpay.me/@rohitsingh9645";
             });
         });
 
-        // --- 6. SHARD RECEIPT & TIMELINE ---
-        function openReceipt(node) {
-            document.getElementById('rec-id').innerText = node.id;
-            document.getElementById('rec-name').innerText = node.patient;
-            document.getElementById('rec-wing').innerText = node.wing;
-            document.getElementById('rec-date').innerText = node.date;
-            document.getElementById('rec-bill').innerText = node.bill;
-            document.getElementById('receipt-modal').classList.remove('hidden');
-        }
-
-        function closeReceipt() {
-            document.getElementById('receipt-modal').classList.add('hidden');
-            window.location.href = MERCHANT_NODE;
-        }
-
-        function refreshPatientTimeline() {
-            const db = JSON.parse(localStorage.getItem('omega_v35_records'));
-            const myList = db.filter(r => r.origin === currentSession.email);
-            const container = document.getElementById('pt-timeline');
+        // --- 6. RENDER DATA (Admin & Patient) ---
+        function renderAdminData() {
+            const bookings = JSON.parse(localStorage.getItem('bookings'));
+            const table = document.getElementById('admin-table-body');
             
-            container.innerHTML = myList.length ? "" : '<p class="text-slate-400 font-black uppercase text-sm tracking-[0.5em] animate-pulse underline decoration-primary py-10">No medical shards found in neural cloud.</p>';
-            
-            myList.forEach(r => {
-                container.innerHTML += `
-                    <div class="dashboard-card p-16 animate__animated animate__fadeInUp relative overflow-hidden italic font-bold border-l-[30px] border-primary">
-                        <div class="flex justify-between items-start">
-                            <div>
-                                <p class="text-[13px] font-black text-primary uppercase tracking-[0.4em] mb-10 underline decoration-blue-100 decoration-[10px] underline-offset-8">Matrix Node: ${r.wing}</p>
-                                <h4 class="text-5xl font-black text-slate-900 tracking-tighter uppercase underline decoration-primary decoration-[15px] underline-offset-[15px]">${r.patient}</h4>
-                                <p class="text-xl text-slate-400 mt-12 italic font-black underline decoration-slate-100 decoration-[12px] underline-offset-[15px]">Schedule: ${r.date} | ${r.time}</p>
-                            </div>
-                            <div class="text-right">
-                                <span class="bg-green-100 text-green-700 px-10 py-4 rounded-full text-[13px] font-black uppercase tracking-[0.5em] italic shadow-2xl">Verified Node</span>
-                                <p class="mt-14 text-sm font-black text-slate-300 tracking-[0.3em] underline underline-offset-[12px] decoration-slate-50 uppercase">ID: ${r.id}</p>
-                            </div>
-                        </div>
-                        <div class="mt-28 flex gap-12 pt-20 border-t-[10px] border-slate-50 border-dotted italic">
-                            <button onclick="Swal.fire('EMR Lock', 'Verified clinical identity required.', 'info')" class="text-[13px] font-black uppercase text-blue-500 hover:text-blue-800 underline tracking-[0.6em] decoration-blue-100 font-black underline-offset-8">Download E-Prescription</button>
-                            <button onclick="abortShard('${r.id}')" class="text-[13px] font-black uppercase text-red-400 hover:text-red-800 underline tracking-[0.6em] decoration-red-100 font-black underline-offset-8">Abort Node registry</button>
-                        </div>
-                    </div>
-                `;
-            });
-        }
+            document.getElementById('stat-patients').innerText = bookings.length;
+            document.getElementById('stat-revenue').innerText = '₹' + (bookings.length * 500);
 
-        // --- 7. ADMIN INTELLIGENCE MATRIX ---
-        function refreshAdminMatrix() {
-            const db = JSON.parse(localStorage.getItem('omega_v35_records'));
-            const table = document.getElementById('adm-emr-table');
-            const total = db.reduce((sum, r) => sum + parseInt(r.bill.replace('₹', '')), 0);
-            document.getElementById('admin-rev-total').innerText = '₹' + total.toLocaleString();
-            document.getElementById('admin-emr-count').innerText = db.length.toLocaleString();
-
-            table.innerHTML = db.map(r => `
-                <tr class="hover:bg-slate-50 transition-all border-b-8 border-slate-50 duration-500 font-black italic">
-                    <td class="py-12 px-6 font-black text-slate-300 text-sm tracking-[0.4em] uppercase">${r.id}</td>
-                    <td class="px-6 text-slate-900 italic underline decoration-slate-100 decoration-8 underline-offset-[12px] text-lg">${r.origin}</td>
-                    <td class="px-6 text-primary italic tracking-tighter underline decoration-blue-100 decoration-[12px] underline-offset-[12px] text-2xl">${r.wing}</td>
-                    <td class="px-6 text-green-500 underline decoration-green-100 decoration-[10px] uppercase text-[12px] tracking-widest">Verified ${r.bill}</td>
-                    <td class="px-6 text-slate-500 text-lg">${r.date}</td>
-                    <td class="px-6"><button onclick="abortShard('${r.id}')" class="w-20 h-20 bg-red-50 text-red-500 rounded-[2rem] flex items-center justify-center hover:bg-red-500 hover:text-white transition-all shadow-xl active:scale-75"><i class="fas fa-trash-alt text-2xl"></i></button></td>
+            table.innerHTML = bookings.map(b => `
+                <tr class="border-b hover:bg-gray-50 transition">
+                    <td class="p-6 font-bold">${b.name} <br><span class="text-xs text-gray-400">${b.userEmail}</span></td>
+                    <td class="p-6 text-blue-600">${b.dept}</td>
+                    <td class="p-6 text-gray-500">${b.date}</td>
+                    <td class="p-6"><button onclick="deleteBooking(${b.id})" class="text-red-500"><i class="fas fa-trash"></i></button></td>
                 </tr>
             `).join('');
         }
 
-        function abortShard(id) {
-            Swal.fire({
-                title: 'ABORT NEURAL NODE?',
-                text: "Critical Error: Permanent Removal of EMR ID " + id + " from Matrix.",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#f43f5e',
-                confirmButtonText: 'PURGE SHARD'
-            }).then((res) => {
-                if(res.isConfirmed) {
-                    let db = JSON.parse(localStorage.getItem('omega_v35_records'));
-                    db = db.filter(r => r.id !== id);
-                    localStorage.setItem('omega_v35_records', JSON.stringify(db));
-                    syncSystem();
-                    Swal.fire('Purged', 'Shard successfully detached.', 'success');
-                }
-            });
-        }
-
-        function purgeGlobalShards() {
-            if(confirm("CRITICAL: Wipe entire 24 Hospital Neural Database?")) {
-                localStorage.setItem('omega_v35_records', JSON.stringify([]));
-                syncSystem();
+        function renderPatientHistory() {
+            const bookings = JSON.parse(localStorage.getItem('bookings'));
+            const myHistory = bookings.filter(b => b.userEmail === currentUser.email);
+            const container = document.getElementById('patient-history');
+            
+            if(myHistory.length === 0) {
+                container.innerHTML = '<p class="text-gray-400 italic">No medical history found.</p>';
+                return;
             }
+
+            container.innerHTML = myHistory.map(b => `
+                <div class="bg-white p-8 rounded-[2rem] shadow-sm border border-blue-50 animate__animated animate__fadeIn">
+                    <p class="text-xs font-bold text-blue-600 uppercase mb-2">${b.dept}</p>
+                    <h4 class="text-2xl font-bold text-gray-800">${b.name}</h4>
+                    <p class="text-sm text-gray-400 mt-4">Schedule: ${b.date}</p>
+                    <div class="mt-6 flex justify-between items-center">
+                        <span class="bg-green-100 text-green-700 px-4 py-1 rounded-full text-xs font-bold">PAID</span>
+                        <span class="text-gray-300 text-[10px]">Node ID: ${b.id}</span>
+                    </div>
+                </div>
+            `).join('');
         }
 
-        // --- 8. NEURAL AI LOGIC (Gemini Bridge) ---
-        function toggleAI() { document.getElementById('ai-modal').classList.toggle('hidden'); }
-        
-        async function askAI() {
-            const input = document.getElementById('ai-input').value;
-            const body = document.getElementById('ai-body');
-            if(!input) return;
-
-            body.innerHTML += `<div class="flex justify-end"><div class="ai-chat-bubble user-bubble text-2xl animate__animated animate__fadeInRight tracking-tighter italic uppercase underline underline-offset-8">${input}</div></div>`;
-            document.getElementById('ai-input').value = "";
-            body.scrollTop = body.scrollHeight;
-
-            const loadId = "ai-" + Date.now();
-            body.innerHTML += `<div id="${loadId}" class="ai-chat-bubble bot-bubble text-2xl animate-pulse underline decoration-primary decoration-[10px] underline-offset-[12px]">Titan AI is mapping clinical shards...</div>`;
-
-            try {
-                // REAL API CALL: GEMINI PRO
-                const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${GEMINI_KEY}`, {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({ contents: [{ parts: [{ text: `Senior Doctor Persona. Symptoms: ${input}. Suggest Wing (Cardiology/Neurology/Ortho). Reference rohitsinghh777@gmail.com and 8708987154.` }] }] })
-                });
-                const data = await res.json();
-                document.getElementById(loadId).remove();
-                const reply = data.candidates[0].content.parts[0].text;
-                body.innerHTML += `<div class="ai-chat-bubble bot-bubble text-xl animate__animated animate__fadeInLeft leading-relaxed italic underline underline-offset-8 decoration-slate-100 decoration-[6px]">${reply}</div>`;
-                body.scrollTop = body.scrollHeight;
-            } catch (e) {
-                document.getElementById(loadId).innerText = "Neural Matrix Link failed. Query logged for rohitsinghh777@gmail.com via 8708987154.";
-            }
+        function deleteBooking(id) {
+            let bookings = JSON.parse(localStorage.getItem('bookings'));
+            bookings = bookings.filter(b => b.id !== id);
+            localStorage.setItem('bookings', JSON.stringify(bookings));
+            renderAdminData();
         }
 
-        // --- 9. ANALYTICS (Chart.js) ---
-        let chartsInit = false;
-        function initCharts() {
-            if(chartsInit) return;
-            new Chart(document.getElementById('revChart').getContext('2d'), {
-                type: 'line',
-                data: { labels: ['S1', 'S2', 'S3', 'S4', 'S5', 'S6'], datasets: [{ label: 'Revenue Cr', data: [5, 12, 8, 18, 14, 28], borderColor: '#0284c7', borderWidth: 20, tension: 0.5, fill: true, backgroundColor: 'rgba(2, 132, 199, 0.05)' }] },
-                options: { plugins: { legend: { display: false } }, scales: { y: { display: false }, x: { grid: { display: false } } } }
-            });
-            new Chart(document.getElementById('loadChart').getContext('2d'), {
-                type: 'doughnut',
-                data: { labels: ['Cardiac', 'Neuro', 'Ortho'], datasets: [{ data: [40, 35, 25], backgroundColor: ['#0284c7', '#0f172a', '#f43f5e'], borderWidth: 0 }] },
-                options: { cutout: '85%', plugins: { legend: { position: 'bottom' } } }
-            });
-            chartsInit = true;
-        }
-
-        function scrollToReg() { document.getElementById('intake-zone').scrollIntoView({behavior: 'smooth'}); }
-        function googleIdentityBypass() {
-            Swal.fire({ title: 'Google Identity Sync', text: 'Bridging OAuth Shard for rohitsinghh777@gmail.com...', timer: 2000, showConfirmButton: false, didOpen: () => { Swal.showLoading() } }).then(() => {
-                currentSession = { email: MASTER_EMAIL, role: 'admin', name: 'Rohit Singh' };
-                sessionStorage.setItem('omega_v35_session', JSON.stringify(currentSession));
-                syncSystem();
-            });
-        }
+        // Initialize session on load
+        window.onload = () => {
+            setTimeout(() => {
+                document.getElementById('sys-loader').classList.add('hidden');
+                initSession();
+            }, 1500);
+        };
     </script>
 </body>
 </html>

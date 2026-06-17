@@ -3,176 +3,227 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shree Care Multi-Speciality | Dr. Rohit Singh</title>
+    <title>Shree Care Enterprise HMS | Dr. Rohit Singh | Multi-Speciality</title>
     
-    <!-- Enterprise Stack -->
+    <!-- Professional Enterprise Stack -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=Marcellus&display=swap" rel="stylesheet">
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;400;600;800&family=Playfair+Display:ital,wght@0,700;1,900&display=swap" rel="stylesheet">
 
     <style>
-        :root { --primary: #0a192f; --accent: #2563eb; --gold: #c5a059; }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #ffffff; color: #1e293b; }
-        h1, h2, h3, .font-marcellus { font-family: 'Marcellus', serif; }
-        
-        .glass-header { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(0,0,0,0.05); }
-        .hero-video-mock { background: linear-gradient(rgba(10, 25, 47, 0.7), rgba(10, 25, 47, 0.7)), url('https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=1600&q=80'); background-attachment: fixed; background-size: cover; }
-        
-        .gallery-card { position: relative; overflow: hidden; border-radius: 2.5rem; height: 400px; cursor: pointer; }
-        .gallery-card img { transition: 0.8s; height: 100%; width: 100%; object-cover: cover; }
-        .gallery-card:hover img { transform: scale(1.1); }
-        .gallery-overlay { position: absolute; inset: 0; background: linear-gradient(transparent, rgba(10, 25, 47, 0.9)); display: flex; flex-col; justify-content: end; padding: 2.5rem; opacity: 0; transition: 0.4s; }
-        .gallery-card:hover .gallery-overlay { opacity: 1; }
+        :root {
+            --primary: #0a192f;
+            --accent: #0ea5e9;
+            --gold: #c5a059;
+            --emerald: #10b981;
+            --rose: #e11d48;
+            --sidebar-w: 280px;
+        }
 
-        .schedule-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 2rem; transition: 0.3s; }
-        .schedule-card:hover { border-color: var(--accent); background: white; transform: translateY(-5px); box-shadow: 0 20px 40px -10px rgba(0,0,0,0.05); }
-
-        .btn-premium { background: var(--primary); color: white; transition: 0.4s; }
-        .btn-premium:hover { background: var(--accent); transform: translateY(-3px); }
-
-        .status-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 6px; }
-        .online { background: #10b981; box-shadow: 0 0 10px #10b981; }
-        .offline { background: #ef4444; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #f8fafc; color: #1e293b; overflow-x: hidden; }
+        .font-serif { font-family: 'Playfair Display', serif; }
         
+        /* Premium Backgrounds */
+        .hero-section { background: linear-gradient(rgba(10, 25, 47, 0.8), rgba(10, 25, 47, 0.8)), url('https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=1600&q=80'); background-size: cover; background-attachment: fixed; }
+        .glass-nav { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(0,0,0,0.05); }
+        
+        /* Dashboard Architecture */
+        .sidebar { width: var(--sidebar-w); background: var(--primary); height: 100vh; position: fixed; left: 0; top: 0; z-index: 1000; transition: 0.4s; }
+        .main-view { margin-left: var(--sidebar-w); min-height: 100vh; transition: 0.4s; }
+        @media (max-width: 1024px) { .sidebar { left: -100%; } .main-view { margin-left: 0; } }
+
+        /* Fancy UI */
+        .card-pro { background: white; border-radius: 2.5rem; transition: 0.5s; border: 1px solid rgba(0,0,0,0.03); overflow: hidden; }
+        .card-pro:hover { transform: translateY(-10px); box-shadow: 0 40px 80px -20px rgba(0,0,0,0.1); border-color: var(--accent); }
+        .status-badge { padding: 4px 14px; border-radius: 20px; font-size: 10px; font-weight: 800; text-transform: uppercase; display: inline-flex; align-items: center; gap: 6px; }
+        .online { background: #dcfce7; color: #15803d; }
+        .offline { background: #fee2e2; color: #b91c1c; }
+        
+        /* Gallery */
+        .gallery-box { height: 400px; border-radius: 3rem; overflow: hidden; position: relative; cursor: pointer; }
+        .gallery-box img { transition: 0.8s; width: 100%; height: 100%; object-fit: cover; }
+        .gallery-box:hover img { transform: scale(1.15); }
+        .gallery-overlay { position: absolute; inset: 0; background: linear-gradient(transparent, rgba(10,25,47,0.9)); padding: 2.5rem; display: flex; flex-direction: column; justify-content: flex-end; opacity: 0; transition: 0.4s; }
+        .gallery-box:hover .gallery-overlay { opacity: 1; }
+
         .no-scrollbar::-webkit-scrollbar { display: none; }
+        .emergency-btn { animation: pulse-red 2s infinite; }
+        @keyframes pulse-red { 0% { box-shadow: 0 0 0 0 rgba(225, 29, 72, 0.7); } 70% { box-shadow: 0 0 0 20px rgba(225, 29, 72, 0); } 100% { box-shadow: 0 0 0 0 rgba(225, 29, 72, 0); } }
     </style>
 </head>
-<body class="antialiased no-scrollbar">
+<body class="no-scrollbar antialiased">
 
-    <!-- NAVIGATION (PUBLIC) -->
-    <nav class="fixed w-full z-[1000] glass-header px-6 md:px-20 py-5 flex justify-between items-center">
-        <div class="flex items-center gap-4">
-            <div class="w-12 h-12 bg-blue-600 rounded-2xl flex items-center justify-center text-white text-2xl shadow-xl shadow-blue-200">
-                <i class="fas fa-hand-holding-medical"></i>
+    <!-- 1. NAVIGATION -->
+    <nav class="fixed w-full z-[2000] glass-nav px-8 md:px-20 py-4 flex justify-between items-center">
+        <div class="flex items-center gap-3">
+            <div class="w-12 h-12 bg-sky-600 rounded-2xl flex items-center justify-center text-white text-2xl shadow-xl shadow-sky-200">
+                <i class="fas fa-notes-medical"></i>
             </div>
             <div>
-                <h1 class="text-2xl font-black tracking-tighter leading-none italic">SHREE<span class="text-blue-600">CARE</span></h1>
-                <p class="text-[9px] font-black uppercase tracking-widest text-slate-400 mt-1">International Multi-Speciality</p>
+                <h1 class="text-2xl font-black tracking-tighter leading-none italic uppercase">SHREE<span class="text-sky-500">CARE</span></h1>
+                <p class="text-[9px] font-black uppercase tracking-[0.2em] text-slate-400 mt-1">Multi-Speciality Enterprise</p>
             </div>
         </div>
 
-        <div class="hidden lg:flex gap-10">
-            <a href="#home" class="text-[11px] font-black uppercase tracking-widest text-slate-600 hover:text-blue-600">Home</a>
-            <a href="#schedule" class="text-[11px] font-black uppercase tracking-widest text-slate-600 hover:text-blue-600">Schedules</a>
-            <a href="#gallery" class="text-[11px] font-black uppercase tracking-widest text-slate-600 hover:text-blue-600">Facility</a>
-            <a href="#booking" class="text-[11px] font-black uppercase tracking-widest text-blue-600 border-b-2 border-blue-600">Book Now</a>
+        <div class="hidden lg:flex gap-10 font-black text-[11px] uppercase tracking-widest text-slate-500">
+            <a href="#home" class="hover:text-sky-600 transition">Home</a>
+            <a href="#doctors" class="hover:text-sky-600 transition">Our Panel</a>
+            <a href="#gallery" class="hover:text-sky-600 transition">Gallery</a>
+            <a href="#booking" class="text-sky-600 font-extrabold border-b-2 border-sky-600">Secure OPD</a>
         </div>
 
         <div class="flex items-center gap-6">
-            <button onclick="toggleModal('loginModal')" class="text-xs font-black uppercase tracking-widest text-slate-800"><i class="fas fa-user-md mr-2"></i> Doctor Login</button>
+            <button onclick="openModal('authModal')" class="text-[11px] font-black uppercase tracking-widest text-slate-800"><i class="fas fa-fingerprint mr-2"></i> Access Portal</button>
+            <button onclick="triggerSOS()" class="w-12 h-12 bg-rose-600 text-white rounded-2xl flex items-center justify-center text-xl shadow-xl emergency-btn"><i class="fas fa-ambulance"></i></button>
         </div>
     </nav>
 
-    <!-- PUBLIC SITE VIEWS -->
+    <!-- 2. PUBLIC SITE VIEW (OPEN) -->
     <div id="publicSite">
-        
-        <!-- HERO SECTION -->
-        <section id="home" class="hero-video-mock h-screen flex items-center px-6 md:px-20 text-white">
-            <div class="max-w-5xl animate__animated animate__fadeInUp">
-                <span class="bg-blue-600 px-5 py-2 rounded-full text-[10px] font-black uppercase tracking-[0.2em] mb-8 inline-block">NABH ACCREDITED & ISO CERTIFIED</span>
-                <h2 class="text-7xl md:text-9xl font-black font-marcellus leading-none tracking-tighter mb-10">Modern <br><span class="text-blue-400 italic">Precision.</span></h2>
-                <p class="text-slate-300 text-lg md:text-2xl max-w-2xl mb-12 italic leading-relaxed font-light">
-                    Redefining healthcare through robotic excellence and compassionate nursing. Led by <b>Dr. Rohit Singh.</b>
+        <!-- Hero Section -->
+        <header id="home" class="hero-section h-screen flex items-center px-8 md:px-20 text-white">
+            <div class="max-w-4xl animate__animated animate__fadeInUp">
+                <div class="inline-flex items-center gap-3 bg-white/10 backdrop-blur-md px-5 py-2 rounded-full border border-white/10 mb-8">
+                    <span class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
+                    <span class="text-[10px] font-black uppercase tracking-widest">NABH Accredited & ISO Certified Facility</span>
+                </div>
+                <h2 class="text-7xl md:text-9xl font-black font-serif italic leading-none tracking-tighter mb-10">Advanced <br><span class="text-sky-400">Surgery.</span></h2>
+                <p class="text-slate-300 text-lg md:text-2xl max-w-2xl mb-12 italic leading-relaxed border-l-4 border-sky-500 pl-8">
+                    Led by <b>Dr. Rohit Singh</b>, we provide integrated interventional care with a focus on robotic precision and human healing.
                 </p>
                 <div class="flex flex-wrap gap-6">
-                    <a href="#booking" class="bg-white text-slate-900 px-12 py-5 rounded-2xl font-black text-sm uppercase shadow-2xl hover:scale-105 transition duration-300">Appointment Enrollment</a>
-                    <button onclick="triggerSOS()" class="bg-rose-600 text-white px-12 py-5 rounded-2xl font-black text-sm uppercase shadow-2xl animate-pulse">Emergency Dispatch</button>
+                    <a href="#booking" class="bg-white text-slate-900 px-12 py-5 rounded-2xl font-black text-sm uppercase shadow-2xl hover:scale-105 transition">Enrollment Gateway</a>
+                    <a href="https://razorpay.me/@rohitsingh9645" target="_blank" class="bg-slate-900 border border-white/10 px-10 py-5 rounded-2xl flex items-center gap-4">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/8/89/Razorpay_logo.svg" class="h-4">
+                        <span class="text-xs font-black uppercase text-white">Pay Online</span>
+                    </a>
                 </div>
+            </div>
+        </header>
+
+        <!-- Doctor Panel (10 Departments) -->
+        <section id="doctors" class="py-32 px-8 md:px-20 bg-slate-50">
+            <div class="text-center mb-20">
+                <h3 class="text-5xl font-black font-serif italic mb-4">Board of <span class="text-sky-600">Surgeons</span></h3>
+                <p class="text-slate-400 font-bold text-[10px] uppercase tracking-widest italic">Check real-time availability & timings</p>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 max-w-6xl mx-auto" id="doctorPublicGrid">
+                <!-- Data from JS -->
             </div>
         </section>
 
-        <!-- DOCTOR SCHEDULE SECTION (OPEN) -->
-        <section id="schedule" class="py-32 px-6 md:px-20 bg-white">
-            <div class="text-center mb-20">
-                <h3 class="text-5xl font-black font-marcellus mb-4">Doctor <span class="text-blue-600">Availability</span></h3>
-                <p class="text-slate-400 font-bold uppercase tracking-widest text-[10px]">Real-time daily schedules</p>
+        <!-- Attractive Gallery (HD Images) -->
+        <section id="gallery" class="py-32 px-8 md:px-20 bg-white">
+            <div class="text-center mb-24">
+                <h3 class="text-6xl font-black font-serif italic mb-6">Facility <span class="text-sky-600">Showcase</span></h3>
+                <p class="text-slate-400 font-black uppercase tracking-[0.4em] text-[10px]">Take a tour of our international standard units</p>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Dr Rohit -->
-                <div class="schedule-card p-10 text-center">
-                    <img src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&w=400&q=80" class="w-32 h-32 rounded-3xl mx-auto mb-6 object-cover border-4 border-white shadow-lg">
-                    <div id="status_Cardiology" class="mb-4"><span class="status-dot online"></span><span class="text-[10px] font-black uppercase text-emerald-500 tracking-widest">Available Today</span></div>
-                    <h4 class="text-2xl font-black italic">Dr. Rohit Singh</h4>
-                    <p class="text-blue-600 font-bold text-xs uppercase mb-6">Cardiologist (10 AM - 4 PM)</p>
-                    <a href="#booking" class="text-xs font-black uppercase tracking-widest py-3 px-6 border border-slate-200 rounded-full hover:bg-blue-600 hover:text-white transition">Book Slot</a>
-                </div>
-                <!-- Dr Aryan -->
-                <div class="schedule-card p-10 text-center">
-                    <img src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&w=400&q=80" class="w-32 h-32 rounded-3xl mx-auto mb-6 object-cover border-4 border-white shadow-lg">
-                    <div id="status_Neurology" class="mb-4"><span class="status-dot online"></span><span class="text-[10px] font-black uppercase text-emerald-500 tracking-widest">Available Today</span></div>
-                    <h4 class="text-2xl font-black italic">Dr. Aryan Mehra</h4>
-                    <p class="text-blue-600 font-bold text-xs uppercase mb-6">Neurologist (11 AM - 5 PM)</p>
-                    <a href="#booking" class="text-xs font-black uppercase tracking-widest py-3 px-6 border border-slate-200 rounded-full hover:bg-blue-600 hover:text-white transition">Book Slot</a>
-                </div>
-            </div>
-        </section>
-
-        <!-- ATTRACTIVE FACILITY GALLERY -->
-        <section id="gallery" class="py-32 px-6 md:px-20 bg-slate-900 text-white rounded-[4rem] mx-4 md:mx-10">
-            <div class="text-center mb-20">
-                <h3 class="text-5xl font-black font-marcellus mb-4">World Class <span class="text-blue-400">Infrastructure</span></h3>
-                <p class="text-slate-500 font-bold uppercase tracking-widest text-[10px]">Take a virtual tour of Shree Care</p>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
-                <div class="gallery-card group">
-                    <img src="https://images.unsplash.com/photo-1551606713-da4558f1f079?auto=format&fit=crop&w=800&q=80" alt="OT">
+                <div class="gallery-box group">
+                    <img src="https://images.unsplash.com/photo-1551606713-da4558f1f079?auto=format&fit=crop&w=800&q=80">
                     <div class="gallery-overlay">
-                        <h4 class="text-3xl font-black italic">Modular OT</h4>
-                        <p class="text-blue-400 text-xs font-bold uppercase mt-2">Zero Infection Robotic Zone</p>
+                        <h4 class="text-3xl font-black text-white italic">Robotic OT</h4>
+                        <p class="text-sky-400 text-xs font-black uppercase mt-2">Precision Guided Surgery Zone</p>
                     </div>
                 </div>
-                <div class="gallery-card group">
-                    <img src="https://images.unsplash.com/photo-1516549655169-df83a0774514?auto=format&fit=crop&w=800&q=80" alt="Suites">
+                <div class="gallery-box group">
+                    <img src="https://images.unsplash.com/photo-1516549655169-df83a0774514?auto=format&fit=crop&w=800&q=80">
                     <div class="gallery-overlay">
-                        <h4 class="text-3xl font-black italic">Deluxe Suites</h4>
-                        <p class="text-blue-400 text-xs font-bold uppercase mt-2">Patient comfort redefined</p>
+                        <h4 class="text-3xl font-black text-white italic">Premium Suites</h4>
+                        <p class="text-sky-400 text-xs font-black uppercase mt-2">Deluxe healing environment</p>
                     </div>
                 </div>
-                <div class="gallery-card group">
-                    <img src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=800&q=80" alt="Diagnosis">
+                <div class="gallery-box group">
+                    <img src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=800&q=80">
                     <div class="gallery-overlay">
-                        <h4 class="text-3xl font-black italic">Radiology Hub</h4>
-                        <p class="text-blue-400 text-xs font-bold uppercase mt-2">3-Tesla MRI & 128 Slice CT</p>
+                        <h4 class="text-3xl font-black text-white italic">Radiology Hub</h4>
+                        <p class="text-sky-400 text-xs font-black uppercase mt-2">Advanced 3-Tesla Diagnostics</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- ENROLLMENT SECTION (SILENT WHATSAPP) -->
-        <section id="booking" class="py-32 px-6 md:px-20 bg-white">
-            <div class="max-w-6xl mx-auto flex flex-col lg:flex-row bg-[#0a192f] rounded-[4rem] overflow-hidden shadow-3xl">
-                <div class="lg:w-1/3 p-16 text-white bg-blue-600">
-                    <h3 class="text-5xl font-black font-marcellus leading-none mb-8">Quick <br>Enrollment.</h3>
-                    <p class="opacity-80 text-sm leading-relaxed mb-12 italic">Confirmation is synced silently with our doctors. Pay securely via Razorpay.</p>
+        <!-- Surgery Success Rates & EMI -->
+        <section id="surgeries" class="py-32 px-8 md:px-20 bg-slate-900 text-white rounded-[4rem] mx-4 md:mx-10 mb-20">
+            <div class="grid lg:grid-cols-2 gap-20 items-center">
+                <div>
+                    <h3 class="text-5xl font-black font-serif italic mb-8 leading-tight">Expert Care <br><span class="text-sky-400">Zero Interest Finance.</span></h3>
+                    <p class="text-slate-400 text-lg italic leading-relaxed mb-12">At Shree Care, money shouldn't stop treatment. Calculate your surgery EMI and get instant approval.</p>
                     <div class="space-y-6">
-                        <p class="text-xs font-black uppercase"><i class="fas fa-check-circle mr-3"></i> Unique Health ID (UHID)</p>
-                        <p class="text-xs font-black uppercase"><i class="fas fa-check-circle mr-3"></i> Silent Dr. Notification</p>
-                        <p class="text-xs font-black uppercase"><i class="fas fa-check-circle mr-3"></i> 256-bit Secure Gateway</p>
+                        <div class="flex items-center gap-6 bg-white/5 p-8 rounded-3xl border border-white/10">
+                            <p class="text-4xl font-black italic text-sky-400">99.8%</p>
+                            <p class="text-[10px] font-bold uppercase tracking-widest">Cardiac Surgery Success</p>
+                        </div>
+                        <div class="flex items-center gap-6 bg-white/5 p-8 rounded-3xl border border-white/10">
+                            <p class="text-4xl font-black italic text-sky-400">98.2%</p>
+                            <p class="text-[10px] font-bold uppercase tracking-widest">Neuro Spine Recovery</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white p-12 rounded-[3.5rem] text-slate-900 shadow-3xl">
+                    <h4 class="text-2xl font-black italic mb-10 text-sky-600">Surgery EMI Calculator</h4>
+                    <div class="space-y-8">
+                        <div>
+                            <label class="text-[10px] font-black uppercase text-slate-400 tracking-widest">Surgery Amount (₹)</label>
+                            <input type="range" id="emi_amount" min="50000" max="1500000" value="250000" step="50000" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-sky-600 mt-4">
+                            <p class="mt-2 text-3xl font-black text-slate-900">₹ <span id="val_amount">2,50,000</span></p>
+                        </div>
+                        <div>
+                            <label class="text-[10px] font-black uppercase text-slate-400 tracking-widest">Tenure (Months)</label>
+                            <select id="emi_months" class="w-full bg-slate-50 p-5 rounded-2xl mt-4 font-black outline-none border-none ring-1 ring-slate-100">
+                                <option value="12">12 Months (0% Interest)</option>
+                                <option value="24">24 Months</option>
+                                <option value="36">36 Months</option>
+                            </select>
+                        </div>
+                        <div class="pt-8 border-t border-slate-50 flex justify-between items-end">
+                            <div><p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Monthly EMI</p><h4 class="text-5xl font-black text-sky-600">₹ <span id="val_emi">20,833</span></h4></div>
+                            <button onclick="alert('Our financial desk will contact you shortly.')" class="bg-slate-900 text-white px-10 py-4 rounded-2xl text-[10px] font-black uppercase">Apply Now</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Secure Enrollment (OPD) -->
+        <section id="booking" class="py-32 px-8 md:px-20 bg-white">
+            <div class="max-w-6xl mx-auto flex flex-col lg:flex-row bg-[#0a192f] rounded-[4.5rem] overflow-hidden shadow-3xl">
+                <div class="lg:w-1/3 p-16 text-white bg-sky-600">
+                    <h3 class="text-5xl font-black italic mb-8">Digital <br>Enrollment</h3>
+                    <p class="opacity-80 text-sm italic mb-12">Confirm your slot silently. Appointments are instantly synced with our doctors dashboard.</p>
+                    <div class="space-y-6">
+                        <p class="text-[10px] font-black uppercase"><i class="fas fa-fingerprint mr-3"></i> Unique Health ID (UHID)</p>
+                        <p class="text-[10px] font-black uppercase"><i class="fas fa-sun mr-3 text-yellow-300"></i> Special Sunday Care Available</p>
                     </div>
                 </div>
                 <div class="lg:w-2/3 p-16 bg-white">
-                    <form id="hmsMasterForm" class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                    <form id="hmsBookingForm" class="grid grid-cols-1 md:grid-cols-2 gap-10">
                         <div class="md:col-span-2">
-                            <label class="text-[10px] font-black uppercase text-slate-400 tracking-widest ml-4 mb-2 block">Patient Full Name</label>
-                            <input type="text" id="p_name" required class="w-full p-6 bg-slate-50 border-none outline-none ring-1 ring-slate-100 font-bold rounded-2xl">
+                            <label class="text-[10px] font-black uppercase text-slate-400 tracking-widest ml-4 mb-3 block">Patient Identity (Name)</label>
+                            <input type="text" id="b_name" required placeholder="Enter Legal Name" class="w-full p-6 bg-slate-50 rounded-2xl font-bold outline-none ring-1 ring-slate-100">
                         </div>
                         <div>
-                            <label class="text-[10px] font-black uppercase text-slate-400 tracking-widest ml-4 mb-2 block">Department Unit</label>
-                            <select id="p_dept" onchange="checkLeaveStatus()" class="w-full p-6 bg-slate-50 border-none outline-none ring-1 ring-slate-100 font-bold rounded-2xl text-blue-600">
-                                <option value="Cardiology">Cardiology Unit (Dr. Rohit)</option>
-                                <option value="Neurology">Neurology Suite (Dr. Aryan)</option>
+                            <label class="text-[10px] font-black uppercase text-slate-400 tracking-widest ml-4 mb-3 block">Consulting Date</label>
+                            <input type="date" id="b_date" required onchange="calculateFee()" class="w-full p-6 bg-slate-50 rounded-2xl font-bold outline-none ring-1 ring-slate-100">
+                        </div>
+                        <div>
+                            <label class="text-[10px] font-black uppercase text-slate-400 tracking-widest ml-4 mb-3 block">Select Specialist</label>
+                            <select id="b_doc" onchange="calculateFee()" class="w-full p-6 bg-slate-50 rounded-2xl font-bold outline-none ring-1 ring-slate-100 text-sky-600">
+                                <!-- Docs populated from JS -->
                             </select>
                         </div>
-                        <div>
-                            <label class="text-[10px] font-black uppercase text-slate-400 tracking-widest ml-4 mb-2 block">Contact (WhatsApp)</label>
-                            <input type="tel" id="p_phone" required placeholder="+91" class="w-full p-6 bg-slate-50 border-none outline-none ring-1 ring-slate-100 font-bold rounded-2xl">
+                        <div id="sundayAlert" class="md:col-span-2 hidden bg-amber-50 p-6 rounded-3xl text-amber-700 text-xs font-bold italic border border-amber-100">
+                            SPECIAL SUNDAY CARE: Selected date is Sunday. Special consultancy charges apply (₹200 Extra).
                         </div>
-                        <div id="leaveAlert" class="md:col-span-2 hidden bg-rose-50 text-rose-600 p-6 rounded-3xl text-xs font-black italic border border-rose-100">
-                            LEAVE ALERT: Selected specialist is on leave today. Booking will be scheduled for the next slot.
+                        <div id="leaveAlert" class="md:col-span-2 hidden bg-rose-50 p-6 rounded-3xl text-rose-700 text-xs font-bold italic border border-rose-100">
+                            LEAVE ALERT: Selected Doctor is on leave. Please select another date or specialist.
                         </div>
-                        <div class="md:col-span-2 pt-6">
-                            <button type="submit" class="w-full bg-[#0a192f] text-white py-7 rounded-[2rem] font-black text-xl hover:bg-black transition-all shadow-2xl">CONFIRM & SECURE (₹1200)</button>
+                        <div class="md:col-span-2 pt-8 flex flex-col md:flex-row justify-between items-center gap-8">
+                            <div class="text-center md:text-left"><p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Total Payable Fee</p><h4 class="text-6xl font-black italic tracking-tighter">₹ <span id="total_fee">1200</span></h4></div>
+                            <button type="submit" class="w-full md:w-auto bg-[#0a192f] text-white px-16 py-6 rounded-[2.5rem] font-black text-xl hover:bg-black transition-all shadow-3xl">SECURE SLOT & PAY</button>
                         </div>
                     </form>
                 </div>
@@ -180,167 +231,388 @@
         </section>
     </div>
 
-    <!-- DOCTOR'S COMMAND CENTER (DASHBOARD) -->
-    <div id="doctorPortal" class="hidden flex h-screen bg-[#f1f5f9]">
-        <aside class="w-80 bg-[#0a192f] text-white p-10 flex flex-col">
-            <h2 class="text-2xl font-black italic mb-20 text-blue-500">HMS CORE</h2>
+    <!-- 3. DOCTOR'S COMMAND CENTER (HIDDEN) -->
+    <div id="doctorPortal" class="hidden min-h-screen">
+        <aside class="sidebar p-10 flex flex-col text-white">
+            <h2 class="text-2xl font-black italic mb-20 text-sky-500 tracking-tighter uppercase">Doctor Suite</h2>
             <nav class="flex-1 space-y-4">
-                <button class="w-full text-left p-5 rounded-2xl font-bold bg-blue-600">Daily Queue</button>
-                <button onclick="toggleLeave()" class="w-full text-left p-5 rounded-2xl font-bold text-slate-400 hover:bg-white/5">Doctor Settings</button>
+                <button onclick="switchDocTab('queue')" class="w-full text-left p-5 rounded-2xl font-black bg-sky-600 shadow-xl shadow-sky-500/20">Today's Queue</button>
+                <button onclick="switchDocTab('history')" class="w-full text-left p-5 rounded-2xl font-bold text-slate-400 hover:bg-white/5 transition">Medical Vault</button>
+                <button onclick="switchDocTab('settings')" class="w-full text-left p-5 rounded-2xl font-bold text-slate-400 hover:bg-white/5 transition">Duty Settings</button>
             </nav>
-            <button onclick="logout()" class="text-rose-500 font-bold p-5 border-t border-white/5 pt-10">Logout Dr. Session</button>
+            <div class="mt-auto border-t border-white/5 pt-10">
+                <button onclick="logout()" class="text-rose-500 font-black uppercase text-xs tracking-widest"><i class="fas fa-power-off mr-3"></i> Shutdown</button>
+            </div>
         </aside>
 
-        <main class="flex-1 p-16 overflow-y-auto no-scrollbar">
-            <div class="flex justify-between items-end mb-12">
-                <div>
-                    <h3 class="text-4xl font-black italic tracking-tighter" id="docWelcome">Queue Dashboard</h3>
-                    <p id="docDeptTitle" class="text-blue-600 font-black text-[10px] uppercase tracking-widest mt-2"></p>
+        <main class="main-view bg-slate-50 p-16 overflow-y-auto no-scrollbar h-screen">
+            <!-- View: Queue -->
+            <div id="view_d_queue" class="animate__animated animate__fadeIn">
+                <div class="flex justify-between items-end mb-16">
+                    <div>
+                        <h3 id="doc_name_title" class="text-5xl font-black italic tracking-tighter">Doctor Dashboard</h3>
+                        <p id="doc_dept_sub" class="text-sky-600 font-black text-[11px] uppercase tracking-widest mt-4 italic"></p>
+                    </div>
+                    <div class="bg-white px-10 py-6 rounded-[3rem] shadow-sm border border-slate-200">
+                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 text-center">Live Token Queue</p>
+                        <h4 id="today_count" class="text-5xl font-black text-center">0</h4>
+                    </div>
                 </div>
-                <div class="bg-white px-8 py-4 rounded-3xl shadow-sm border flex items-center gap-6">
-                    <div><p class="text-[10px] font-bold text-slate-400 uppercase">Today's Total</p><h4 class="text-4xl font-black" id="countToday">0</h4></div>
+
+                <div class="bg-white rounded-[4rem] shadow-xl overflow-hidden border">
+                    <table class="w-full text-left">
+                        <thead class="bg-slate-50 border-b">
+                            <tr>
+                                <th class="p-8 text-[11px] font-black uppercase text-slate-400">Token ID</th>
+                                <th class="p-8 text-[11px] font-black uppercase text-slate-400">Patient Details</th>
+                                <th class="p-8 text-[11px] font-black uppercase text-slate-400">Status</th>
+                                <th class="p-8 text-[11px] font-black uppercase text-slate-400">Clinical EMR Note</th>
+                                <th class="p-8 text-center text-[11px] font-black uppercase text-slate-400">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="queueListBody" class="divide-y divide-slate-50">
+                            <!-- Queue Data -->
+                        </tbody>
+                    </table>
                 </div>
             </div>
 
-            <div class="bg-white rounded-[3rem] shadow-xl overflow-hidden border">
-                <table class="w-full text-left">
-                    <thead class="bg-slate-50 border-b">
-                        <tr>
-                            <th class="p-8 text-[10px] font-black uppercase text-slate-400">Queue ID</th>
-                            <th class="p-8 text-[10px] font-black uppercase text-slate-400">Patient Details</th>
-                            <th class="p-8 text-[10px] font-black uppercase text-slate-400">Contact</th>
-                            <th class="p-8 text-center text-[10px] font-black uppercase text-slate-400">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody id="doctorQueueBody">
-                        <!-- Dynamic Queue -->
-                    </tbody>
-                </table>
+            <!-- View: Status/Leave Settings -->
+            <div id="view_d_settings" class="hidden animate__animated animate__fadeIn">
+                <h3 class="text-5xl font-black italic tracking-tighter mb-16">Duty Management</h3>
+                <div class="bg-white p-20 rounded-[4rem] shadow-xl max-w-2xl border">
+                    <div class="flex items-center justify-between mb-12">
+                        <div><p class="text-[10px] font-black text-slate-400 uppercase mb-2">Current Identity Status</p><h4 id="myStatusBadge" class="status-badge online italic">Available</h4></div>
+                        <button onclick="toggleDoctorLeave()" id="leaveToggleBtn" class="bg-rose-500 text-white px-10 py-4 rounded-2xl font-black text-xs uppercase shadow-xl hover:bg-rose-600 transition">Mark On Leave</button>
+                    </div>
+                </div>
             </div>
         </main>
     </div>
 
-    <!-- LOGIN MODAL -->
-    <div id="loginModal" class="fixed inset-0 z-[2000] bg-slate-950/95 backdrop-blur hidden items-center justify-center p-6">
-        <div class="bg-white p-16 rounded-[4rem] max-w-md w-full animate__animated animate__zoomIn">
-            <h3 class="text-4xl font-black italic mb-2 tracking-tighter leading-none">Identity Gate</h3>
-            <p class="text-slate-400 font-bold uppercase text-[10px] tracking-widest mb-10 italic">Enterprise Portal Sync</p>
-            <div class="space-y-4">
-                <input type="email" id="authEmail" placeholder="Dr. Email Address" class="w-full p-6 bg-slate-50 rounded-2xl border-none font-bold outline-none ring-1 ring-slate-100">
-                <input type="password" id="authPass" placeholder="Security Password" class="w-full p-6 bg-slate-50 rounded-2xl border-none font-bold outline-none ring-1 ring-slate-100">
-                <button onclick="handleLogin()" class="w-full bg-[#0a192f] text-white py-6 rounded-2xl font-black text-lg shadow-2xl">Authenticate Session</button>
-                <button onclick="toggleModal('loginModal')" class="w-full text-slate-400 font-bold uppercase text-[10px] mt-8">Cancel Request</button>
+    <!-- 4. PATIENT PORTAL (HIDDEN) -->
+    <div id="patientPortal" class="hidden flex h-screen bg-slate-50">
+        <aside class="w-80 bg-white border-r p-12 flex flex-col">
+            <div class="mb-20">
+                <div id="p_avatar" class="w-20 h-20 bg-sky-600 rounded-[2.5rem] flex items-center justify-center text-white text-4xl font-black mb-6 shadow-2xl">U</div>
+                <h4 id="p_userName" class="text-2xl font-black italic tracking-tighter">Patient User</h4>
+                <p id="p_userUHID" class="text-[10px] font-bold text-sky-600 uppercase tracking-widest mt-2">SC-2024-0000</p>
             </div>
+            <nav class="flex-1 space-y-4">
+                <button class="w-full text-left p-6 bg-sky-50 rounded-3xl font-black text-sky-600"><i class="fas fa-file-medical mr-4"></i> My Appointments</button>
+                <button onclick="changePatientPass()" class="w-full text-left p-6 font-bold text-slate-400"><i class="fas fa-shield-alt mr-4"></i> Privacy Settings</button>
+            </nav>
+            <button onclick="logout()" class="text-rose-600 font-black uppercase text-xs tracking-widest border-t pt-10"><i class="fas fa-power-off mr-3"></i> Sign Out</button>
+        </aside>
+
+        <main class="flex-1 p-20 overflow-y-auto no-scrollbar">
+            <h3 class="text-5xl font-black italic tracking-tighter mb-16">Clinical Records</h3>
+            <div id="patientHistoryGrid" class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                <!-- Data from JS -->
+            </div>
+        </main>
+    </div>
+
+    <!-- MODALS: AUTH & LOGIN -->
+    <div id="authModal" class="fixed inset-0 z-[5000] bg-slate-950/95 backdrop-blur hidden items-center justify-center p-6">
+        <div class="bg-white p-16 rounded-[4.5rem] max-w-md w-full animate__animated animate__zoomIn text-center shadow-3xl">
+            <div class="w-20 h-20 bg-sky-600 rounded-3xl mx-auto mb-10 flex items-center justify-center text-white text-4xl shadow-2xl"><i class="fas fa-fingerprint"></i></div>
+            <h3 class="text-4xl font-black italic mb-2 tracking-tighter">Security Gate</h3>
+            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-10 italic">Enterprise Portal Sync</p>
+            
+            <div id="loginForm" class="space-y-4">
+                <input type="email" id="authEmail" placeholder="Registered Email" class="w-full p-6 bg-slate-50 rounded-2xl border-none outline-none font-bold ring-1 ring-slate-100">
+                <input type="password" id="authPass" placeholder="Access Password" class="w-full p-6 bg-slate-50 rounded-2xl border-none outline-none font-bold ring-1 ring-slate-100">
+                <button onclick="handleLogin()" class="w-full bg-[#0a192f] text-white py-6 rounded-2xl font-black text-lg shadow-2xl mt-6">Authenticate Session</button>
+                <div class="flex justify-between px-2 text-[10px] font-black uppercase text-sky-600 mt-6 italic">
+                    <button onclick="toggleAuth('signup')">Create UHID Identity</button>
+                    <button onclick="forgotPass()">Forgot Password?</button>
+                </div>
+            </div>
+
+            <div id="signupForm" class="hidden space-y-4">
+                <input type="text" id="s_name" placeholder="Full Legal Name" class="w-full p-6 bg-slate-50 rounded-2xl border-none outline-none font-bold ring-1 ring-slate-100">
+                <input type="email" id="s_email" placeholder="Email Address" class="w-full p-6 bg-slate-50 rounded-2xl border-none outline-none font-bold ring-1 ring-slate-100">
+                <input type="password" id="s_pass" placeholder="Create Access Password" class="w-full p-6 bg-slate-50 rounded-2xl border-none outline-none font-bold ring-1 ring-slate-100">
+                <button onclick="handleSignup()" class="w-full bg-sky-600 text-white py-6 rounded-2xl font-black text-lg shadow-2xl mt-6">Register Health Identity</button>
+                <button onclick="toggleAuth('login')" class="w-full text-slate-400 font-black uppercase text-[10px] mt-8">Back to Login</button>
+            </div>
+            
+            <button onclick="closeModal('authModal')" class="w-full text-slate-300 font-black uppercase text-[10px] mt-10">Close Gateway</button>
         </div>
     </div>
 
-    <!-- SCRIPT LOGIC -->
+    <!-- CORE SCRIPT: HMS ENGINE v15.0 -->
     <script>
-        let DB_APPS = JSON.parse(localStorage.getItem('shree_apps_ultimate')) || [];
-        let DOC_STATUS = JSON.parse(localStorage.getItem('shree_doc_status_ult')) || { Cardiology: 'Available', Neurology: 'Available' };
+        // --- GLOBAL DATABASE (LOCAL STORAGE PERSISTENT) ---
+        let DB_USERS = JSON.parse(localStorage.getItem('shree_users_v15')) || [];
+        let DB_APPS = JSON.parse(localStorage.getItem('shree_apps_v15')) || [];
+        let DOC_LEAVE = JSON.parse(localStorage.getItem('shree_doc_leave_v15')) || {};
         let SESSION = null;
 
-        const DOCTOR_MAP = {
-            'Cardiology': { name: 'Dr. Rohit Singh', email: 'dr.rohit@shreecare.com', pass: 'ROHIT7154' },
-            'Neurology': { name: 'Dr. Aryan Mehra', email: 'dr.aryan@shreecare.com', pass: 'ARYAN123' }
+        const DEPARTMENTS = {
+            Cardiology: { id: 'D1', name: 'Dr. Rohit Singh', fee: 1200, time: '10 AM - 4 PM', email: 'dr.rohit@shreecare.com', pass: 'ROHIT7154', image: 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&w=400&q=80' },
+            Neurology: { id: 'D2', name: 'Dr. Aryan Mehra', fee: 1500, time: '11 AM - 5 PM', email: 'dr.aryan@shreecare.com', pass: 'ARYAN123', image: 'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&w=400&q=80' },
+            Orthopedics: { id: 'D3', name: 'Dr. S.K. Gupta', fee: 1000, time: '10 AM - 2 PM', email: 'dr.gupta@shreecare.com', pass: 'GUPTA123', image: 'https://images.unsplash.com/photo-1537368910025-700350fe46c7?auto=format&fit=crop&w=400&q=80' },
+            Pediatrics: { id: 'D4', name: 'Dr. Anjali Verma', fee: 800, time: '12 PM - 6 PM', email: 'dr.anjali@shreecare.com', pass: 'ANJALI123', image: 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=400&q=80' },
+            Gynaecology: { id: 'D5', name: 'Dr. Meena Sethi', fee: 1100, time: '11 AM - 4 PM', email: 'dr.meena@shreecare.com', pass: 'MEENA123', image: 'https://images.unsplash.com/photo-1594824476967-48c8b964273f?auto=format&fit=crop&w=400&q=80' },
+            Oncology: { id: 'D6', name: 'Dr. Vikas Oberoi', fee: 2000, time: '10 AM - 3 PM', email: 'dr.vikas@shreecare.com', pass: 'VIKAS123', image: 'https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&w=400&q=80' },
+            ENT: { id: 'D7', name: 'Dr. Rahul Bose', fee: 700, time: '4 PM - 8 PM', email: 'dr.rahul@shreecare.com', pass: 'RAHUL123', image: 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=400&q=80' },
+            Dental: { id: 'D8', name: 'Dr. Pooja Khanna', fee: 600, time: '10 AM - 6 PM', email: 'dr.pooja@shreecare.com', pass: 'POOJA123', image: 'https://images.unsplash.com/photo-1594824476967-48c8b964273f?auto=format&fit=crop&w=400&q=80' }
         };
 
         const TODAY = new Date().toISOString().split('T')[0];
 
-        // NAVIGATION & MODALS
-        function toggleModal(id) { document.getElementById(id).classList.toggle('hidden'); document.getElementById(id).classList.add('flex'); }
+        // --- AUTH MODULE ---
+        function openModal(id) { document.getElementById(id).classList.remove('hidden'); document.getElementById(id).classList.add('flex'); }
+        function closeModal(id) { document.getElementById(id).classList.add('hidden'); document.getElementById(id).classList.remove('flex'); }
+        function toggleAuth(mode) {
+            document.getElementById('loginForm').classList.toggle('hidden', mode !== 'login');
+            document.getElementById('signupForm').classList.toggle('hidden', mode !== 'signup');
+        }
 
-        // AUTH
+        function handleSignup() {
+            const name = document.getElementById('s_name').value;
+            const email = document.getElementById('s_email').value;
+            const pass = document.getElementById('s_pass').value;
+            if(!name || !email || !pass) return alert("All fields required.");
+            if(DB_USERS.find(u => u.email === email)) return alert("Email already exists.");
+            
+            const newUser = { uhid: 'UHID-'+Math.floor(100000+Math.random()*900000), name, email, pass, role: 'patient' };
+            DB_USERS.push(newUser);
+            syncDB();
+            alert("UHID Created: " + newUser.uhid);
+            toggleAuth('login');
+        }
+
         function handleLogin() {
             const email = document.getElementById('authEmail').value.trim();
             const pass = document.getElementById('authPass').value.trim();
 
-            for(let dept in DOCTOR_MAP) {
-                if(DOCTOR_MAP[dept].email === email && DOCTOR_MAP[dept].pass === pass) {
-                    SESSION = { ...DOCTOR_MAP[dept], dept: dept };
-                    launchDoctorPortal();
+            // Doctor Login Bridge
+            for(let dept in DEPARTMENTS) {
+                if(DEPARTMENTS[dept].email === email && DEPARTMENTS[dept].pass === pass) {
+                    SESSION = { ...DEPARTMENTS[dept], dept: dept, role: 'doctor' };
+                    launchDoctorApp();
                     return;
                 }
             }
-            alert("Unauthorized Entry.");
+            // Patient Login Bridge
+            const user = DB_USERS.find(u => u.email === email && u.pass === pass);
+            if(user) { SESSION = user; launchPatientApp(); }
+            else { alert("Unauthorized Entry."); }
         }
 
-        function launchDoctorPortal() {
+        function launchDoctorApp() {
             document.getElementById('publicSite').classList.add('hidden');
             document.getElementById('doctorPortal').classList.remove('hidden');
             document.querySelector('nav').classList.add('hidden');
-            document.getElementById('docWelcome').innerText = SESSION.name + "'s Command";
-            document.getElementById('docDeptTitle').innerText = SESSION.dept + " Unit Daily Log";
-            toggleModal('loginModal');
+            document.getElementById('doc_name_title').innerText = SESSION.name + "'s Command";
+            document.getElementById('doc_dept_sub').innerText = SESSION.dept + " Speciality Unit | Live Dashboard";
+            closeModal('authModal');
             renderQueue();
+            updateDoctorUI();
+        }
+
+        function launchPatientApp() {
+            document.getElementById('publicSite').classList.add('hidden');
+            document.getElementById('patientPortal').classList.remove('hidden');
+            document.querySelector('nav').classList.add('hidden');
+            document.getElementById('p_userName').innerText = SESSION.name;
+            document.getElementById('p_userUHID').innerText = SESSION.uhid;
+            document.getElementById('p_avatar').innerText = SESSION.name.charAt(0);
+            closeModal('authModal');
+            renderPatientRecords();
         }
 
         function logout() { location.reload(); }
 
-        // DOCTOR QUEUE
+        // --- BOOKING ENGINE (SUNDAY LOGIC & LEAVE CHECK) ---
+        function calculateFee() {
+            const docId = document.getElementById('b_doc').value;
+            const dateVal = document.getElementById('b_date').value;
+            const alertSun = document.getElementById('sundayAlert');
+            const alertLeave = document.getElementById('leaveAlert');
+            
+            if(!docId || !dateVal) return;
+
+            // Leave Check
+            if(DOC_LEAVE[docId]) {
+                alertLeave.classList.remove('hidden');
+            } else {
+                alertLeave.classList.add('hidden');
+            }
+
+            // Sunday Check
+            const d = new Date(dateVal);
+            let finalFee = DEPARTMENTS[docId].fee;
+            if(d.getDay() === 0) {
+                alertSun.classList.remove('hidden');
+                finalFee += 200; // Sunday Premium
+            } else {
+                alertSun.classList.add('hidden');
+            }
+            document.getElementById('total_fee').innerText = finalFee;
+        }
+
+        document.getElementById('hmsBookingForm').onsubmit = function(e) {
+            e.preventDefault();
+            if(DOC_LEAVE[document.getElementById('b_doc').value]) return alert("Doctor is on Leave!");
+
+            // Identify/Register Patient
+            const name = document.getElementById('b_name').value;
+            let user = DB_USERS.find(u => u.name === name);
+            if(!user) {
+                user = { uhid: 'UHID-REG-'+Math.floor(1000+Math.random()*9000), name, email: name.split(' ')[0]+'@gen.sc', pass: '123456', role: 'patient' };
+                DB_USERS.push(user);
+            }
+
+            const record = {
+                id: 'APP-' + Math.floor(100000+Math.random()*900000),
+                uhid: user.uhid,
+                name: user.name,
+                doc: DEPARTMENTS[document.getElementById('b_doc').value].name,
+                dept: document.getElementById('b_doc').value,
+                date: document.getElementById('b_date').value,
+                fee: document.getElementById('total_fee').innerText,
+                status: 'Waiting',
+                note: 'No clinical notes yet.'
+            };
+
+            // SILENT NOTIFICATION SYNC
+            console.log("Background: Syncing appointment with Dr. " + record.doc);
+            
+            DB_APPS.push(record);
+            syncDB();
+            alert(`ENROLLMENT SUCCESS!\nUHID: ${user.uhid}\nSilently synced with Dr. ${record.doc}. Redirecting to Razorpay...`);
+            window.location.href = "https://razorpay.me/@rohitsingh9645";
+        };
+
+        // --- DOCTOR QUEUE & EMR ENGINE ---
         function renderQueue() {
-            const todayApps = DB_APPS.filter(app => app.dept === SESSION.dept && app.date === TODAY);
-            const list = document.getElementById('doctorQueueBody');
-            document.getElementById('countToday').innerText = todayApps.length;
+            const todayApps = DB_APPS.filter(a => a.dept === SESSION.dept && a.date === TODAY);
+            const tbody = document.getElementById('queueListBody');
+            document.getElementById('today_count').innerText = todayApps.length;
 
             if(todayApps.length === 0) {
-                list.innerHTML = '<tr><td colspan="4" class="p-20 text-center text-slate-400 font-bold italic underline">No appointments for today.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="5" class="p-20 text-center text-slate-300 font-bold italic">No appointments for today.</td></tr>';
             } else {
-                list.innerHTML = todayApps.map(item => `
+                tbody.innerHTML = todayApps.map((item, index) => `
                     <tr class="border-b hover:bg-slate-50 transition">
-                        <td class="p-8 font-black text-blue-600 tracking-widest">${item.id}</td>
-                        <td class="p-8"><p class="font-black text-slate-800 text-lg italic">${item.name}</p></td>
-                        <td class="p-8 font-bold text-slate-400">${item.phone}</td>
-                        <td class="p-8 text-center"><button onclick="deleteApp('${item.id}')" class="text-rose-400 hover:text-rose-600 transition"><i class="fas fa-trash-alt"></i></button></td>
+                        <td class="p-8 font-black text-sky-600 tracking-widest">${item.id}</td>
+                        <td class="p-8">
+                            <p class="font-black text-slate-800 text-lg italic">${item.name}</p>
+                            <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">${item.uhid}</p>
+                        </td>
+                        <td class="p-8"><span class="status-badge ${item.status === 'Waiting' ? 'online' : 'offline'}">${item.status}</span></td>
+                        <td class="p-8">
+                            <input type="text" onchange="updateEMR('${item.id}', this.value)" value="${item.note}" class="w-full bg-transparent border-b border-dashed border-slate-200 py-2 outline-none italic font-medium text-xs focus:border-sky-500">
+                        </td>
+                        <td class="p-8 text-center flex justify-center gap-4">
+                            <button onclick="changeStatus('${item.id}', 'Consulting')" class="w-10 h-10 bg-sky-50 text-sky-600 rounded-xl flex items-center justify-center hover:bg-sky-600 hover:text-white transition"><i class="fas fa-play text-xs"></i></button>
+                            <button onclick="deleteApp('${item.id}')" class="w-10 h-10 bg-rose-50 text-rose-500 rounded-xl flex items-center justify-center hover:bg-rose-600 hover:text-white transition"><i class="fas fa-trash-alt text-xs"></i></button>
+                        </td>
                     </tr>
                 `).join('');
             }
         }
 
-        // BOOKING (SILENT WHATSAPP)
-        document.getElementById('hmsMasterForm').onsubmit = function(e) {
-            e.preventDefault();
-            const dept = document.getElementById('p_dept').value;
-            const record = {
-                id: 'APP-' + Math.floor(1000 + Math.random() * 9000),
-                name: document.getElementById('p_name').value,
-                phone: document.getElementById('p_phone').value,
-                dept: dept,
-                date: TODAY,
-                time: "10:30 AM"
-            };
+        function switchDocTab(view) {
+            document.getElementById('view_d_queue').classList.toggle('hidden', view !== 'queue');
+            document.getElementById('view_d_settings').classList.toggle('hidden', view !== 'settings');
+        }
 
-            DB_APPS.push(record);
-            localStorage.setItem('shree_apps_ultimate', JSON.stringify(DB_APPS));
+        function toggleDoctorLeave() {
+            const current = DOC_LEAVE[SESSION.dept];
+            DOC_LEAVE[SESSION.dept] = !current;
+            syncDB();
+            updateDoctorUI();
+            alert("Availability Status Updated Globally.");
+        }
 
-            // Silent Simulation: Data synced with doctor dashboard in background
-            alert(`ENROLLMENT SECURED!\nUHID: ${record.id}\nDr. ${DOCTOR_MAP[dept].name}'s Command Center Alerted Silently.`);
-            window.location.href = "https://razorpay.me/@rohitsingh9645";
+        function updateDoctorUI() {
+            const status = DOC_LEAVE[SESSION.dept];
+            const badge = document.getElementById('myStatusBadge');
+            const btn = document.getElementById('leaveToggleBtn');
+            badge.innerText = status ? 'On Leave' : 'Available';
+            badge.className = `status-badge ${status ? 'offline' : 'online'} italic`;
+            btn.innerText = status ? 'Resume Availability' : 'Mark On Leave';
+            btn.className = `px-10 py-4 rounded-2xl font-black text-xs uppercase shadow-xl transition ${status ? 'bg-emerald-500' : 'bg-rose-500'} text-white`;
+        }
+
+        // --- PATIENT PORTAL ---
+        function renderPatientRecords() {
+            const myApps = DB_APPS.filter(a => a.uhid === SESSION.uhid);
+            const grid = document.getElementById('patientHistoryGrid');
+            if(myApps.length === 0) {
+                grid.innerHTML = '<p class="text-slate-400 font-bold italic">No medical records found.</p>';
+            } else {
+                grid.innerHTML = myApps.reverse().map(app => `
+                    <div class="bg-white p-12 rounded-[4rem] border shadow-sm">
+                        <div class="flex justify-between items-center mb-8">
+                            <span class="text-[10px] font-black uppercase text-sky-600 tracking-widest border px-4 py-1 rounded-full">${app.id}</span>
+                            <span class="text-[10px] font-black text-slate-400 uppercase italic">${app.date}</span>
+                        </div>
+                        <h4 class="text-3xl font-black italic mb-4">${app.dept} Consultation</h4>
+                        <p class="text-slate-500 font-medium mb-8 italic">Clinical Findings: <span class="text-slate-900">${app.note}</span></p>
+                        <div class="pt-8 border-t flex items-center justify-between">
+                            <span class="status-badge online italic">Status: SECURE</span>
+                            <button onclick="alert('Digital receipt sent to your Gmail.')" class="text-[10px] font-black uppercase text-sky-600">Download E-Slip</button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        // --- UTILS & SYNC ---
+        function syncDB() { localStorage.setItem('shree_users_v15', JSON.stringify(DB_USERS)); localStorage.setItem('shree_apps_v15', JSON.stringify(DB_APPS)); localStorage.setItem('shree_doc_leave_v15', JSON.stringify(DOC_LEAVE)); }
+        function triggerSOS() { alert("🚨 ENTERPRISE SOS: Hartron Road Unit Alerted. Dr. Rohit Singh Dispatched."); }
+        function deleteApp(id) { if(confirm("Discard from queue?")) { DB_APPS = DB_APPS.filter(a => a.id !== id); syncDB(); renderQueue(); } }
+        function updateEMR(id, note) { const idx = DB_APPS.findIndex(a => a.id === id); DB_APPS[idx].note = note; syncDB(); }
+        function changeStatus(id, stat) { const idx = DB_APPS.findIndex(a => a.id === id); DB_APPS[idx].status = stat; syncDB(); renderQueue(); }
+        function changePatientPass() { const p = prompt("Enter New Portal Password:"); if(p) { SESSION.pass = p; syncDB(); logout(); } }
+        function forgotPass() { const email = prompt("Enter UHID Registered Email:"); if(email) alert("A secure recovery link has been sent to " + email); }
+
+        // EMI CALC
+        document.getElementById('emi_amount').oninput = function() {
+            const amount = parseInt(this.value);
+            document.getElementById('val_amount').innerText = amount.toLocaleString();
+            calculateEMI();
         };
-
-        // LEAVE & STATUS
-        function checkLeaveStatus() {
-            const dept = document.getElementById('p_dept').value;
-            document.getElementById('leaveAlert').classList.toggle('hidden', DOC_STATUS[dept] !== 'On Leave');
+        document.getElementById('emi_months').onchange = calculateEMI;
+        function calculateEMI() {
+            const amount = parseInt(document.getElementById('emi_amount').value);
+            const months = parseInt(document.getElementById('emi_months').value);
+            const rate = 12 / 12 / 100;
+            let emi = months === 12 ? amount / 12 : (amount * rate * Math.pow(1+rate, months)) / (Math.pow(1+rate, months)-1);
+            document.getElementById('val_emi').innerText = Math.round(emi).toLocaleString();
         }
 
-        function toggleLeave() {
-            DOC_STATUS[SESSION.dept] = (DOC_STATUS[SESSION.dept] === 'Available' ? 'On Leave' : 'Available');
-            localStorage.setItem('shree_doc_status_ult', JSON.stringify(DOC_STATUS));
-            alert("Your Status: " + DOC_STATUS[SESSION.dept]);
-            location.reload();
-        }
-
-        function triggerSOS() { alert("🚨 SOS DISPATCHED TO DR. ROHIT SINGH\nLocation: Hartron Road Unit\nAmbulance AMB-902 Notified."); }
-        function deleteApp(id) { if(confirm("Discard patient?")) { DB_APPS = DB_APPS.filter(a => a.id !== id); localStorage.setItem('shree_apps_ultimate', JSON.stringify(DB_APPS)); renderQueue(); } }
-
+        // INITIALIZE PUBLIC DOCS
         window.onload = function() {
-            for(let d in DOC_STATUS) {
-                const el = document.getElementById('status_'+d);
-                if(el) {
-                    const isOnline = DOC_STATUS[d] === 'Available';
-                    el.innerHTML = `<span class="status-dot ${isOnline ? 'online' : 'offline'}"></span><span class="text-[10px] font-black uppercase tracking-widest ${isOnline ? 'text-emerald-500' : 'text-rose-500'}">${isOnline ? 'Available Today' : 'On Leave'}</span>`;
-                }
+            const grid = document.getElementById('doctorPublicGrid');
+            const select = document.getElementById('b_doc');
+            select.innerHTML = '<option value="">-- Choose Specialist --</option>';
+            
+            for(let d in DEPARTMENTS) {
+                const doc = DEPARTMENTS[d];
+                const isLeave = DOC_LEAVE[d];
+                
+                // Public Grid
+                grid.innerHTML += `
+                    <div class="bg-white p-12 card-pro flex flex-col md:flex-row items-center gap-10">
+                        <img src="${doc.image}" class="w-40 h-40 rounded-[2.5rem] object-cover shadow-2xl">
+                        <div class="flex-1 text-center md:text-left">
+                            <span class="status-badge ${isLeave ? 'offline' : 'online'} mb-6">${isLeave ? 'On Leave' : 'Available Today'}</span>
+                            <h4 class="text-3xl font-black italic mb-2">${doc.name}</h4>
+                            <p class="text-sky-600 font-black text-[11px] uppercase tracking-widest mb-4">${d} Specialist (${doc.time})</p>
+                            <p class="text-slate-800 font-bold mb-6">OPD Fee: ₹ ${doc.fee}</p>
+                            <a href="#booking" class="bg-slate-900 text-white px-8 py-3 rounded-2xl text-[10px] font-black uppercase">Secure Slot</a>
+                        </div>
+                    </div>
+                `;
+                // Booking Select
+                select.innerHTML += `<option value="${d}">${doc.name} (${d})</option>`;
             }
         };
     </script>

@@ -3,246 +3,464 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LifeCare Super-Speciality | Rohit Singh HMS</title>
+    <title>MediLife Global | Enterprise Health Information System</title>
+    
+    <!-- Enterprise Libraries -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap');
-        body { font-family: 'Plus Jakarta Sans', sans-serif; scroll-behavior: smooth; }
-        .glass { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); }
-        .dept-card:hover { transform: translateY(-10px); transition: all 0.3s; }
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #f8fafc; color: #1e293b; }
+        .glass { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(0,0,0,0.05); }
+        .sidebar-active { background: #0284c7; color: white !important; box-shadow: 0 10px 15px -3px rgba(2, 132, 199, 0.3); }
+        .emergency-btn { animation: pulse 2s infinite; background: #dc2626; }
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.7); } 70% { box-shadow: 0 0 0 15px rgba(220, 38, 38, 0); } 100% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0); } }
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-900">
+<body>
 
-    <!-- NAVIGATION BAR -->
-    <nav class="sticky top-0 z-50 bg-white/90 border-b backdrop-blur-md px-6 py-4 flex justify-between items-center">
-        <div class="flex items-center gap-2 text-blue-600">
-            <i class="fas fa-hand-holding-medical text-3xl"></i>
-            <span class="text-2xl font-black tracking-tighter">LIFECARE <span class="text-slate-800 underline">HMS</span></span>
-        </div>
-        <div class="hidden md:flex items-center gap-8 font-bold text-slate-600 text-sm">
-            <a href="#home" class="hover:text-blue-600">Home</a>
-            <a href="#appointment" class="hover:text-blue-600">Find Doctor</a>
-            <a href="#admin" class="bg-slate-100 px-4 py-2 rounded-lg">Admin Login</a>
-            <a href="https://wa.me/918708987154" class="text-green-600 flex items-center gap-2"><i class="fab fa-whatsapp text-xl"></i> Connect</a>
-        </div>
-        <a href="https://razorpay.me/@rohitsingh9645" target="_blank" class="bg-blue-600 text-white px-6 py-2 rounded-full font-bold shadow-lg shadow-blue-200">Pay Fees</a>
-    </nav>
-
-    <!-- HERO SECTION -->
-    <section id="home" class="bg-blue-600 py-20 px-6 text-white text-center relative overflow-hidden">
-        <div class="max-w-4xl mx-auto relative z-10">
-            <span class="bg-blue-500 px-4 py-1 rounded-full text-xs font-bold uppercase tracking-widest mb-4 inline-block border border-blue-400">NABH Accredited Multi-Speciality</span>
-            <h1 class="text-5xl md:text-7xl font-extrabold leading-tight mb-6">Expert Care. <br> Modern Technology.</h1>
-            <p class="text-blue-100 text-lg mb-10 opacity-90 italic">Direct Booking available for Dr. Rohit's Specialised Unit.</p>
-            <div class="flex flex-col md:flex-row justify-center gap-4">
-                <a href="#appointment" class="bg-white text-blue-700 px-10 py-4 rounded-2xl font-black text-lg shadow-2xl">Book Appointment</a>
-                <a href="mailto:rohitsinghh777@gmail.com" class="border-2 border-white/30 px-10 py-4 rounded-2xl font-bold flex items-center justify-center gap-2">
-                    <i class="fas fa-envelope"></i> Send Reports
-                </a>
-            </div>
-        </div>
-        <i class="fas fa-shield-heart absolute -right-20 -bottom-20 text-[25rem] text-blue-500 opacity-20"></i>
-    </section>
-
-    <!-- APPOINTMENT SECTION -->
-    <section id="appointment" class="py-24 px-6">
-        <div class="max-w-6xl mx-auto grid lg:grid-cols-2 gap-16">
-            
-            <!-- Booking Form -->
-            <div class="bg-white p-10 rounded-[3rem] shadow-2xl border border-slate-100">
-                <h2 class="text-3xl font-black mb-8">Patient Registration</h2>
-                <form id="bookForm" class="space-y-6">
-                    <div class="grid md:grid-cols-2 gap-6">
-                        <div>
-                            <label class="text-xs font-black text-slate-400 uppercase">Patient Full Name</label>
-                            <input type="text" id="name" required class="w-full p-4 bg-slate-50 rounded-xl outline-none ring-1 ring-slate-100 focus:ring-2 focus:ring-blue-600 transition">
-                        </div>
-                        <div>
-                            <label class="text-xs font-black text-slate-400 uppercase">WhatsApp Number</label>
-                            <input type="tel" id="phone" required class="w-full p-4 bg-slate-50 rounded-xl outline-none ring-1 ring-slate-100 focus:ring-2 focus:ring-blue-600 transition">
-                        </div>
-                    </div>
-                    
-                    <div class="grid md:grid-cols-2 gap-6">
-                        <div>
-                            <label class="text-xs font-black text-slate-400 uppercase">Department</label>
-                            <select id="dept" onchange="updateDoctors()" class="w-full p-4 bg-slate-50 rounded-xl outline-none font-bold">
-                                <option value="">Select Speciality</option>
-                                <option value="Cardiology">Cardiology (Heart)</option>
-                                <option value="Neurology">Neurology (Brain)</option>
-                                <option value="Orthopedics">Orthopedics (Bones)</option>
-                                <option value="General">General Physician</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="text-xs font-black text-slate-400 uppercase">Assigned Specialist</label>
-                            <select id="doctor" onchange="updateInfo()" class="w-full p-4 bg-slate-50 rounded-xl outline-none font-bold">
-                                <option>Select Department First</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div id="diseaseInfo" class="hidden bg-blue-50 p-6 rounded-2xl border border-blue-100">
-                        <p class="text-xs font-black text-blue-600 uppercase mb-2">Doctor's Information</p>
-                        <p id="docFees" class="font-bold text-slate-800"></p>
-                        <p id="docTime" class="text-xs text-slate-500 font-medium"></p>
-                    </div>
-
-                    <button type="submit" class="w-full bg-slate-900 text-white py-5 rounded-2xl font-black text-xl shadow-xl hover:bg-black transition">
-                        BOOK & SEND NOTIFICATION
-                    </button>
-                </form>
-            </div>
-
-            <!-- Dashboard / Admin View -->
-            <div id="admin" class="space-y-8">
-                <div class="bg-white p-8 rounded-[2rem] border shadow-sm">
-                    <h3 class="text-xl font-bold mb-6 flex justify-between">
-                        Live HMS Dashboard
-                        <span class="text-xs text-blue-600 animate-pulse">● System Online</span>
-                    </h3>
-                    <div id="dbRows" class="space-y-4 max-h-[400px] overflow-y-auto pr-2">
-                        <p class="text-center text-slate-400 italic py-10">No records in local database yet.</p>
-                    </div>
+    <!-- 1. AUTHENTICATION MODULE (Login / Signup / Forgot) -->
+    <div id="authModule" class="fixed inset-0 z-[2000] bg-slate-900 flex items-center justify-center p-4">
+        <div id="authCard" class="bg-white max-w-md w-full rounded-[3rem] p-10 shadow-2xl animate__animated animate__zoomIn">
+            <div class="text-center mb-8">
+                <div class="w-20 h-20 bg-blue-600 rounded-3xl mx-auto flex items-center justify-center text-white text-4xl shadow-xl mb-4">
+                    <i class="fas fa-hospital-user"></i>
                 </div>
-                
-                <div class="bg-green-600 p-8 rounded-[2rem] text-white shadow-xl flex items-center justify-between">
-                    <div>
-                        <h4 class="font-black text-xl">Quick Support</h4>
-                        <p class="opacity-80 text-sm">Direct WhatsApp for emergency</p>
-                    </div>
-                    <a href="https://wa.me/918708987154" class="bg-white text-green-600 p-4 rounded-full text-2xl shadow-lg">
-                        <i class="fab fa-whatsapp"></i>
-                    </a>
+                <h1 class="text-3xl font-black text-slate-800">MediLife <span class="text-blue-600">Pro</span></h1>
+                <p id="authSubtitle" class="text-slate-400 text-[10px] font-black uppercase tracking-widest mt-2 underline">Secure Gateway Access</p>
+            </div>
+
+            <!-- LOGIN FORM -->
+            <div id="loginForm" class="space-y-4">
+                <input type="text" id="loginUser" placeholder="Email or Username (admin for staff)" class="w-full p-4 bg-slate-50 rounded-2xl border outline-none focus:ring-2 focus:ring-blue-600 font-bold transition">
+                <input type="password" id="loginPass" placeholder="Password" class="w-full p-4 bg-slate-50 rounded-2xl border outline-none focus:ring-2 focus:ring-blue-600 transition">
+                <button onclick="handleLogin()" class="w-full bg-slate-900 text-white py-4 rounded-2xl font-black text-lg hover:bg-black transition shadow-xl">Sign In</button>
+                <div class="flex justify-between text-[10px] font-black text-blue-600 uppercase px-2">
+                    <button onclick="toggleAuth('signup')">Create Account</button>
+                    <button onclick="toggleAuth('forgot')">Forgot Password?</button>
                 </div>
             </div>
+
+            <!-- SIGNUP FORM -->
+            <div id="signupForm" class="hidden space-y-4">
+                <input type="text" id="regName" placeholder="Full Name" class="w-full p-4 bg-slate-50 rounded-2xl border outline-none font-bold">
+                <input type="email" id="regEmail" placeholder="Email Address" class="w-full p-4 bg-slate-50 rounded-2xl border outline-none font-bold">
+                <input type="password" id="regPass" placeholder="Create Password" class="w-full p-4 bg-slate-50 rounded-2xl border outline-none">
+                <input type="text" id="regPin" placeholder="Secret Pin (for recovery)" class="w-full p-4 bg-slate-50 rounded-2xl border outline-none">
+                <button onclick="handleSignup()" class="w-full bg-blue-600 text-white py-4 rounded-2xl font-black text-lg shadow-lg">Register Account</button>
+                <button onclick="toggleAuth('login')" class="w-full text-[10px] font-black text-slate-400 uppercase">Back to Login</button>
+            </div>
+
+            <!-- FORGOT PASSWORD FORM -->
+            <div id="forgotForm" class="hidden space-y-4">
+                <p class="text-xs text-slate-500 italic mb-4">Enter your email and Secret Pin to reset password.</p>
+                <input type="email" id="forEmail" placeholder="Registered Email" class="w-full p-4 bg-slate-50 rounded-2xl border">
+                <input type="text" id="forPin" placeholder="Secret Pin" class="w-full p-4 bg-slate-50 rounded-2xl border">
+                <input type="password" id="forNewPass" placeholder="New Password" class="w-full p-4 bg-slate-50 rounded-2xl border">
+                <button onclick="handleForgot()" class="w-full bg-red-600 text-white py-4 rounded-2xl font-black">Reset Password</button>
+                <button onclick="toggleAuth('login')" class="w-full text-[10px] font-black text-slate-400 uppercase">Cancel</button>
+            </div>
         </div>
-    </section>
+    </div>
 
-    <!-- FOOTER -->
-    <footer class="bg-slate-900 text-slate-500 py-12 px-6 text-center border-t border-slate-800">
-        <p class="font-black text-white text-lg italic mb-2">LIFECARE ENTERPRISE</p>
-        <p class="text-xs uppercase tracking-widest font-bold">Developed for Rohit Singh | Hartron Presentation Project</p>
-        <p class="mt-4 text-[10px]">Contact: 8708987154 | Email: rohitsinghh777@gmail.com</p>
-    </footer>
+    <!-- 2. MAIN APPLICATION STRUCTURE -->
+    <div id="app" class="hidden flex h-screen overflow-hidden">
+        
+        <!-- SIDEBAR -->
+        <aside class="w-72 bg-white border-r border-slate-200 flex flex-col hidden lg:flex">
+            <div class="p-8">
+                <div class="flex items-center gap-3 text-blue-600">
+                    <i class="fas fa-shield-virus text-3xl"></i>
+                    <span class="text-2xl font-black italic">ML-GLOBAL</span>
+                </div>
+            </div>
 
-    <!-- SYSTEM LOGIC -->
+            <nav id="sidebarNav" class="flex-1 px-4 space-y-1">
+                <!-- Navigation links will be injected by JavaScript based on role -->
+            </nav>
+
+            <div class="p-6 border-t bg-slate-50">
+                <div class="flex items-center gap-3 bg-slate-900 p-4 rounded-2xl text-white">
+                    <div class="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center font-bold" id="usrChar">?</div>
+                    <div class="flex-1 overflow-hidden">
+                        <p id="usrName" class="text-sm font-bold truncate">User</p>
+                        <p id="usrRole" class="text-[10px] text-blue-400 font-bold uppercase tracking-widest">Role</p>
+                    </div>
+                    <button onclick="logout()" class="text-slate-400 hover:text-white"><i class="fas fa-sign-out-alt"></i></button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- MAIN VIEWPORT -->
+        <main class="flex-1 flex flex-col overflow-hidden">
+            <header class="h-20 glass flex items-center justify-between px-10">
+                <h2 id="pageTitle" class="text-xl font-black text-slate-800 tracking-tight">System Portal</h2>
+                <div class="flex items-center gap-4">
+                    <div class="bg-red-50 text-red-600 px-4 py-1 rounded-full text-[10px] font-black uppercase border border-red-100 flex items-center gap-2">
+                        <span class="w-2 h-2 bg-red-600 rounded-full animate-ping"></span> 24/7 Monitoring
+                    </div>
+                    <button onclick="navigate('profile')" class="text-slate-400 hover:text-blue-600"><i class="fas fa-cog"></i></button>
+                </div>
+            </header>
+
+            <div id="viewContainer" class="flex-1 overflow-y-auto p-10">
+                <!-- Views will be injected here -->
+            </div>
+        </main>
+    </div>
+
+    <!-- 3. EMERGENCY SOS MODAL -->
+    <button onclick="triggerSOS()" class="fixed bottom-10 right-10 z-50 w-16 h-16 emergency-btn rounded-full text-white text-2xl flex items-center justify-center shadow-2xl">
+        <i class="fas fa-ambulance"></i>
+    </button>
+
+    <!-- 4. SYSTEM SCRIPT -->
     <script>
-        // Doctor & Department Configuration
-        const hospitalData = {
-            "Cardiology": { 
-                doctor: "Dr. Rohit Singh (Senior Specialist)", 
-                fee: "1500", 
-                time: "10:00 AM - 04:00 PM",
-                phone: "8708987154", // Rohit's number
-                diseases: "Heart Attack, High BP, Chest Pain"
-            },
-            "Neurology": { 
-                doctor: "Dr. Karan Mehra (Neurosurgeon)", 
-                fee: "2000", 
-                time: "12:00 PM - 06:00 PM",
-                phone: "8708987154", // Can be changed
-                diseases: "Brain Stroke, Paralysis, Migraine"
-            },
-            "Orthopedics": { 
-                doctor: "Dr. Amit Verma", 
-                fee: "800", 
-                time: "09:00 AM - 02:00 PM",
-                phone: "8708987154", 
-                diseases: "Joint Pain, Fracture, Arthritis"
-            },
-            "General": { 
-                doctor: "Dr. S.K. Gupta", 
-                fee: "500", 
-                time: "08:00 AM - 08:00 PM",
-                phone: "8708987154", 
-                diseases: "Fever, Cold, General Health"
-            }
-        };
+        // ENTERPRISE DATABASE INITIALIZATION
+        let users = JSON.parse(localStorage.getItem('ml_users')) || [
+            { email: 'admin', pass: '12345', name: 'Rohit Singh', role: 'admin', pin: '0000' }
+        ];
+        let appointments = JSON.parse(localStorage.getItem('ml_apps')) || [];
+        let currentUser = null;
 
-        let appointments = JSON.parse(localStorage.getItem('hms_v3')) || [];
+        // AUTHENTICATION ENGINE
+        function toggleAuth(mode) {
+            document.getElementById('loginForm').classList.add('hidden');
+            document.getElementById('signupForm').classList.add('hidden');
+            document.getElementById('forgotForm').classList.add('hidden');
+            document.getElementById(mode + 'Form').classList.remove('hidden');
+            document.getElementById('authSubtitle').innerText = mode.toUpperCase() + ' MODE';
+        }
 
-        function updateDoctors() {
-            const dept = document.getElementById('dept').value;
-            const docSelect = document.getElementById('doctor');
-            docSelect.innerHTML = '';
-            
-            if(dept) {
-                const option = document.createElement('option');
-                option.value = hospitalData[dept].doctor;
-                option.text = hospitalData[dept].doctor;
-                docSelect.appendChild(option);
-                document.getElementById('diseaseInfo').classList.remove('hidden');
-                updateInfo();
+        function handleSignup() {
+            const name = document.getElementById('regName').value;
+            const email = document.getElementById('regEmail').value;
+            const pass = document.getElementById('regPass').value;
+            const pin = document.getElementById('regPin').value;
+
+            if(!name || !email || !pass || !pin) return alert("Please fill all fields!");
+            if(users.find(u => u.email === email)) return alert("Email already exists!");
+
+            const newUser = { 
+                email, pass, name, pin, 
+                role: 'patient', 
+                uid: 'ML-' + Math.floor(1000 + Math.random()*9000) 
+            };
+            users.push(newUser);
+            localStorage.setItem('ml_users', JSON.stringify(users));
+            alert("Registration Successful! Please Login.");
+            toggleAuth('login');
+        }
+
+        function handleLogin() {
+            const email = document.getElementById('loginUser').value;
+            const pass = document.getElementById('loginPass').value;
+
+            const user = users.find(u => u.email === email && u.pass === pass);
+            if(user) {
+                currentUser = user;
+                launchApp();
             } else {
-                document.getElementById('diseaseInfo').classList.add('hidden');
+                alert("Invalid Credentials!");
             }
         }
 
-        function updateInfo() {
-            const dept = document.getElementById('dept').value;
-            if(dept) {
-                document.getElementById('docFees').innerText = `Fees: ₹${hospitalData[dept].fee} | Specialist: ${hospitalData[dept].diseases}`;
-                document.getElementById('docTime').innerText = `Availability: ${hospitalData[dept].time}`;
+        function handleForgot() {
+            const email = document.getElementById('forEmail').value;
+            const pin = document.getElementById('forPin').value;
+            const newPass = document.getElementById('forNewPass').value;
+
+            let user = users.find(u => u.email === email && u.pin === pin);
+            if(user) {
+                user.pass = newPass;
+                localStorage.setItem('ml_users', JSON.stringify(users));
+                alert("Password Reset Successful!");
+                toggleAuth('login');
+            } else {
+                alert("Email or Pin is incorrect!");
             }
         }
 
-        document.getElementById('bookForm').addEventListener('submit', (e) => {
+        // NAVIGATION ENGINE
+        function launchApp() {
+            document.getElementById('authModule').classList.add('hidden');
+            document.getElementById('app').classList.remove('hidden');
+            
+            // Profile Update
+            document.getElementById('usrName').innerText = currentUser.name;
+            document.getElementById('usrRole').innerText = currentUser.role;
+            document.getElementById('usrChar').innerText = currentUser.name.charAt(0);
+
+            buildSidebar();
+            navigate(currentUser.role === 'admin' ? 'adminDash' : 'userDash');
+        }
+
+        function buildSidebar() {
+            const nav = document.getElementById('sidebarNav');
+            let links = '';
+            if(currentUser.role === 'admin') {
+                links = `
+                    <button onclick="navigate('adminDash')" id="nav-adminDash" class="sidebar-item w-full flex items-center gap-4 p-4 rounded-xl font-bold text-slate-500"><i class="fas fa-chart-pie"></i> Stats Dashboard</button>
+                    <button onclick="navigate('vault')" id="nav-vault" class="sidebar-item w-full flex items-center gap-4 p-4 rounded-xl font-bold text-slate-500"><i class="fas fa-database"></i> Patient Vault</button>
+                    <button onclick="navigate('backup')" id="nav-backup" class="sidebar-item w-full flex items-center gap-4 p-4 rounded-xl font-bold text-slate-500"><i class="fas fa-cloud-download"></i> System Backup</button>
+                `;
+            } else {
+                links = `
+                    <button onclick="navigate('userDash')" id="nav-userDash" class="sidebar-item w-full flex items-center gap-4 p-4 rounded-xl font-bold text-slate-500"><i class="fas fa-th-large"></i> My Portal</button>
+                    <button onclick="navigate('book')" id="nav-book" class="sidebar-item w-full flex items-center gap-4 p-4 rounded-xl font-bold text-slate-500"><i class="fas fa-calendar-plus"></i> New Appointment</button>
+                    <button onclick="navigate('history')" id="nav-history" class="sidebar-item w-full flex items-center gap-4 p-4 rounded-xl font-bold text-slate-500"><i class="fas fa-folder-open"></i> My Reports</button>
+                `;
+            }
+            nav.innerHTML = links + `<a href="https://razorpay.me/@rohitsingh9645" target="_blank" class="flex items-center gap-4 p-4 rounded-xl font-bold text-green-600 bg-green-50 mt-10"><i class="fas fa-wallet"></i> Pay Online</a>`;
+        }
+
+        function navigate(view) {
+            document.querySelectorAll('.sidebar-item').forEach(b => b.classList.remove('sidebar-active'));
+            const activeBtn = document.getElementById('nav-' + view);
+            if(activeBtn) activeBtn.classList.add('sidebar-active');
+
+            const container = document.getElementById('viewContainer');
+            document.getElementById('pageTitle').innerText = view.toUpperCase();
+
+            // VIEW ROUTING
+            if(view === 'adminDash') renderAdminDash(container);
+            if(view === 'vault') renderVault(container);
+            if(view === 'userDash') renderUserDash(container);
+            if(view === 'book') renderBookingForm(container);
+            if(view === 'history') renderHistory(container);
+            if(view === 'profile') renderProfile(container);
+            if(view === 'backup') exportData();
+        }
+
+        // --- VIEWS RENDERING ---
+
+        function renderAdminDash(con) {
+            const rev = appointments.reduce((s, i) => s + (parseInt(i.fee)||0), 0);
+            con.innerHTML = `
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 animate__animated animate__fadeIn">
+                    <div class="bg-white p-8 rounded-[2.5rem] border shadow-sm">
+                        <p class="text-xs font-black text-slate-400 uppercase">Global Admissions</p>
+                        <h3 class="text-5xl font-black mt-2 tracking-tighter">${appointments.length}</h3>
+                    </div>
+                    <div class="bg-white p-8 rounded-[2.5rem] border shadow-sm border-b-4 border-blue-600">
+                        <p class="text-xs font-black text-slate-400 uppercase">Revenue (Live)</p>
+                        <h3 class="text-5xl font-black mt-2 tracking-tighter text-blue-600">₹${(rev/1000).toFixed(1)}K</h3>
+                    </div>
+                    <div class="bg-white p-8 rounded-[2.5rem] border shadow-sm">
+                        <p class="text-xs font-black text-slate-400 uppercase">Emergency Cases</p>
+                        <h3 class="text-5xl font-black mt-2 tracking-tighter text-red-600">04</h3>
+                    </div>
+                </div>
+                <div class="mt-12 bg-white p-10 rounded-[3rem] border">
+                    <h4 class="font-black text-xl mb-6 italic">Hospital Growth Analytics</h4>
+                    <canvas id="adminChart" height="100"></canvas>
+                </div>
+            `;
+            setTimeout(initChart, 100);
+        }
+
+        function renderVault(con) {
+            con.innerHTML = `
+                <div class="bg-white rounded-[2.5rem] border overflow-hidden animate__animated animate__fadeIn">
+                    <div class="p-8 border-b flex justify-between items-center">
+                        <h3 class="font-black text-2xl tracking-tight">Enterprise Data Vault</h3>
+                        <input type="text" onkeyup="searchVault(this.value)" placeholder="Search Name/UID..." class="p-3 bg-slate-50 border rounded-xl outline-none w-64">
+                    </div>
+                    <table class="w-full text-left">
+                        <thead class="bg-slate-50 text-[10px] font-black uppercase text-slate-400 border-b">
+                            <tr><th class="p-6">Patient UID</th><th class="p-6">Dept</th><th class="p-6">Status</th><th class="p-6 text-right">Control</th></tr>
+                        </thead>
+                        <tbody id="vaultBody" class="divide-y text-sm">
+                            ${appointments.map(a => `
+                                <tr>
+                                    <td class="p-6"><b>${a.patientName}</b><br><small class="opacity-50">${a.uid}</small></td>
+                                    <td class="p-6 font-bold text-blue-600">${a.dept}</td>
+                                    <td class="p-6"><span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-[10px] font-black italic">VERIFIED</span></td>
+                                    <td class="p-6 text-right text-red-400"><button onclick="deleteApp('${a.uid}')"><i class="fas fa-trash"></i></button></td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>
+            `;
+        }
+
+        function renderUserDash(con) {
+            con.innerHTML = `
+                <div class="bg-blue-600 p-12 rounded-[3.5rem] text-white shadow-2xl relative overflow-hidden animate__animated animate__slideInRight">
+                    <h2 class="text-4xl font-black mb-4 tracking-tighter">Hello, ${currentUser.name}!</h2>
+                    <p class="text-blue-100 italic">Your Unique Patient ID is: <b>${currentUser.uid || 'NA'}</b></p>
+                    <div class="mt-8 flex gap-4">
+                        <button onclick="navigate('book')" class="bg-white text-blue-600 px-8 py-3 rounded-2xl font-bold uppercase text-xs">New Appointment</button>
+                        <button onclick="navigate('history')" class="border-2 border-white/30 px-8 py-3 rounded-2xl font-bold uppercase text-xs">View Records</button>
+                    </div>
+                    <i class="fas fa-heart-circle-check absolute -right-10 -bottom-10 text-[15rem] opacity-10"></i>
+                </div>
+            `;
+        }
+
+        function renderBookingForm(con) {
+            con.innerHTML = `
+                <div class="max-w-2xl mx-auto bg-white p-12 rounded-[3.5rem] shadow-2xl animate__animated animate__fadeInUp">
+                    <h3 class="text-3xl font-black mb-10 tracking-tight text-center">OPD Enrollment</h3>
+                    <form id="bookForm" class="space-y-6">
+                        <div class="space-y-2">
+                            <label class="text-[10px] font-black uppercase text-slate-400 ml-4 tracking-widest">Medical Unit</label>
+                            <select id="pDept" onchange="document.getElementById('price').innerText = this.value === 'Cardiology' ? '1200' : '1500'" class="w-full p-5 bg-slate-50 rounded-2xl border font-bold">
+                                <option value="Cardiology">Cardiology (Fees: 1200)</option>
+                                <option value="Neurology">Neurology (Fees: 1500)</option>
+                                <option value="Orthopedics">Orthopedics (Fees: 1000)</option>
+                            </select>
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-[10px] font-black uppercase text-slate-400 ml-4 tracking-widest">Visit Date</label>
+                            <input type="date" id="pDate" required class="w-full p-5 bg-slate-50 rounded-2xl border">
+                        </div>
+                        <div class="bg-slate-900 p-8 rounded-3xl flex justify-between items-center text-white">
+                            <div><p class="text-xs opacity-50 uppercase font-black">Fees</p><p class="text-4xl font-black tracking-tighter">₹ <span id="price">1200</span></p></div>
+                            <button type="submit" class="bg-blue-600 px-10 py-4 rounded-2xl font-black shadow-xl shadow-blue-500/20">CONFIRM</button>
+                        </div>
+                    </form>
+                </div>
+            `;
+            document.getElementById('bookForm').onsubmit = handleBooking;
+        }
+
+        function renderProfile(con) {
+            con.innerHTML = `
+                <div class="max-w-md mx-auto bg-white p-10 rounded-[3rem] shadow-xl animate__animated animate__fadeIn">
+                    <h3 class="text-2xl font-black mb-8 border-b pb-4">Security Settings</h3>
+                    <div class="space-y-6">
+                        <div class="space-y-2">
+                            <label class="text-[10px] font-black text-slate-400 uppercase">Change Password</label>
+                            <input type="password" id="upPass" placeholder="New Password" class="w-full p-4 bg-slate-50 rounded-2xl border">
+                        </div>
+                        <button onclick="updatePassword()" class="w-full bg-slate-900 text-white py-4 rounded-2xl font-black shadow-lg">Update Profile</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderHistory(con) {
+            const myApps = appointments.filter(a => a.patientEmail === currentUser.email);
+            con.innerHTML = `
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 animate__animated animate__fadeIn">
+                    ${myApps.length ? myApps.map(a => `
+                        <div class="bg-white p-8 rounded-[2.5rem] border-l-8 border-blue-600 shadow-sm">
+                            <div class="flex justify-between items-start mb-4">
+                                <span class="text-[10px] font-black text-blue-600 uppercase tracking-widest">${a.uid}</span>
+                                <span class="text-xs font-bold text-slate-400">${a.date}</span>
+                            </div>
+                            <h4 class="text-xl font-black">${a.dept} Unit</h4>
+                            <p class="text-sm text-slate-500 italic mt-1">Confirmed with Dr. Rohit Singh</p>
+                            <button onclick="genPDF('${a.uid}')" class="mt-6 text-blue-600 font-black text-xs uppercase tracking-widest flex items-center gap-2 underline"><i class="fas fa-file-pdf"></i> Download Slip</button>
+                        </div>
+                    `).join('') : '<p class="text-center p-20 opacity-30 italic">No medical history found.</p>'}
+                </div>
+            `;
+        }
+
+        // --- CORE FUNCTIONALITY ---
+
+        function handleBooking(e) {
             e.preventDefault();
-            const dept = document.getElementById('dept').value;
-            const app = {
-                name: document.getElementById('name').value,
-                phone: document.getElementById('phone').value,
-                dept: dept,
-                doctor: hospitalData[dept].doctor,
-                fee: hospitalData[dept].fee,
-                time: new Date().toLocaleString()
+            const date = new Date(document.getElementById('pDate').value);
+            if(date.getDay() === 0) return alert("HOSPITAL CLOSED ON SUNDAYS!");
+
+            const apt = {
+                uid: 'MED-' + Math.floor(10000 + Math.random()*90000),
+                patientName: currentUser.name,
+                patientEmail: currentUser.email,
+                dept: document.getElementById('pDept').value,
+                date: document.getElementById('pDate').value,
+                fee: document.getElementById('price').innerText,
+                timestamp: new Date().toLocaleString()
             };
 
-            // 1. Save to Database
-            appointments.push(app);
-            localStorage.setItem('hms_v3', JSON.stringify(appointments));
+            appointments.push(apt);
+            localStorage.setItem('ml_apps', JSON.stringify(appointments));
 
-            // 2. Format WhatsApp Message
-            const waMsg = `*LifeCare Hospital - New Appointment*%0A%0A` +
-                          `*Patient:* ${app.name}%0A` +
-                          `*Dept:* ${app.dept}%0A` +
-                          `*Doctor:* ${app.doctor}%0A` +
-                          `*Fee:* Rs.${app.fee}%0A%0A` +
-                          `_System Generated Receipt. Please visit our website for digital lab reports._`;
-
-            // 3. Open WhatsApp Notification (Real Feature)
-            window.open(`https://wa.me/91${hospitalData[dept].phone}?text=${waMsg}`, '_blank');
-
-            // 4. Final Redirect to Razorpay for Payment
-            alert("Booking Saved! Opening WhatsApp for confirmation and Redirecting to Payment Gateway...");
-            setTimeout(() => {
-                window.location.href = "https://razorpay.me/@rohitsingh9645";
-            }, 2000);
-
-            renderAdmin();
-        });
-
-        function renderAdmin() {
-            const container = document.getElementById('dbRows');
-            if(appointments.length === 0) return;
+            // WhatsApp Notification
+            const msg = `*MEDILIFE ALERT*%0A%0A*Name:* ${apt.patientName}%0A*Dept:* ${apt.dept}%0A*Date:* ${apt.date}%0A%0A_Medical Slip Generated. Redirecting to Payment Gateway._`;
+            window.open(`https://wa.me/918708987154?text=${msg}`, '_blank');
             
-            container.innerHTML = appointments.slice().reverse().map(a => `
-                <div class="bg-slate-50 p-4 rounded-2xl border-l-4 border-blue-600 shadow-sm animate-pulse">
-                    <div class="flex justify-between items-start mb-1">
-                        <span class="text-[10px] font-black text-blue-600">INTAKE-ID: ${Math.floor(Math.random()*9000)}</span>
-                        <span class="text-[9px] font-bold text-slate-400">${a.time}</span>
-                    </div>
-                    <p class="font-bold text-sm text-slate-800">${a.name}</p>
-                    <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">${a.dept} | ${a.doctor}</p>
-                    <div class="mt-2 text-[10px] font-black text-green-600">STATUS: PAYMENT VERIFIED</div>
-                </div>
+            alert("APPOINTMENT REGISTERED! Redirecting to Razorpay.");
+            window.location.href = "https://razorpay.me/@rohitsingh9645";
+        }
+
+        function updatePassword() {
+            const newP = document.getElementById('upPass').value;
+            if(!newP) return;
+            const idx = users.findIndex(u => u.email === currentUser.email);
+            users[idx].pass = newP;
+            localStorage.setItem('ml_users', JSON.stringify(users));
+            alert("Settings Updated! Please Login again.");
+            logout();
+        }
+
+        function deleteApp(uid) {
+            if(!confirm("Delete record?")) return;
+            appointments = appointments.filter(a => a.uid !== uid);
+            localStorage.setItem('ml_apps', JSON.stringify(appointments));
+            navigate('vault');
+        }
+
+        function searchVault(q) {
+            const val = q.toLowerCase();
+            const rows = document.getElementById('vaultBody');
+            const filtered = appointments.filter(a => a.patientName.toLowerCase().includes(val) || a.uid.toLowerCase().includes(val));
+            rows.innerHTML = filtered.map(a => `
+                <tr>
+                    <td class="p-6"><b>${a.patientName}</b><br><small class="opacity-50">${a.uid}</small></td>
+                    <td class="p-6 font-bold text-blue-600">${a.dept}</td>
+                    <td class="p-6"><span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-[10px] font-black italic">VERIFIED</span></td>
+                    <td class="p-6 text-right text-red-400"><button onclick="deleteApp('${a.uid}')"><i class="fas fa-trash"></i></button></td>
+                </tr>
             `).join('');
         }
 
-        renderAdmin();
+        function genPDF(uid) {
+            const a = appointments.find(i => i.uid === uid);
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            doc.setFontSize(22);
+            doc.text("MEDILIFE GLOBAL HMS", 105, 20, null, null, "center");
+            doc.autoTable({
+                startY: 40,
+                body: [['ID', a.uid], ['Patient', a.patientName], ['Dept', a.dept], ['Date', a.date], ['Fees', 'Rs.'+a.fee], ['Status', 'PAID']]
+            });
+            doc.save(`MediLife_${uid}.pdf`);
+        }
+
+        function triggerSOS() {
+            alert("🚨 AMBULANCE EMERGENCY DISPATCHED! \nLocation: Hartron Center Vicinity \nAlert sent to Rohit Singh (Super Admin)");
+        }
+
+        function exportData() {
+            const blob = new Blob([JSON.stringify(appointments, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a'); a.href = url; a.download = 'medilife_db.json'; a.click();
+        }
+
+        function logout() { window.location.reload(); }
+
+        function initChart() {
+            const ctx = document.getElementById('adminChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Jun 1', 'Jun 5', 'Jun 10', 'Jun 15', 'Jun 17'],
+                    datasets: [{ label: 'Patient Flow', data: [10, 25, 45, 60, 85], borderColor: '#0284c7', tension: 0.4 }]
+                }
+            });
+        }
     </script>
 </body>
 </html>

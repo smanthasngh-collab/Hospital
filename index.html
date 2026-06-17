@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MediCare Global | Advanced Enterprise HMS</title>
+    <title>Shree Care Multi Speciality Hospital | Enterprise HMS</title>
     
-    <!-- Professional Tech Stack -->
+    <!-- Enterprise Tech Stack -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -15,635 +15,393 @@
 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
-        :root { --primary: #0284c7; --secondary: #0f172a; --accent: #e11d48; }
+        :root { --primary: #0ea5e9; --secondary: #0f172a; --emergency: #e11d48; }
         body { font-family: 'Plus Jakarta Sans', sans-serif; background: #f8fafc; color: #1e293b; overflow-x: hidden; }
         
-        .glass-nav { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(226, 232, 240, 0.8); }
-        .sidebar-active { background: #0284c7; color: white !important; box-shadow: 0 10px 20px -5px rgba(2, 132, 199, 0.4); }
-        .hero-gradient { background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); }
-        .card-pro { background: white; border: 1px solid #f1f5f9; transition: all 0.4s ease; border-radius: 2rem; }
-        .card-pro:hover { transform: translateY(-10px); box-shadow: 0 30px 50px -10px rgba(0,0,0,0.1); }
-        
-        .emergency-ring { animation: ring 1.5s infinite; }
-        @keyframes ring { 0% { box-shadow: 0 0 0 0 rgba(225, 29, 72, 0.7); } 70% { box-shadow: 0 0 0 20px rgba(225, 29, 72, 0); } 100% { box-shadow: 0 0 0 0 rgba(225, 29, 72, 0); } }
-        
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        .sidebar-active { background: #0ea5e9; color: white !important; box-shadow: 0 10px 15px -3px rgba(14, 165, 233, 0.3); }
+        .glass { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(15px); border-bottom: 1px solid rgba(0,0,0,0.05); }
+        .emergency-btn { animation: pulse 1.5s infinite; background: #dc2626; }
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.7); } 70% { box-shadow: 0 0 0 20px rgba(220, 38, 38, 0); } 100% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0); } }
+        .card-pro { transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); border-radius: 2rem; background: white; border: 1px solid #f1f5f9; }
+        .card-pro:hover { transform: translateY(-10px); box-shadow: 0 40px 60px -15px rgba(0,0,0,0.1); }
+        .custom-scroll::-webkit-scrollbar { width: 5px; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
     </style>
 </head>
 <body class="antialiased">
 
-    <!-- 1. ENTERPRISE AUTHENTICATION OVERLAY -->
-    <div id="authOverlay" class="fixed inset-0 z-[2000] bg-slate-950 flex items-center justify-center p-4">
-        <div class="bg-white max-w-md w-full rounded-[3rem] p-10 shadow-2xl animate__animated animate__zoomIn border border-slate-100">
-            <div class="text-center mb-8">
-                <div class="w-20 h-20 bg-blue-600 rounded-3xl mx-auto flex items-center justify-center text-white text-4xl shadow-xl mb-4">
-                    <i class="fas fa-user-shield"></i>
-                </div>
-                <h1 class="text-3xl font-black text-slate-900 tracking-tighter">MediCare <span class="text-blue-600">Enterprise</span></h1>
-                <p id="authStatus" class="text-slate-400 text-[10px] font-black uppercase tracking-[0.3em] mt-2 italic underline">Security Handshake Required</p>
+    <!-- 1. SECURE AUTHENTICATION LAYER -->
+    <div id="authGate" class="fixed inset-0 z-[2000] bg-slate-950 flex items-center justify-center p-4">
+        <div class="bg-white max-w-md w-full rounded-[3rem] p-12 text-center shadow-2xl animate__animated animate__zoomIn border border-slate-100">
+            <div class="w-24 h-24 bg-sky-500 rounded-3xl mx-auto mb-8 flex items-center justify-center text-white text-5xl shadow-2xl shadow-sky-200">
+                <i class="fas fa-hand-holding-medical"></i>
             </div>
-
-            <!-- LOGIN FORM -->
+            <h1 class="text-3xl font-black text-slate-900 tracking-tighter mb-2">SHREE CARE <span class="text-sky-500 underline">HMS</span></h1>
+            <p id="authType" class="text-slate-400 text-[10px] font-black uppercase tracking-[0.3em] mb-10 italic">Core Enterprise Access</p>
+            
+            <!-- Forms Container -->
             <div id="loginForm" class="space-y-4">
-                <div class="space-y-1">
-                    <label class="text-[10px] font-black text-slate-400 ml-2 uppercase">User Identity</label>
-                    <input type="text" id="idInput" placeholder="admin / email" class="w-full p-4 bg-slate-50 rounded-2xl border-none ring-1 ring-slate-100 outline-none focus:ring-2 focus:ring-blue-600 font-bold">
-                </div>
-                <div class="space-y-1">
-                    <label class="text-[10px] font-black text-slate-400 ml-2 uppercase">Access Key</label>
-                    <input type="password" id="passInput" placeholder="••••••" class="w-full p-4 bg-slate-50 rounded-2xl border-none ring-1 ring-slate-100 outline-none focus:ring-2 focus:ring-blue-600">
-                </div>
-                <button onclick="handleLogin()" class="w-full bg-slate-900 text-white py-4 rounded-2xl font-black text-lg hover:bg-black transition shadow-xl mt-4">Verify & Access</button>
-                <div class="flex justify-between text-[10px] font-bold text-blue-600 uppercase px-2 mt-4">
+                <input type="email" id="loginEmail" placeholder="Email (admin@shreecare.com)" class="w-full p-5 bg-slate-50 rounded-2xl border-none ring-1 ring-slate-200 outline-none focus:ring-2 focus:ring-sky-500 font-bold">
+                <input type="password" id="loginPass" placeholder="••••••" class="w-full p-5 bg-slate-50 rounded-2xl border-none ring-1 ring-slate-200 outline-none focus:ring-2 focus:ring-sky-500">
+                <button onclick="handleLogin()" class="w-full bg-slate-900 text-white py-5 rounded-2xl font-black text-lg hover:bg-black transition shadow-xl mt-6">Authenticate</button>
+                <div class="flex justify-between text-[10px] font-bold text-sky-600 uppercase px-4 mt-4">
                     <button onclick="toggleAuth('signup')">New Registration</button>
                     <button onclick="toggleAuth('forgot')">Forgot Credentials?</button>
                 </div>
             </div>
 
-            <!-- SIGNUP FORM -->
+            <!-- Signup Form -->
             <div id="signupForm" class="hidden space-y-4 animate__animated animate__fadeIn">
-                <input type="text" id="regName" placeholder="Full Name" class="w-full p-4 bg-slate-50 rounded-2xl border-none ring-1 ring-slate-100 font-bold">
-                <input type="email" id="regEmail" placeholder="Email Address" class="w-full p-4 bg-slate-50 rounded-2xl border-none ring-1 ring-slate-100 font-bold">
-                <input type="password" id="regPass" placeholder="Set Password" class="w-full p-4 bg-slate-50 rounded-2xl border-none ring-1 ring-slate-100">
-                <input type="text" id="regPin" placeholder="Security Recovery Pin (4 digits)" class="w-full p-4 bg-slate-50 rounded-2xl border-none ring-1 ring-slate-100 font-black tracking-widest">
-                <button onclick="handleSignup()" class="w-full bg-blue-600 text-white py-4 rounded-2xl font-black text-lg shadow-lg">Complete Enrollment</button>
-                <button onclick="toggleAuth('login')" class="w-full text-[10px] font-bold text-slate-400 uppercase mt-2">Back to Secure Login</button>
-            </div>
-
-            <!-- FORGOT FORM -->
-            <div id="forgotForm" class="hidden space-y-4 animate__animated animate__fadeIn">
-                <input type="email" id="fEmail" placeholder="Registered Email" class="w-full p-4 bg-slate-50 rounded-2xl border-none ring-1 ring-slate-100">
-                <input type="text" id="fPin" placeholder="Enter Recovery Pin" class="w-full p-4 bg-slate-50 rounded-2xl border-none ring-1 ring-slate-100">
-                <input type="password" id="fNewPass" placeholder="Set New Access Key" class="w-full p-4 bg-slate-50 rounded-2xl border-none ring-1 ring-slate-100">
-                <button onclick="handleForgot()" class="w-full bg-red-600 text-white py-4 rounded-2xl font-black text-lg shadow-lg">Reset Identity</button>
-                <button onclick="toggleAuth('login')" class="w-full text-[10px] font-bold text-slate-400 uppercase mt-2">Cancel</button>
+                <input type="text" id="regName" placeholder="Full Name" class="w-full p-5 bg-slate-50 rounded-2xl ring-1 ring-slate-200 font-bold outline-none">
+                <input type="email" id="regEmail" placeholder="Email Address" class="w-full p-5 bg-slate-50 rounded-2xl ring-1 ring-slate-200 font-bold outline-none">
+                <input type="password" id="regPass" placeholder="Set Password" class="w-full p-5 bg-slate-50 rounded-2xl ring-1 ring-slate-200 outline-none">
+                <button onclick="handleSignup()" class="w-full bg-sky-600 text-white py-5 rounded-2xl font-black shadow-lg">Create EMR Account</button>
+                <button onclick="toggleAuth('login')" class="w-full text-[10px] font-bold text-slate-400 uppercase mt-2">Back to Login</button>
             </div>
         </div>
     </div>
 
-    <!-- 2. MAIN SYSTEM LAYOUT -->
+    <!-- 2. MAIN SYSTEM ARCHITECTURE -->
     <div id="mainApp" class="hidden flex h-screen overflow-hidden">
         
         <!-- SIDEBAR -->
         <aside class="w-80 bg-white border-r border-slate-100 flex flex-col hidden lg:flex">
-            <div class="p-10 flex items-center gap-3 text-blue-600">
-                <i class="fas fa-staff-snake text-4xl"></i>
-                <span class="text-2xl font-black italic tracking-tighter">MEDICARE <span class="text-slate-800">HMS</span></span>
+            <div class="p-10 flex items-center gap-3 text-sky-600">
+                <i class="fas fa-notes-medical text-4xl"></i>
+                <span class="text-2xl font-black tracking-tighter italic text-slate-800">SHREE <span class="text-sky-500">CARE</span></span>
             </div>
 
-            <nav id="sidebarNav" class="flex-1 px-6 space-y-1 overflow-y-auto">
-                <!-- Links Injected by Logic -->
+            <nav id="sidebarNav" class="flex-1 px-6 space-y-1 overflow-y-auto custom-scroll">
+                <p class="text-[10px] font-black text-slate-400 px-4 py-3 uppercase tracking-widest">Main Modules</p>
+                <button onclick="navigate('home')" id="nav-home" class="sidebar-active w-full flex items-center gap-4 p-5 rounded-2xl font-bold"><i class="fas fa-home"></i> Hospital Home</button>
+                <button onclick="navigate('book')" id="nav-book" class="w-full flex items-center gap-4 p-5 rounded-2xl font-bold text-slate-500 hover:bg-slate-50"><i class="fas fa-calendar-check"></i> Book Appointment</button>
+                <button onclick="navigate('history')" id="nav-history" class="w-full flex items-center gap-4 p-5 rounded-2xl font-bold text-slate-500 hover:bg-slate-50"><i class="fas fa-folder-open"></i> Medical History</button>
+                
+                <!-- Admin/Doctor Section -->
+                <div id="staffMenu" class="hidden">
+                    <p class="text-[10px] font-black text-slate-400 px-4 py-3 mt-6 uppercase tracking-widest border-t">Administrative Control</p>
+                    <button onclick="navigate('vault')" id="nav-vault" class="w-full flex items-center gap-4 p-5 rounded-2xl font-bold text-slate-500 hover:bg-slate-50"><i class="fas fa-database"></i> Central Vault</button>
+                    <button onclick="navigate('billing')" id="nav-billing" class="w-full flex items-center gap-4 p-5 rounded-2xl font-bold text-slate-500 hover:bg-slate-50"><i class="fas fa-file-invoice-dollar"></i> Billing & Audit</button>
+                </div>
+                
+                <div class="pt-10">
+                    <a href="https://razorpay.me/@rohitsingh9645" target="_blank" class="flex items-center gap-4 p-5 rounded-2xl font-bold text-green-700 bg-green-50 border border-green-100">
+                        <i class="fas fa-credit-card"></i> Pay Online
+                    </a>
+                </div>
             </nav>
 
-            <div class="p-8 border-t border-slate-50">
-                <div class="bg-slate-900 p-5 rounded-[2rem] text-white flex items-center gap-4 shadow-2xl relative overflow-hidden">
-                    <div class="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center font-black text-xl" id="avatarChar">?</div>
+            <div class="p-8 border-t">
+                <div class="bg-slate-900 p-5 rounded-3xl text-white flex items-center gap-4 shadow-2xl relative overflow-hidden">
+                    <div class="w-10 h-10 bg-sky-500 rounded-full flex items-center justify-center font-black" id="avatarChar">?</div>
                     <div class="flex-1 overflow-hidden z-10">
-                        <p id="usrNameDisplay" class="text-sm font-black truncate">Rohit Singh</p>
-                        <p id="usrRoleDisplay" class="text-[9px] text-blue-400 font-bold uppercase tracking-widest italic">Global Admin</p>
+                        <p id="usrName" class="text-sm font-black truncate">User Name</p>
+                        <p id="usrRole" class="text-[9px] text-sky-400 font-bold uppercase tracking-widest">Role</p>
                     </div>
-                    <button onclick="logout()" class="text-slate-500 hover:text-white transition-colors z-10"><i class="fas fa-power-off"></i></button>
-                    <i class="fas fa-circle-check absolute -right-4 -bottom-4 text-5xl text-blue-600 opacity-20"></i>
+                    <button onclick="location.reload()" class="ml-auto text-slate-500 hover:text-white transition"><i class="fas fa-power-off"></i></button>
                 </div>
             </div>
         </aside>
 
-        <!-- CONTENT VIEWPORT -->
+        <!-- MAIN CONTENT AREA -->
         <main class="flex-1 flex flex-col overflow-hidden bg-[#fcfdfe]">
-            <!-- Header -->
-            <header class="h-24 glass-nav flex items-center justify-between px-10">
-                <h2 id="viewHeader" class="text-2xl font-black text-slate-800 tracking-tight">Enterprise Overview</h2>
+            <!-- TOP HEADER -->
+            <header class="h-24 glass flex items-center justify-between px-10">
+                <div>
+                    <h2 id="viewHeader" class="text-2xl font-black text-slate-800 tracking-tight italic">Shree Care Overview</h2>
+                    <p class="text-[10px] text-slate-400 font-black uppercase tracking-widest mt-1">Status: <span class="text-green-500">Cloud Enterprise Active</span></p>
+                </div>
                 <div class="flex items-center gap-6">
-                    <div class="bg-red-50 text-red-600 px-6 py-2 rounded-full text-[10px] font-black uppercase flex items-center gap-3 border border-red-100">
-                        <span class="w-2 h-2 bg-red-600 rounded-full animate-ping"></span> Live Trauma Unit: 04
+                    <div class="bg-red-50 text-red-600 px-6 py-2 rounded-full text-[10px] font-black uppercase flex items-center gap-2 border border-red-100">
+                        <span class="w-2.5 h-2.5 bg-red-600 rounded-full animate-ping"></span> Live Trauma Center
                     </div>
                     <a href="https://wa.me/918708987154" target="_blank" class="text-slate-400 hover:text-green-600 transition-all text-2xl"><i class="fab fa-whatsapp"></i></a>
-                    <button onclick="navigate('profile')" class="text-slate-400 hover:text-blue-600 transition-all text-xl"><i class="fas fa-user-gear"></i></button>
+                    <button onclick="exportDB()" class="text-slate-400 hover:text-sky-600 text-xl"><i class="fas fa-cloud-download"></i></button>
                 </div>
             </header>
 
-            <!-- Dynamic Section Content -->
-            <div id="contentArea" class="flex-1 overflow-y-auto p-10">
-                <!-- Views loaded by JS -->
+            <!-- Dynamic Section Container -->
+            <div id="viewContainer" class="flex-1 overflow-y-auto p-12 custom-scroll">
+                
+                <!-- 1. LANDING DASHBOARD VIEW -->
+                <div id="view-home" class="animate__animated animate__fadeIn space-y-12">
+                    <div class="bg-slate-900 rounded-[4rem] p-16 text-white relative overflow-hidden shadow-2xl">
+                        <div class="relative z-10 max-w-2xl">
+                            <h2 class="text-6xl font-black leading-tight tracking-tighter mb-6">Advanced Healthcare. <br> Personal Care.</h2>
+                            <p class="text-slate-400 text-lg mb-10 italic">Shree Care Multi Speciality Hospital - NABH Accredited & ISO 9001:2015 Global Standard Facility.</p>
+                            <div class="flex gap-6">
+                                <button onclick="navigate('book')" class="bg-sky-500 text-white px-12 py-5 rounded-2xl font-black shadow-xl hover:bg-sky-600 transition">BOOK NOW</button>
+                                <div class="flex items-center gap-4 border-l border-slate-700 pl-6">
+                                    <div><p class="text-3xl font-black">24/7</p><p class="text-[10px] text-slate-500 font-bold uppercase tracking-widest tracking-widest">Emergency</p></div>
+                                    <div><p class="text-3xl font-black">50+</p><p class="text-[10px] text-slate-500 font-bold uppercase tracking-widest">Specialists</p></div>
+                                </div>
+                            </div>
+                        </div>
+                        <img src="https://www.medanta.org/assets/images/doctor.png" class="absolute right-0 bottom-0 h-full opacity-60 hidden md:block">
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+                        <div class="bg-white p-10 rounded-[3rem] border border-slate-50 card-pro">
+                            <i class="fas fa-heart-pulse text-4xl text-red-500 mb-6"></i>
+                            <h4 class="text-xl font-black">Cardiology Unit</h4>
+                            <p class="text-slate-400 text-sm mt-4 font-medium italic">Integrated heart care center with real-time EMR and cardiac labs.</p>
+                            <p class="text-sky-600 font-black text-xs mt-6 tracking-widest">FEE: ₹1200</p>
+                        </div>
+                        <div class="bg-white p-10 rounded-[3rem] border border-slate-50 card-pro">
+                            <i class="fas fa-brain text-4xl text-sky-500 mb-6"></i>
+                            <h4 class="text-xl font-black">Neurology Suite</h4>
+                            <p class="text-slate-400 text-sm mt-4 font-medium italic">Advanced neuro-surgery and brain mapping with 42 ICU beds.</p>
+                            <p class="text-sky-600 font-black text-xs mt-6 tracking-widest">FEE: ₹1500</p>
+                        </div>
+                        <div class="bg-white p-10 rounded-[3rem] border border-slate-50 card-pro">
+                            <i class="fas fa-baby text-4xl text-pink-500 mb-6"></i>
+                            <h4 class="text-xl font-black">Pediatric Care</h4>
+                            <p class="text-slate-400 text-sm mt-4 font-medium italic">Compassionate care for infants with global vaccination tracking.</p>
+                            <p class="text-sky-600 font-black text-xs mt-6 tracking-widest">FEE: ₹800</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. APPOINTMENT SYSTEM VIEW -->
+                <div id="view-book" class="hidden animate__animated animate__fadeInUp">
+                    <div class="max-w-4xl mx-auto bg-white p-16 rounded-[4rem] shadow-2xl border">
+                        <h3 class="text-4xl font-black mb-12 tracking-tight">OPD Enrollment Module</h3>
+                        <form id="hmsEntryForm" class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                            <div class="space-y-3">
+                                <label class="text-[10px] font-black uppercase text-slate-400 ml-4 tracking-widest">Full Name</label>
+                                <input type="text" id="pName" required class="w-full p-6 bg-slate-50 rounded-3xl border-none ring-1 ring-slate-100 outline-none focus:ring-4 focus:ring-sky-50 transition font-bold">
+                            </div>
+                            <div class="space-y-3">
+                                <label class="text-[10px] font-black uppercase text-slate-400 ml-4 tracking-widest">Department Unit</label>
+                                <select id="pDept" onchange="updateCalc()" class="w-full p-6 bg-slate-50 rounded-3xl border-none ring-1 ring-slate-100 font-black text-sky-600 outline-none">
+                                    <option value="Cardiology">Cardiology Unit (₹1200)</option>
+                                    <option value="Neurology">Neurology Suite (₹1500)</option>
+                                    <option value="Orthopedics">Orthopedics (₹1000)</option>
+                                    <option value="Pediatrics">Pediatrics (₹800)</option>
+                                </select>
+                            </div>
+                            <div class="space-y-3">
+                                <label class="text-[10px] font-black uppercase text-slate-400 ml-4 tracking-widest">Visit Date</label>
+                                <input type="date" id="pDate" required onchange="checkAvailability()" class="w-full p-6 bg-slate-50 rounded-3xl border-none ring-1 ring-slate-100 font-bold outline-none">
+                            </div>
+                            <div class="space-y-3">
+                                <label class="text-[10px] font-black uppercase text-slate-400 ml-4 tracking-widest">Contact (WhatsApp)</label>
+                                <input type="tel" id="pPhone" required class="w-full p-6 bg-slate-50 rounded-3xl border-none ring-1 ring-slate-100 outline-none font-bold">
+                            </div>
+                            <div class="md:col-span-2">
+                                <div id="statusAlert" class="bg-sky-50 p-6 rounded-2xl mb-8 border border-sky-100 text-sky-600 text-xs font-bold italic">
+                                    System Status: Waiting for date validation...
+                                </div>
+                                <div class="bg-slate-900 p-10 rounded-[3rem] flex flex-col md:flex-row justify-between items-center text-white">
+                                    <div><p class="text-[10px] font-black uppercase text-sky-400 tracking-widest">Payable Consultant Fee</p><h4 class="text-5xl font-black mt-1 tracking-tighter">₹ <span id="feeDisplay">1200</span></h4></div>
+                                    <button type="submit" class="bg-sky-500 text-white px-16 py-6 rounded-3xl font-black text-xl hover:bg-sky-600 shadow-xl transition-all shadow-sky-500/20">CONFIRM & PAY</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- 3. CENTRAL EMR VAULT VIEW -->
+                <div id="view-vault" class="hidden animate__animated animate__fadeIn">
+                    <div class="flex justify-between items-end mb-12">
+                        <div><h3 class="text-4xl font-black tracking-tight">Enterprise Data Vault</h3><p class="text-slate-400 font-bold text-sm mt-2 italic underline">Real-time PostgreSQL Simulation (JSON Persistent)</p></div>
+                        <input type="text" id="dbSearch" onkeyup="searchDB()" placeholder="Search Record UID..." class="w-96 p-5 bg-white border rounded-3xl outline-none font-bold shadow-sm focus:ring-4 focus:ring-sky-50">
+                    </div>
+                    <div class="bg-white rounded-[4rem] shadow-xl border border-slate-50 overflow-hidden">
+                        <table class="w-full text-left">
+                            <thead class="bg-slate-50 text-[10px] font-black text-slate-400 uppercase tracking-widest border-b">
+                                <tr><th class="p-8">UID Identity</th><th class="p-8">Patient Identity</th><th class="p-8">Medical Unit</th><th class="p-8">Billing</th><th class="p-8 text-center">Actions</th></tr>
+                            </thead>
+                            <tbody id="dbRows" class="divide-y divide-slate-50">
+                                <!-- Data rows -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
             </div>
         </main>
     </div>
 
-    <!-- EMERGENCY SOS -->
-    <div onclick="triggerEmergency()" class="fixed bottom-10 right-10 z-[100] w-20 h-20 bg-red-600 text-white rounded-full flex items-center justify-center text-3xl shadow-2xl emergency-ring cursor-pointer hover:scale-110 transition">
-        <i class="fas fa-ambulance"></i>
+    <!-- NOTIFICATION MODAL -->
+    <div id="receiptModal" class="fixed inset-0 z-[2000] bg-slate-900/90 backdrop-blur-md hidden flex items-center justify-center p-6">
+        <div class="bg-white p-16 rounded-[4rem] max-w-lg w-full text-center animate__animated animate__bounceIn">
+            <div class="w-24 h-24 bg-green-100 text-green-600 rounded-full flex items-center justify-center text-5xl mx-auto mb-8">
+                <i class="fas fa-file-invoice"></i>
+            </div>
+            <h3 class="text-3xl font-black mb-4 tracking-tighter">System Confirmed!</h3>
+            <p class="text-slate-500 font-medium mb-10 italic">Consultation token generated and record logged in Shree Care PostgreSQL Instance.</p>
+            <div class="space-y-4">
+                <button onclick="downloadPDF()" class="w-full bg-sky-600 text-white py-5 rounded-2xl font-black text-lg shadow-xl shadow-sky-200">
+                    <i class="fas fa-download mr-2"></i> DOWNLOAD MEDICAL SLIP
+                </button>
+                <button onclick="window.location.href='https://razorpay.me/@rohitsingh9645'" class="w-full bg-slate-900 text-white py-4 rounded-2xl font-black text-lg">PROCEED TO RAZORPAY</button>
+            </div>
+        </div>
     </div>
 
-    <!-- SYSTEM ENGINE SCRIPT (2500+ Lines Logic Structure) -->
+    <!-- SOS SOS -->
+    <button onclick="triggerSOS()" class="fixed bottom-10 right-10 z-[100] w-20 h-20 bg-red-600 text-white rounded-full flex items-center justify-center text-3xl shadow-2xl emergency-btn">
+        <i class="fas fa-ambulance"></i>
+    </button>
+
+    <!-- CORE SYSTEM ENGINE -->
     <script>
         // --- 1. ENTERPRISE DATA STORE ---
-        const CONFIG = {
-            doctors: {
-                Cardiology: { name: "Dr. Rohit Singh", fee: 1500, off: [0], img: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&w=300" },
-                Neurology: { name: "Dr. Aryan Mehra", fee: 2000, off: [6], img: "https://images.unsplash.com/photo-1537368910025-700350fe46c7?auto=format&fit=crop&w=300" },
-                Orthopedics: { name: "Dr. Sameer Khan", fee: 1200, off: [0, 6], img: "https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&w=300" },
-                Pediatrics: { name: "Dr. Anjali Verma", fee: 800, off: [3], img: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=300" }
-            },
-            surgeries: [
-                { id: 1, name: "Bypass Surgery", price: 350000, discount: 25, img: "https://images.unsplash.com/photo-1551076805-e1869033e561?auto=format&fit=crop&w=400" },
-                { id: 2, name: "Hip Replacement", price: 180000, discount: 15, img: "https://images.unsplash.com/photo-1583912267550-d44d7a125e7e?auto=format&fit=crop&w=400" },
-                { id: 3, name: "Spine Fixation", price: 250000, discount: 10, img: "https://images.unsplash.com/photo-1516549655169-df83a0774514?auto=format&fit=crop&w=400" }
-            ]
-        };
-
-        let USERS = JSON.parse(localStorage.getItem('mc_users')) || [
-            { email: 'admin', pass: '12345', name: 'Rohit Singh (Super Admin)', role: 'admin', pin: '8708' }
-        ];
-        let APPS = JSON.parse(localStorage.getItem('mc_apps')) || [];
-        let ACTIVE_USER = null;
+        let DB = JSON.parse(localStorage.getItem('shreecare_v12')) || [];
+        const CONFIG = { Cardiology: 1200, Neurology: 1500, Orthopedics: 1000, Pediatrics: 800 };
+        const DOCS = { Cardiology: "Dr. Rohit Singh", Neurology: "Dr. Aryan Mehra", Orthopedics: "Dr. S.K. Gupta", Pediatrics: "Dr. Anjali Verma" };
+        let activeRecord = null;
 
         // --- 2. AUTHENTICATION MODULE ---
         function toggleAuth(mode) {
-            ['login', 'signup', 'forgot'].forEach(m => document.getElementById(m + 'Form').classList.add('hidden'));
-            document.getElementById(mode + 'Form').classList.remove('hidden');
-            document.getElementById('authStatus').innerText = mode.toUpperCase() + ' SESSION INITIALIZED';
+            document.getElementById('loginForm').classList.toggle('hidden', mode !== 'login');
+            document.getElementById('signupForm').classList.toggle('hidden', mode !== 'signup');
+            document.getElementById('authType').innerText = mode.toUpperCase() + ' SESSION INITIALIZED';
         }
 
         function handleSignup() {
             const name = document.getElementById('regName').value;
             const email = document.getElementById('regEmail').value;
             const pass = document.getElementById('regPass').value;
-            const pin = document.getElementById('regPin').value;
-
-            if(!name || !email || !pass || !pin) return alert("System Alert: All fields are mandatory.");
-            if(USERS.find(u => u.email === email)) return alert("Identity Conflict: Email already exists.");
-
-            USERS.push({ name, email, pass, pin, role: 'patient', uid: 'PID-' + Math.floor(1000 + Math.random()*9000) });
-            localStorage.setItem('mc_users', JSON.stringify(USERS));
-            alert("EMR Account Created! Please authenticate to continue.");
+            if(!name || !email || !pass) return alert("All fields mandatory!");
+            
+            let users = JSON.parse(localStorage.getItem('sc_users')) || [];
+            users.push({name, email, pass, role: 'patient'});
+            localStorage.setItem('sc_users', JSON.stringify(users));
+            alert("Account Verified. Please login.");
             toggleAuth('login');
         }
 
         function handleLogin() {
-            const id = document.getElementById('idInput').value.toLowerCase();
-            const pass = document.getElementById('passInput').value;
-            const user = USERS.find(u => (u.email === id || (id === 'admin' && u.email === 'admin')) && u.pass === pass);
+            const email = document.getElementById('loginEmail').value;
+            const pass = document.getElementById('loginPass').value;
 
-            if(user) {
-                ACTIVE_USER = user;
-                launchSystem();
+            if(email === 'admin@shreecare.com' && pass === 'admin123') {
+                launch('Rohit Singh', 'admin');
+            } else if(email === 'doctor@shreecare.com' && pass === 'doc123') {
+                launch('Dr. Aryan', 'doctor');
             } else {
-                alert("Security Alert: Unauthorized access attempt. Identity mismatch.");
+                let users = JSON.parse(localStorage.getItem('sc_users')) || [];
+                let user = users.find(u => u.email === email && u.pass === pass);
+                if(user) launch(user.name, 'patient');
+                else alert("Unauthorized access! JWT Validation Failed.");
             }
         }
 
-        function handleForgot() {
-            const email = document.getElementById('fEmail').value;
-            const pin = document.getElementById('fPin').value;
-            const newPass = document.getElementById('fNewPass').value;
-
-            let user = USERS.find(u => u.email === email && u.pin === pin);
-            if(user) {
-                user.pass = newPass;
-                localStorage.setItem('mc_users', JSON.stringify(USERS));
-                alert("Identity Pin Verified. Password Reset Successful.");
-                toggleAuth('login');
-            } else {
-                alert("Verification Failed: Email or Security Pin is incorrect.");
-            }
-        }
-
-        // --- 3. SYSTEM LAUNCHER ---
-        function launchSystem() {
-            document.getElementById('authOverlay').classList.add('animate__animated', 'animate__fadeOutUp');
+        function launch(name, role) {
+            document.getElementById('authGate').classList.add('animate__animated', 'animate__fadeOutUp');
             setTimeout(() => {
-                document.getElementById('authOverlay').classList.add('hidden');
+                document.getElementById('authGate').classList.add('hidden');
                 document.getElementById('mainApp').classList.remove('hidden');
-                
-                document.getElementById('usrNameDisplay').innerText = ACTIVE_USER.name;
-                document.getElementById('usrRoleDisplay').innerText = ACTIVE_USER.role === 'admin' ? "Chief Superintendent" : "Verified Patient";
-                document.getElementById('avatarChar').innerText = ACTIVE_USER.name.charAt(0).toUpperCase();
-
-                renderSidebar();
-                navigate(ACTIVE_USER.role === 'admin' ? 'adminDash' : 'userDash');
+                document.getElementById('usrName').innerText = name;
+                document.getElementById('usrRole').innerText = role.toUpperCase();
+                document.getElementById('avatarChar').innerText = name.charAt(0);
+                if(role === 'admin' || role === 'doctor') document.getElementById('staffMenu').classList.remove('hidden');
+                navigate('home');
             }, 600);
         }
 
-        function renderSidebar() {
-            const nav = document.getElementById('sidebarNav');
-            let links = '';
-            if(ACTIVE_USER.role === 'admin') {
-                links = `
-                    <button onclick="navigate('adminDash')" id="nav-adminDash" class="sidebar-active w-full flex items-center gap-4 p-5 rounded-2xl font-bold"><i class="fas fa-chart-pie"></i> Intelligence Dash</button>
-                    <button onclick="navigate('vault')" id="nav-vault" class="w-full flex items-center gap-4 p-5 rounded-2xl font-bold text-slate-500 hover:bg-slate-50 transition-all"><i class="fas fa-database"></i> EMR Master Vault</button>
-                    <button onclick="exportJSON()" class="w-full flex items-center gap-4 p-5 rounded-2xl font-bold text-blue-600 bg-blue-50 mt-10 border border-blue-100"><i class="fas fa-cloud-download"></i> System Backup</button>
-                `;
-            } else {
-                links = `
-                    <button onclick="navigate('userDash')" id="nav-userDash" class="sidebar-active w-full flex items-center gap-4 p-5 rounded-2xl font-bold"><i class="fas fa-house-medical"></i> My Portal</button>
-                    <button onclick="navigate('book')" id="nav-book" class="w-full flex items-center gap-4 p-5 rounded-2xl font-bold text-slate-500 hover:bg-slate-50 transition-all"><i class="fas fa-calendar-check"></i> New Appointment</button>
-                    <button onclick="navigate('surgeries')" id="nav-surgeries" class="w-full flex items-center gap-4 p-5 rounded-2xl font-bold text-slate-500 hover:bg-slate-50 transition-all"><i class="fas fa-scissors"></i> Surgery Offers</button>
-                    <button onclick="navigate('ai')" id="nav-ai" class="w-full flex items-center gap-4 p-5 rounded-2xl font-bold text-slate-500 hover:bg-slate-50 transition-all"><i class="fas fa-robot"></i> AI Diagnostic</button>
-                    <button onclick="navigate('emi')" id="nav-emi" class="w-full flex items-center gap-4 p-5 rounded-2xl font-bold text-slate-500 hover:bg-slate-50 transition-all"><i class="fas fa-calculator"></i> EMI Tool</button>
-                `;
-            }
-            nav.innerHTML = links + `<a href="https://razorpay.me/@rohitsingh9645" target="_blank" class="flex items-center gap-4 p-5 rounded-2xl font-bold text-green-700 bg-green-50 mt-10 border border-green-100"><i class="fas fa-wallet"></i> Billing Center</a>`;
-        }
-
+        // --- 3. NAVIGATION MODULE ---
         function navigate(view) {
-            const container = document.getElementById('contentArea');
+            ['home', 'book', 'vault', 'history', 'billing'].forEach(v => {
+                const el = document.getElementById('view-'+v);
+                if(el) el.classList.add('hidden');
+            });
+            document.getElementById('view-'+view).classList.remove('hidden');
             document.querySelectorAll('nav button').forEach(b => b.classList.remove('sidebar-active', 'text-white'));
-            const activeLink = document.getElementById('nav-' + view);
-            if(activeLink) activeLink.classList.add('sidebar-active');
-
-            document.getElementById('viewHeader').innerText = view.toUpperCase() + ' INTERFACE';
-
-            // --- VIEW DISPATCHER ---
-            if(view === 'adminDash') renderAdminDash(container);
-            if(view === 'vault') renderVault(container);
-            if(view === 'userDash') renderUserDash(container);
-            if(view === 'book') renderBooking(container);
-            if(view === 'surgeries') renderSurgeries(container);
-            if(view === 'ai') renderAI(container);
-            if(view === 'emi') renderEMI(container);
-            if(view === 'profile') renderProfile(container);
+            document.getElementById('nav-'+view).classList.add('sidebar-active');
+            document.getElementById('viewHeader').innerText = view.toUpperCase() + ' PORTAL';
+            if(view === 'vault') renderVault();
         }
 
-        // --- 4. VIEW RENDERERS ---
-
-        function renderAdminDash(con) {
-            const rev = APPS.reduce((s, i) => s + parseInt(i.fee), 0);
-            con.innerHTML = `
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-8 animate__animated animate__fadeIn">
-                    <div class="bg-white p-8 rounded-[2.5rem] border shadow-sm">
-                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest italic">Global Admissions</p>
-                        <h3 class="text-5xl font-black mt-2 tracking-tighter">${APPS.length}</h3>
-                    </div>
-                    <div class="bg-white p-8 rounded-[2.5rem] shadow-xl border-b-4 border-blue-600">
-                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest italic">Net Revenue</p>
-                        <h3 class="text-5xl font-black mt-2 tracking-tighter text-blue-600">₹${(rev/1000).toFixed(1)}K</h3>
-                    </div>
-                    <div class="bg-white p-8 rounded-[2.5rem] border shadow-sm">
-                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest italic">Success Rate</p>
-                        <h3 class="text-5xl font-black mt-2 tracking-tighter text-emerald-500">99%</h3>
-                    </div>
-                    <div class="bg-white p-8 rounded-[2.5rem] border shadow-sm">
-                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest italic">OPD Feedback</p>
-                        <h3 class="text-5xl font-black mt-2 tracking-tighter text-blue-400">4.9/5</h3>
-                    </div>
-                </div>
-                <div class="mt-12 bg-white p-12 rounded-[3.5rem] border border-slate-50">
-                    <h4 class="text-xl font-black mb-10 italic">Patient Admissions Analysis (Weekly Insights)</h4>
-                    <canvas id="adminChart" height="100"></canvas>
-                </div>
-            `;
-            setTimeout(initAdminChart, 100);
-        }
-
-        function renderVault(con) {
-            con.innerHTML = `
-                <div class="bg-white rounded-[3.5rem] border shadow-sm overflow-hidden animate__animated animate__fadeIn">
-                    <div class="p-10 border-b flex justify-between items-center bg-slate-50/50">
-                        <h3 class="text-3xl font-black tracking-tighter">EMR Enterprise Vault</h3>
-                        <input type="text" onkeyup="searchVault(this.value)" placeholder="Search Name/UID..." class="p-4 bg-white border-none ring-1 ring-slate-200 rounded-2xl outline-none focus:ring-2 focus:ring-blue-600 w-80 font-bold shadow-sm">
-                    </div>
-                    <table class="w-full text-left">
-                        <thead class="bg-white text-[11px] font-black uppercase text-slate-400 tracking-[0.2em] border-b">
-                            <tr><th class="p-8">Reference UID</th><th class="p-8">Patient Profile</th><th class="p-8">Medical Unit</th><th class="p-8 text-right">System Action</th></tr>
-                        </thead>
-                        <tbody id="vaultBody" class="divide-y divide-slate-100 font-medium">
-                            ${APPS.slice().reverse().map(a => `
-                                <tr class="hover:bg-slate-50/50 transition duration-300">
-                                    <td class="p-8 font-black text-slate-400 text-xs">${a.uid}</td>
-                                    <td class="p-8"><p class="font-black text-slate-900 text-lg">${a.name}</p><p class="text-[11px] font-bold text-slate-400 italic">${a.phone}</p></td>
-                                    <td class="p-8"><span class="bg-blue-50 text-blue-600 px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest">${a.dept}</span></td>
-                                    <td class="p-8 text-right"><button onclick="deleteRecord('${a.uid}')" class="text-red-300 hover:text-red-600 transition-all p-3 bg-red-50 rounded-xl"><i class="fas fa-trash-alt"></i></button></td>
-                                </tr>
-                            `).join('')}
-                        </tbody>
-                    </table>
-                </div>
-            `;
-        }
-
-        function renderUserDash(con) {
-            con.innerHTML = `
-                <div class="bg-blue-600 p-16 rounded-[4rem] text-white shadow-2xl relative overflow-hidden animate__animated animate__slideInRight">
-                    <div class="relative z-10">
-                        <h2 class="text-6xl font-black mb-4 tracking-tighter">Welcome, ${ACTIVE_USER.name}!</h2>
-                        <p class="text-blue-100 text-xl mb-12 italic opacity-90">"MediCare Global - UID Identification: ${ACTIVE_USER.uid || 'CORE-ID'}"</p>
-                        <div class="flex gap-6">
-                            <button onclick="navigate('book')" class="bg-white text-blue-600 px-12 py-5 rounded-3xl font-black text-sm uppercase tracking-widest shadow-xl hover:scale-105 transition-all">New Consultation</button>
-                            <button onclick="navigate('surgeries')" class="border-2 border-white/20 px-12 py-5 rounded-3xl font-bold text-sm uppercase tracking-widest">Surgery Fest</button>
-                        </div>
-                    </div>
-                    <i class="fas fa-heart-pulse absolute -right-20 -bottom-20 text-[25rem] text-blue-500 opacity-20"></i>
-                </div>
-                
-                <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <div class="bg-white p-8 rounded-[3rem] border border-slate-100 card-pro">
-                        <i class="fas fa-microscope text-4xl text-blue-600 mb-6"></i>
-                        <h4 class="text-xl font-black">Digital Lab Reports</h4>
-                        <p class="text-slate-400 text-sm mt-2 italic font-medium">Access your blood, radiology, and biopsy reports in secure PDF format.</p>
-                    </div>
-                    <div class="bg-white p-8 rounded-[3rem] border border-slate-100 card-pro">
-                        <i class="fas fa-dna text-4xl text-emerald-600 mb-6"></i>
-                        <h4 class="text-xl font-black">Genomic Screening</h4>
-                        <p class="text-slate-400 text-sm mt-2 italic font-medium">Identify hereditary risks with our global-standard DNA profiling unit.</p>
-                    </div>
-                    <div class="bg-white p-8 rounded-[3rem] border border-slate-100 card-pro">
-                        <i class="fas fa-video text-4xl text-purple-600 mb-6"></i>
-                        <h4 class="text-xl font-black">Tele-Consultation</h4>
-                        <p class="text-slate-400 text-sm mt-2 italic font-medium">Connect with Dr. Rohit Singh virtually from anywhere in the world.</p>
-                    </div>
-                </div>
-            `;
-        }
-
-        function renderBooking(con) {
-            con.innerHTML = `
-                <div class="max-w-4xl mx-auto bg-white p-16 rounded-[4rem] shadow-2xl border border-slate-50 animate__animated animate__fadeInUp relative overflow-hidden">
-                    <h3 class="text-4xl font-black mb-12 tracking-tight">Appointment Enrollment</h3>
-                    <form id="hmsEntryForm" class="grid grid-cols-1 md:grid-cols-2 gap-10">
-                        <div class="space-y-3">
-                            <label class="text-[11px] font-black uppercase text-slate-400 ml-5 tracking-widest">Medical Unit (Dept)</label>
-                            <select id="pDept" onchange="updateLiveBooking()" class="w-full p-6 bg-slate-50 rounded-3xl border-none ring-1 ring-slate-100 font-black text-blue-600 outline-none focus:ring-2 focus:ring-blue-600">
-                                <option value="Cardiology">Cardiology - Dr. Rohit Singh</option>
-                                <option value="Neurology">Neurology - Dr. Aryan Mehra</option>
-                                <option value="Orthopedics">Orthopedics - Dr. Sameer Khan</option>
-                                <option value="Pediatrics">Pediatrics - Dr. Anjali Verma</option>
-                            </select>
-                        </div>
-                        <div class="space-y-3">
-                            <label class="text-[11px] font-black uppercase text-slate-400 ml-5 tracking-widest">Contact Identity (WhatsApp)</label>
-                            <input type="tel" id="pPhone" required class="w-full p-6 bg-slate-50 rounded-3xl border-none ring-1 ring-slate-100 font-bold outline-none">
-                        </div>
-                        <div class="space-y-3">
-                            <label class="text-[11px] font-black uppercase text-slate-400 ml-5 tracking-widest">Visit Date</label>
-                            <input type="date" id="pDate" required onchange="checkAvailability()" class="w-full p-6 bg-slate-50 rounded-3xl border-none ring-1 ring-slate-100 font-bold outline-none">
-                        </div>
-                        <div class="bg-blue-50 p-8 rounded-3xl border border-blue-100 flex flex-col justify-center">
-                            <p id="availStatus" class="text-xs font-black text-blue-600 uppercase italic">Select Date for Availability...</p>
-                            <p class="text-[10px] text-slate-400 mt-1 font-bold italic">*Sunday & Specific Holidays: OFF</p>
-                        </div>
-                        <div class="md:col-span-2">
-                            <div class="bg-slate-900 p-10 rounded-[3.5rem] flex flex-col md:flex-row justify-between items-center text-white shadow-2xl">
-                                <div>
-                                    <p class="text-[10px] font-black text-blue-400 uppercase tracking-widest">Net Consultation Fee</p>
-                                    <h4 class="text-5xl font-black mt-1">₹ <span id="finalPrice">1500</span></h4>
-                                </div>
-                                <button type="submit" class="bg-blue-600 text-white px-16 py-6 rounded-3xl font-black text-xl hover:bg-blue-700 transition shadow-xl mt-6 md:mt-0">CONFIRM & PAY</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            `;
-            document.getElementById('hmsEntryForm').onsubmit = handleAppointment;
-            updateLiveBooking();
+        function updateCalc() {
+            document.getElementById('feeDisplay').innerText = CONFIG[document.getElementById('pDept').value];
         }
 
         function checkAvailability() {
             const date = new Date(document.getElementById('pDate').value);
-            const day = date.getDay();
-            const dept = document.getElementById('pDept').value;
-            const doc = CONFIG.doctors[dept];
-            const statusBox = document.getElementById('availStatus');
-
-            if(doc.off.includes(day)) {
-                statusBox.innerHTML = "🔴 " + doc.name + " is on LEAVE this day!";
-                statusBox.classList.replace('text-blue-600', 'text-red-600');
+            const status = document.getElementById('statusAlert');
+            if(date.getDay() === 0) {
+                status.innerText = "RED ALERT: Assigned specialist is on Weekly Leave (Sunday).";
+                status.className = "bg-red-50 p-6 rounded-2xl mb-8 border border-red-100 text-red-600 text-xs font-bold italic";
                 return false;
             } else {
-                statusBox.innerHTML = "🟢 " + doc.name + " is PRESENT & Available.";
-                statusBox.classList.replace('text-red-600', 'text-blue-600');
+                status.innerText = "GREEN SIGNAL: Specialist is available. Secure Slot Allocated.";
+                status.className = "bg-sky-50 p-6 rounded-2xl mb-8 border border-sky-100 text-sky-600 text-xs font-bold italic";
                 return true;
             }
         }
 
-        function renderSurgeries(con) {
-            con.innerHTML = `
-                <div class="bg-rose-600 p-16 rounded-[4rem] text-white shadow-2xl relative overflow-hidden animate__animated animate__fadeIn">
-                    <h2 class="text-5xl font-black mb-4 tracking-tighter italic">Grand Surgery Fest 2024</h2>
-                    <p class="text-rose-100 opacity-90 text-lg">"Global Expertise at Local Pricing - Limited Time Institutional Grants."</p>
-                    <i class="fas fa-percent absolute -right-10 -bottom-10 text-[15rem] opacity-10"></i>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-10 mt-12">
-                    ${CONFIG.surgeries.map(s => `
-                        <div class="bg-white p-10 rounded-[3.5rem] border border-slate-50 card-pro flex flex-col justify-between">
-                            <img src="${s.img}" class="w-full h-48 object-cover rounded-[2.5rem] mb-6 grayscale hover:grayscale-0 transition duration-500">
-                            <div>
-                                <span class="bg-rose-50 text-rose-600 px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest italic">Offer: -${s.discount}% Institutional Grant</span>
-                                <h4 class="text-3xl font-black mt-4">${s.name}</h4>
-                            </div>
-                            <div class="mt-10 flex justify-between items-end border-t pt-6 border-slate-50">
-                                <div>
-                                    <p class="text-xs text-slate-400 font-bold line-through">MRP: ₹${s.price.toLocaleString()}</p>
-                                    <p class="text-4xl font-black text-slate-900 tracking-tighter">₹${(s.price - (s.price * s.discount / 100)).toLocaleString()}</p>
-                                </div>
-                                <button onclick="navigate('emi')" class="bg-slate-900 text-white px-8 py-4 rounded-2xl font-black text-[10px] uppercase tracking-widest italic">EMI Plan</button>
-                            </div>
-                        </div>
-                    `).join('')}
-                </div>
-            `;
-        }
-
-        function renderEMI(con) {
-            con.innerHTML = `
-                <div class="max-w-3xl mx-auto bg-white p-16 rounded-[4rem] shadow-2xl animate__animated animate__zoomIn">
-                    <div class="text-center mb-12">
-                        <i class="fas fa-calculator text-5xl text-blue-600 mb-4"></i>
-                        <h3 class="text-3xl font-black tracking-tight">Surgery Finance Calculator</h3>
-                        <p class="text-slate-400 italic text-sm mt-2">Personalized Loan Assessment @ 9.5% Floating Rate</p>
-                    </div>
-                    <div class="space-y-12">
-                        <div class="space-y-4">
-                            <div class="flex justify-between font-black text-[10px] uppercase text-slate-400 tracking-widest">
-                                <span>Surgery Cost Allocation</span>
-                                <span class="text-blue-600">₹ <span id="eAmtLabel">150000</span></span>
-                            </div>
-                            <input type="range" id="eAmt" min="50000" max="1000000" step="10000" value="150000" oninput="calcEMI()" class="w-full h-2 bg-slate-100 rounded-lg appearance-none cursor-pointer accent-blue-600">
-                        </div>
-                        <div class="space-y-4">
-                            <div class="flex justify-between font-black text-[10px] uppercase text-slate-400 tracking-widest">
-                                <span>Repayment Tenure</span>
-                                <span class="text-blue-600"><span id="eTenLabel">12</span> Months</span>
-                            </div>
-                            <input type="range" id="eTen" min="12" max="60" step="12" value="12" oninput="calcEMI()" class="w-full h-2 bg-slate-100 rounded-lg appearance-none cursor-pointer accent-blue-600">
-                        </div>
-                        <div class="bg-blue-600 p-12 rounded-[3.5rem] text-center text-white shadow-2xl shadow-blue-100 border border-blue-400">
-                            <p class="text-xs font-black uppercase tracking-[0.3em] opacity-70 mb-2">Monthly Installment (EMI)</p>
-                            <h2 class="text-7xl font-black tracking-tighter">₹ <span id="emiResult">0</span></h2>
-                            <button onclick="window.location.href='https://razorpay.me/@rohitsingh9645'" class="mt-8 bg-white text-blue-600 px-10 py-4 rounded-2xl font-black uppercase text-[10px] tracking-widest">Apply for Loan</button>
-                        </div>
-                    </div>
-                </div>
-            `;
-            setTimeout(calcEMI, 10);
-        }
-
-        function calcEMI() {
-            const p = document.getElementById('eAmt').value;
-            const t = document.getElementById('eTen').value;
-            const r = 9.5 / 12 / 100;
-            const emi = Math.round((p * r * Math.pow(1 + r, t)) / (Math.pow(1 + r, t) - 1));
-            document.getElementById('eAmtLabel').innerText = parseInt(p).toLocaleString();
-            document.getElementById('eTenLabel').innerText = t;
-            document.getElementById('emiResult').innerText = emi.toLocaleString();
-        }
-
-        function renderAI(con) {
-            con.innerHTML = `
-                <div class="max-w-4xl mx-auto bg-white p-12 rounded-[4rem] shadow-2xl animate__animated animate__fadeIn border border-blue-50">
-                    <div class="flex flex-col items-center mb-10 text-center">
-                        <div class="w-20 h-20 bg-blue-600 text-white rounded-3xl flex items-center justify-center text-4xl shadow-xl mb-6"><i class="fas fa-brain"></i></div>
-                        <h3 class="text-3xl font-black tracking-tight">AI Diagnostic Suite</h3>
-                        <p class="text-slate-400 italic text-sm mt-2 underline">Global Neural Clinical Engine v2.0</p>
-                    </div>
-                    <div id="chatBox" class="h-[350px] overflow-y-auto bg-slate-50 p-8 rounded-[3rem] border border-slate-100 space-y-6 font-medium text-slate-600">
-                        <div class="bg-blue-600 text-white p-5 rounded-3xl rounded-bl-none w-fit shadow-md">System Ready. Please define your symptoms for AI triage analysis.</div>
-                    </div>
-                    <div class="mt-8 flex gap-4">
-                        <input type="text" id="aiIn" placeholder="e.g. Chest pain and Shortness of breath..." class="flex-1 p-6 bg-white ring-1 ring-slate-100 rounded-3xl border-none outline-none focus:ring-4 focus:ring-blue-50 font-bold">
-                        <button onclick="aiProcess()" class="bg-slate-900 text-white px-10 py-6 rounded-3xl font-black text-[10px] uppercase tracking-widest shadow-xl">Analyze</button>
-                    </div>
-                </div>
-            `;
-        }
-
-        async function aiProcess() {
-            const inBox = document.getElementById('aiIn');
-            const chat = document.getElementById('chatBox');
-            if(!inBox.value) return;
-
-            const userMsg = inBox.value;
-            inBox.value = '';
-            chat.innerHTML += `<div class="bg-slate-200 text-slate-800 p-5 rounded-3xl rounded-br-none w-fit ml-auto shadow-sm">${userMsg}</div>`;
-            
-            const loadId = 'L-'+Date.now();
-            chat.innerHTML += `<div id="${loadId}" class="bg-blue-600 text-white p-5 rounded-3xl rounded-bl-none w-fit shadow-md animate-pulse italic">Scanning Clinical Database...</div>`;
-            chat.scrollTop = chat.scrollHeight;
-
-            // Simulated AI Logic (API Plug ready)
-            setTimeout(() => {
-                const el = document.getElementById(loadId);
-                el.classList.remove('animate-pulse', 'italic');
-                el.innerText = "Clinical Alert: Based on symptom patterns, this may indicate 'Advanced Pulmonary Hypertension'. Triage: URGENT. Automatic notification sent to Chief Superintendent Rohit Singh (8708987154). Please book Cardiology OPD immediately.";
-                chat.scrollTop = chat.scrollHeight;
-            }, 1800);
-        }
-
-        function renderProfile(con) {
-            con.innerHTML = `
-                <div class="max-w-md mx-auto bg-white p-12 rounded-[3.5rem] shadow-2xl animate__animated animate__fadeIn border border-slate-100">
-                    <h3 class="text-2xl font-black mb-10 border-b pb-6 italic tracking-tight text-center">Security Integrity Profile</h3>
-                    <div class="space-y-8">
-                        <div class="space-y-2">
-                            <label class="text-[10px] font-black uppercase text-slate-400 ml-5">Official Name</label>
-                            <input type="text" value="${ACTIVE_USER.name}" disabled class="w-full p-5 bg-slate-50 border-none ring-1 ring-slate-100 rounded-2xl font-bold text-slate-400">
-                        </div>
-                        <div class="space-y-2">
-                            <label class="text-[10px] font-black uppercase text-slate-400 ml-5">New Secure Pin</label>
-                            <input type="password" id="nPass" placeholder="Update Access Key" class="w-full p-5 bg-white border-none ring-1 ring-slate-200 rounded-2xl font-bold">
-                        </div>
-                        <button onclick="commitProfile()" class="w-full bg-slate-900 text-white py-5 rounded-2xl font-black text-[10px] tracking-[0.3em] uppercase shadow-2xl hover:scale-105 transition">Update Credentials</button>
-                    </div>
-                </div>
-            `;
-        }
-
-        // --- 5. SYSTEM UTILITIES ---
-
-        function updateLiveBooking() {
-            const dept = document.getElementById('pDept').value;
-            document.getElementById('finalPrice').innerText = CONFIG.doctors[dept].fee;
-            checkAvailability();
-        }
-
-        function handleAppointment(e) {
+        // --- 4. BACKEND SIMULATION (CRUD) ---
+        document.getElementById('hmsEntryForm').onsubmit = function(e) {
             e.preventDefault();
-            if(!checkAvailability()) return alert("System Overload: Assigned specialist is on Leave. Change Date.");
+            if(!checkAvailability()) return alert("Doctor On Leave!");
 
-            const apt = {
-                uid: 'EMR-' + Math.floor(100000 + Math.random()*900000),
-                name: ACTIVE_USER.name,
+            const record = {
+                uid: 'SC-' + Math.floor(100000 + Math.random()*900000),
+                name: document.getElementById('pName').value,
                 dept: document.getElementById('pDept').value,
                 date: document.getElementById('pDate').value,
                 phone: document.getElementById('pPhone').value,
-                fee: document.getElementById('finalPrice').innerText,
+                fee: CONFIG[document.getElementById('pDept').value],
+                doctor: DOCS[document.getElementById('pDept').value],
+                status: 'Verified',
                 time: new Date().toLocaleString()
             };
 
-            APPS.push(apt);
-            localStorage.setItem('mc_apps', JSON.stringify(APPS));
+            activeRecord = record;
+            DB.push(record);
+            localStorage.setItem('shreecare_v12', JSON.stringify(DB));
 
-            // WhatsApp Real-time Alert
-            const msg = `*MEDICARE GLOBAL - INTAKE ALERT*%0A%0A*Name:* ${apt.name}%0A*Unit:* ${apt.dept}%0A*Date:* ${apt.date}%0A*Fee:* Rs.${apt.fee}%0A%0A_Record saved in EMR Vault HR-01._`;
+            // WhatsApp Real Alert Bridge
+            const msg = `*SHREE CARE HMS ALERT*%0A%0A*Patient:* ${record.name}%0A*Unit:* ${record.dept}%0A*Doc:* ${record.doctor}%0A*Date:* ${record.date}%0A%0A_Record saved in Local PostgreSQL Simulation._`;
             window.open(`https://wa.me/918708987154?text=${msg}`, '_blank');
 
-            alert("Appointment Synchronized. Generating Medical Slip & Opening Razorpay Gateway.");
-            genPDF(apt);
-            window.location.href = "https://razorpay.me/@rohitsingh9645";
+            document.getElementById('receiptModal').classList.remove('hidden');
+        };
+
+        function renderVault() {
+            const tbody = document.getElementById('dbRows');
+            tbody.innerHTML = DB.slice().reverse().map(i => `
+                <tr class="hover:bg-slate-50 transition font-medium">
+                    <td class="p-8"><p class="text-[10px] font-black text-slate-400 tracking-widest">${i.uid}</p></td>
+                    <td class="p-8"><p class="font-black text-slate-800 text-lg tracking-tight">${i.name}</p><p class="text-[10px] text-slate-400 font-bold">${i.phone}</p></td>
+                    <td class="p-8"><span class="bg-sky-50 text-sky-600 px-4 py-1 rounded-full text-[10px] font-black uppercase">${i.dept}</span></td>
+                    <td class="p-8"><span class="bg-green-100 text-green-700 px-4 py-1 rounded-full text-[10px] font-black uppercase italic tracking-tighter">PAID (Rs.${i.fee})</span></td>
+                    <td class="p-8 text-center flex justify-center gap-4"><button onclick="deleteRow('${i.uid}')" class="text-slate-300 hover:text-red-500 transition"><i class="fas fa-trash-alt"></i></button></td>
+                </tr>
+            `).join('');
         }
 
-        function genPDF(apt) {
+        function deleteRow(uid) {
+            if(!confirm("Purge medical record from PostgreSQL Vault?")) return;
+            DB = DB.filter(i => i.uid !== uid);
+            localStorage.setItem('shreecare_v12', JSON.stringify(DB));
+            renderVault();
+        }
+
+        function downloadPDF() {
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF();
-            doc.setFontSize(22); doc.setTextColor(2, 132, 199);
-            doc.text("MEDICARE GLOBAL ENTERPRISE", 105, 20, null, null, "center");
-            doc.setFontSize(9); doc.setTextColor(150);
-            doc.text("Electronic Medical Record (EMR) | UID: " + apt.uid, 105, 28, null, null, "center");
+            doc.setFontSize(22); doc.setTextColor(14, 165, 233);
+            doc.text("SHREE CARE MULTI SPECIALITY", 105, 20, null, null, "center");
             doc.autoTable({
                 startY: 40,
-                head: [['Clinical Header', 'Data Log']],
-                body: [['UID', apt.uid], ['Identity', apt.name], ['Unit', apt.dept], ['Enrol Date', apt.date], ['Billing Status', 'PAID (Verified)'], ['Ref Contact', apt.phone]],
-                theme: 'grid', headStyles: { fillColor: [2, 132, 199] }
+                head: [['Field', 'Description']],
+                body: [['UID', activeRecord.uid], ['Patient', activeRecord.name], ['Dept', activeRecord.dept], ['Doctor', activeRecord.doctor], ['Billing', 'Rs.'+activeRecord.fee], ['Status', 'SUCCESS']]
             });
-            doc.save(`Slip_${apt.uid}.pdf`);
+            doc.save("ShreeCare_Slip_" + activeRecord.uid + ".pdf");
         }
 
-        function deleteRecord(uid) {
-            if(!confirm("🔴 PURGE RECORD: Irreversible data deletion for UID "+uid+"?")) return;
-            APPS = APPS.filter(a => a.uid !== uid);
-            localStorage.setItem('mc_apps', JSON.stringify(APPS));
-            renderVault(document.getElementById('contentArea'));
+        function triggerSOS() {
+            alert("🚨 AMBULANCE SOS DISPATCHED!\nReference: AMB-902\nTracking Location: Hartron Skill Center Vicinity\nDoctor: Chief Rohit Singh Alerted.");
         }
 
-        function searchVault(val) {
-            const q = val.toLowerCase();
-            const filtered = APPS.filter(i => i.name.toLowerCase().includes(q) || i.uid.toLowerCase().includes(q));
-            renderVault(document.getElementById('contentArea'), filtered);
-        }
-
-        function commitProfile() {
-            const p = document.getElementById('nPass').value;
-            if(!p) return alert("Security Integrity Error: Empty Pin.");
-            const idx = USERS.findIndex(u => u.email === ACTIVE_USER.email);
-            USERS[idx].pass = p;
-            localStorage.setItem('mc_users', JSON.stringify(USERS));
-            alert("Security Handshake Complete! System Rebooting...");
-            logout();
-        }
-
-        function triggerEmergency() {
-            const am = Math.floor(100+Math.random()*900);
-            alert("🚨 AMBULANCE SOS DISPATCHED!\nReference: AMB-"+am+"\nGPS: Hartron Vicinity\nDoctor: Chief Rohit Singh Alerted.");
-        }
-
-        function exportJSON() {
-            const blob = new Blob([JSON.stringify(APPS, null, 2)], { type: 'application/json' });
+        function exportDB() {
+            const blob = new Blob([JSON.stringify(DB, null, 2)], {type: 'application/json'});
             const url = URL.createObjectURL(blob);
-            const a = document.createElement('a'); a.href = url; a.download = 'mc_cloud_backup.json'; a.click();
-        }
-
-        function logout() { window.location.reload(); }
-
-        function initAdminChart() {
-            const ctx = document.getElementById('adminChart').getContext('2d');
-            new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-                    datasets: [{ label: 'Flow Intensity', data: [45, 62, 50, 88, 70, 110, 15], borderColor: '#0284c7', tension: 0.4, fill: true, backgroundColor: 'rgba(2, 132, 199, 0.05)', borderWidth: 5, pointRadius: 0 }]
-                },
-                options: { plugins: { legend: { display: false } }, scales: { y: { display: false }, x: { grid: { display: false } } } }
-            });
+            const a = document.createElement('a'); a.href = url; a.download = 'shreecare_db_dump.json'; a.click();
         }
     </script>
 </body>

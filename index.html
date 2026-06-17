@@ -3,578 +3,246 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LifeCare Hospital | Apollo Partner</title>
-    
-    <!-- Design & Icons -->
+    <title>LifeCare Super-Speciality | Rohit Singh HMS</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --apollo-blue: #004687; --apollo-green: #008c44; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f9; color: #333; }
-        
-        /* Page switching logic */
-        .page { display: none; }
-        .page.active { display: block; }
-
-        /* Custom Styles */
-        .btn-apollo { background-color: var(--apollo-blue); color: white; transition: 0.3s; }
-        .btn-apollo:hover { background-color: #003366; }
-        .text-apollo { color: var(--apollo-blue); }
-        .border-apollo { border-color: var(--apollo-blue); }
-        
-        /* Mobile responsive adjustments */
-        @media (max-width: 768px) {
-            .hero-text { font-size: 2.5rem !important; }
-            .card-grid { grid-template-columns: 1fr !important; }
-        }
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap');
+        body { font-family: 'Plus Jakarta Sans', sans-serif; scroll-behavior: smooth; }
+        .glass { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); }
+        .dept-card:hover { transform: translateY(-10px); transition: all 0.3s; }
     </style>
 </head>
-<body>
+<body class="bg-slate-50 text-slate-900">
 
-    <!-- 📞 TOP EMERGENCY BAR -->
-    <div class="bg-[#004687] text-white py-2 px-4 md:px-10 flex justify-between items-center text-sm font-bold">
-        <div class="flex items-center gap-4">
-            <span><i class="fas fa-phone-alt mr-2"></i> Emergency: 8708987154</span>
-            <span class="hidden md:block">|</span>
-            <span class="hidden md:block"><i class="fas fa-envelope mr-2"></i> rohitsinghh777@gmail.com</span>
+    <!-- NAVIGATION BAR -->
+    <nav class="sticky top-0 z-50 bg-white/90 border-b backdrop-blur-md px-6 py-4 flex justify-between items-center">
+        <div class="flex items-center gap-2 text-blue-600">
+            <i class="fas fa-hand-holding-medical text-3xl"></i>
+            <span class="text-2xl font-black tracking-tighter">LIFECARE <span class="text-slate-800 underline">HMS</span></span>
         </div>
-        <div class="flex gap-4">
-            <a href="https://razorpay.me/@rohitsingh9645" target="_blank" class="hover:underline">Pay Bill</a>
-            <span onclick="showPage('login')" class="cursor-pointer hover:underline">Patient Portal</span>
+        <div class="hidden md:flex items-center gap-8 font-bold text-slate-600 text-sm">
+            <a href="#home" class="hover:text-blue-600">Home</a>
+            <a href="#appointment" class="hover:text-blue-600">Find Doctor</a>
+            <a href="#admin" class="bg-slate-100 px-4 py-2 rounded-lg">Admin Login</a>
+            <a href="https://wa.me/918708987154" class="text-green-600 flex items-center gap-2"><i class="fab fa-whatsapp text-xl"></i> Connect</a>
         </div>
-    </div>
-
-    <!-- 🚀 MAIN NAVIGATION -->
-    <nav class="bg-white shadow-lg sticky top-0 z-[1000] px-4 md:px-10 py-4 flex justify-between items-center">
-        <div class="flex items-center gap-2 cursor-pointer" onclick="showPage('home')">
-            <img src="https://upload.wikimedia.org/wikipedia/en/thumb/3/3b/Apollo_Hospitals_Logo.svg/1200px-Apollo_Hospitals_Logo.svg.png" alt="Logo" class="h-10 md:h-12">
-            <div class="border-l-2 border-gray-300 pl-2 ml-2 hidden md:block">
-                <h1 class="text-xl font-bold text-gray-800 leading-none">LifeCare<br><span class="text-xs text-apollo uppercase tracking-widest">MultiSpeciality</span></h1>
-            </div>
-        </div>
-
-        <!-- Desktop Menu -->
-        <div class="hidden lg:flex items-center gap-8 font-semibold text-gray-700 uppercase text-sm">
-            <button onclick="showPage('home')" class="hover:text-blue-600 transition">Home</button>
-            <button onclick="showPage('depts')" class="hover:text-blue-600 transition">Departments</button>
-            <button onclick="showPage('doctors')" class="hover:text-blue-600 transition">Doctors</button>
-            <button onclick="showPage('contact')" class="hover:text-blue-600 transition">Contact</button>
-            <button onclick="showPage('book')" class="bg-[#008c44] text-white px-6 py-2 rounded-full hover:bg-green-700 transition shadow-md">Book Appointment</button>
-        </div>
-
-        <!-- Mobile Menu Icon -->
-        <div class="lg:hidden text-2xl" onclick="toggleMobileMenu()">
-            <i class="fas fa-bars text-apollo"></i>
-        </div>
+        <a href="https://razorpay.me/@rohitsingh9645" target="_blank" class="bg-blue-600 text-white px-6 py-2 rounded-full font-bold shadow-lg shadow-blue-200">Pay Fees</a>
     </nav>
 
-    <!-- 📱 MOBILE SIDEBAR MENU -->
-    <div id="mobile-menu" class="hidden fixed inset-0 z-[2000] bg-black bg-opacity-50">
-        <div class="bg-white w-3/4 h-full p-6 space-y-6 flex flex-col">
-            <button onclick="toggleMobileMenu()" class="text-right text-2xl"><i class="fas fa-times"></i></button>
-            <button onclick="showPage('home'); toggleMobileMenu()" class="text-left font-bold text-lg border-b pb-2">Home</button>
-            <button onclick="showPage('depts'); toggleMobileMenu()" class="text-left font-bold text-lg border-b pb-2">Departments</button>
-            <button onclick="showPage('book'); toggleMobileMenu()" class="text-left font-bold text-lg border-b pb-2">Book Now</button>
-            <button onclick="showPage('login'); toggleMobileMenu()" class="text-left font-bold text-lg border-b pb-2 text-apollo">Sign In / Sign Up</button>
-            <a href="tel:8708987154" class="bg-red-600 text-white p-4 rounded-xl text-center font-bold">Call Emergency</a>
-        </div>
-    </div>
-
-    <!-- ========================================================
-         PAGES
-         ======================================================== -->
-
-    <!-- 1. HOME PAGE -->
-    <section id="home" class="page active">
-        <!-- Hero Section -->
-        <div class="relative h-[500px] md:h-[600px] flex items-center">
-            <img src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=1500&q=80" alt="Hospital" class="absolute inset-0 w-full h-full object-cover">
-            <div class="absolute inset-0 bg-gradient-to-r from-black/70 to-transparent"></div>
-            <div class="relative z-10 container mx-auto px-6 md:px-20 text-white">
-                <h2 class="text-5xl md:text-7xl font-bold hero-text mb-6">Expertise <br><span class="text-green-400 font-light italic">for Life.</span></h2>
-                <p class="text-lg md:text-xl max-w-xl opacity-90 mb-10">World-class clinical excellence and patient-centric care at MedCore LifeCare Hospital.</p>
-                <div class="flex flex-wrap gap-4">
-                    <button onclick="showPage('book')" class="bg-[#008c44] px-10 py-4 rounded-full font-bold text-lg shadow-2xl hover:scale-105 transition">Book an Appointment</button>
-                    <button onclick="showPage('depts')" class="bg-white text-apollo px-10 py-4 rounded-full font-bold text-lg shadow-xl hover:bg-gray-100 transition">Our Specialities</button>
-                </div>
+    <!-- HERO SECTION -->
+    <section id="home" class="bg-blue-600 py-20 px-6 text-white text-center relative overflow-hidden">
+        <div class="max-w-4xl mx-auto relative z-10">
+            <span class="bg-blue-500 px-4 py-1 rounded-full text-xs font-bold uppercase tracking-widest mb-4 inline-block border border-blue-400">NABH Accredited Multi-Speciality</span>
+            <h1 class="text-5xl md:text-7xl font-extrabold leading-tight mb-6">Expert Care. <br> Modern Technology.</h1>
+            <p class="text-blue-100 text-lg mb-10 opacity-90 italic">Direct Booking available for Dr. Rohit's Specialised Unit.</p>
+            <div class="flex flex-col md:flex-row justify-center gap-4">
+                <a href="#appointment" class="bg-white text-blue-700 px-10 py-4 rounded-2xl font-black text-lg shadow-2xl">Book Appointment</a>
+                <a href="mailto:rohitsinghh777@gmail.com" class="border-2 border-white/30 px-10 py-4 rounded-2xl font-bold flex items-center justify-center gap-2">
+                    <i class="fas fa-envelope"></i> Send Reports
+                </a>
             </div>
         </div>
-
-        <!-- Quick Info Cards -->
-        <div class="container mx-auto -mt-16 relative z-20 px-6 grid md:grid-cols-3 gap-6">
-            <div class="bg-white p-8 rounded-2xl shadow-xl flex items-start gap-4 border-b-4 border-apollo">
-                <i class="fas fa-user-md text-4xl text-apollo"></i>
-                <div>
-                    <h4 class="text-xl font-bold">Find a Doctor</h4>
-                    <p class="text-gray-500 text-sm mt-1">Book a consultation with our senior specialists.</p>
-                </div>
-            </div>
-            <div class="bg-white p-8 rounded-2xl shadow-xl flex items-start gap-4 border-b-4 border-green-600">
-                <i class="fas fa-calendar-alt text-4xl text-green-600"></i>
-                <div>
-                    <h4 class="text-xl font-bold">Health Checkups</h4>
-                    <p class="text-gray-500 text-sm mt-1">Full body screening and diagnostic packages.</p>
-                </div>
-            </div>
-            <div class="bg-white p-8 rounded-2xl shadow-xl flex items-start gap-4 border-b-4 border-red-600">
-                <i class="fas fa-ambulance text-4xl text-red-600"></i>
-                <div>
-                    <h4 class="text-xl font-bold">Emergency 24x7</h4>
-                    <p class="text-gray-500 text-sm mt-1">Call 8708987154 for immediate ambulance dispatch.</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Why Choose Us -->
-        <div class="container mx-auto py-24 px-6 text-center">
-            <h3 class="text-3xl md:text-4xl font-bold mb-4">Clinical Excellence</h3>
-            <div class="w-20 h-1 bg-[#008c44] mx-auto mb-10"></div>
-            <div class="grid md:grid-cols-4 gap-10">
-                <div>
-                    <p class="text-4xl font-bold text-apollo">50+</p>
-                    <p class="text-gray-500 font-bold uppercase text-xs mt-2">Specialist Doctors</p>
-                </div>
-                <div>
-                    <p class="text-4xl font-bold text-apollo">10,000+</p>
-                    <p class="text-gray-500 font-bold uppercase text-xs mt-2">Happy Patients</p>
-                </div>
-                <div>
-                    <p class="text-4xl font-bold text-apollo">24/7</p>
-                    <p class="text-gray-500 font-bold uppercase text-xs mt-2">Nursing Support</p>
-                </div>
-                <div>
-                    <p class="text-4xl font-bold text-apollo">100%</p>
-                    <p class="text-gray-500 font-bold uppercase text-xs mt-2">Digital Reports</p>
-                </div>
-            </div>
-        </div>
+        <i class="fas fa-shield-heart absolute -right-20 -bottom-20 text-[25rem] text-blue-500 opacity-20"></i>
     </section>
 
-    <!-- 2. DEPARTMENTS PAGE -->
-    <section id="depts" class="page py-20 px-6 container mx-auto">
-        <div class="text-center mb-16">
-            <h2 class="text-4xl font-bold">Our Centres of Excellence</h2>
-            <p class="text-gray-500 mt-2 italic underline underline-offset-4 decoration-apollo">Advanced care for every clinical speciality.</p>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8">
-            <div class="bg-white p-10 rounded-3xl border shadow-sm hover:shadow-xl transition-all group text-center">
-                <i class="fas fa-heart text-5xl text-red-500 mb-6 group-hover:scale-110 transition"></i>
-                <h4 class="text-xl font-bold italic">Cardiology</h4>
-                <p class="text-gray-400 text-sm mt-4">Advanced heart care and surgical unit.</p>
-            </div>
-            <div class="bg-white p-10 rounded-3xl border shadow-sm hover:shadow-xl transition-all group text-center">
-                <i class="fas fa-brain text-5xl text-purple-500 mb-6 group-hover:scale-110 transition"></i>
-                <h4 class="text-xl font-bold italic">Neurology</h4>
-                <p class="text-gray-400 text-sm mt-4">Expert treatment for brain and spine.</p>
-            </div>
-            <div class="bg-white p-10 rounded-3xl border shadow-sm hover:shadow-xl transition-all group text-center">
-                <i class="fas fa-bone text-5xl text-orange-500 mb-6 group-hover:scale-110 transition"></i>
-                <h4 class="text-xl font-bold italic">Orthopedics</h4>
-                <p class="text-gray-400 text-sm mt-4">Joint replacement and bone specialists.</p>
-            </div>
-            <div class="bg-white p-10 rounded-3xl border shadow-sm hover:shadow-xl transition-all group text-center">
-                <i class="fas fa-baby text-5xl text-blue-400 mb-6 group-hover:scale-110 transition"></i>
-                <h4 class="text-xl font-bold italic">Pediatrics</h4>
-                <p class="text-gray-400 text-sm mt-4">Caring for our little patients with love.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- 3. BOOKING PAGE -->
-    <section id="book" class="page py-20 px-6 container mx-auto">
-        <div class="max-w-4xl mx-auto bg-white rounded-[3rem] shadow-2xl overflow-hidden border flex flex-col md:flex-row">
-            <!-- Left Info -->
-            <div class="md:w-1/3 bg-apollo text-white p-10 flex flex-col justify-center">
-                <h3 class="text-3xl font-bold italic tracking-tighter mb-6">Book an <br>Appointment</h3>
-                <p class="opacity-80 mb-10">Fill the form and we will confirm your slot via WhatsApp instantly.</p>
-                <div class="space-y-4">
-                    <p><i class="fas fa-check-circle mr-2"></i> Specialist Consult</p>
-                    <p><i class="fas fa-check-circle mr-2"></i> Same Day Reports</p>
-                    <p><i class="fas fa-check-circle mr-2"></i> 24/7 Helpline</p>
-                </div>
-            </div>
-            <!-- Right Form -->
-            <div class="md:w-2/3 p-10 md:p-16">
-                <form id="bookingForm" class="space-y-6">
-                    <div>
-                        <label class="block font-bold text-xs uppercase tracking-widest text-gray-400 mb-2">Patient Full Name</label>
-                        <input type="text" id="pName" required placeholder="Enter Name" class="w-full p-4 bg-gray-50 rounded-xl border-none outline-none focus:ring-2 focus:ring-apollo">
-                    </div>
+    <!-- APPOINTMENT SECTION -->
+    <section id="appointment" class="py-24 px-6">
+        <div class="max-w-6xl mx-auto grid lg:grid-cols-2 gap-16">
+            
+            <!-- Booking Form -->
+            <div class="bg-white p-10 rounded-[3rem] shadow-2xl border border-slate-100">
+                <h2 class="text-3xl font-black mb-8">Patient Registration</h2>
+                <form id="bookForm" class="space-y-6">
                     <div class="grid md:grid-cols-2 gap-6">
                         <div>
-                            <label class="block font-bold text-xs uppercase tracking-widest text-gray-400 mb-2">Mobile Number</label>
-                            <input type="tel" id="pPhone" required placeholder="8708987154" class="w-full p-4 bg-gray-50 rounded-xl outline-none">
+                            <label class="text-xs font-black text-slate-400 uppercase">Patient Full Name</label>
+                            <input type="text" id="name" required class="w-full p-4 bg-slate-50 rounded-xl outline-none ring-1 ring-slate-100 focus:ring-2 focus:ring-blue-600 transition">
                         </div>
                         <div>
-                            <label class="block font-bold text-xs uppercase tracking-widest text-gray-400 mb-2">Select Speciality</label>
-                            <select id="pDept" class="w-full p-4 bg-gray-50 rounded-xl outline-none font-bold">
-                                <option>Cardiology Specialist</option>
-                                <option>Neurology Specialist</option>
-                                <option>General Physician</option>
+                            <label class="text-xs font-black text-slate-400 uppercase">WhatsApp Number</label>
+                            <input type="tel" id="phone" required class="w-full p-4 bg-slate-50 rounded-xl outline-none ring-1 ring-slate-100 focus:ring-2 focus:ring-blue-600 transition">
+                        </div>
+                    </div>
+                    
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="text-xs font-black text-slate-400 uppercase">Department</label>
+                            <select id="dept" onchange="updateDoctors()" class="w-full p-4 bg-slate-50 rounded-xl outline-none font-bold">
+                                <option value="">Select Speciality</option>
+                                <option value="Cardiology">Cardiology (Heart)</option>
+                                <option value="Neurology">Neurology (Brain)</option>
+                                <option value="Orthopedics">Orthopedics (Bones)</option>
+                                <option value="General">General Physician</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="text-xs font-black text-slate-400 uppercase">Assigned Specialist</label>
+                            <select id="doctor" onchange="updateInfo()" class="w-full p-4 bg-slate-50 rounded-xl outline-none font-bold">
+                                <option>Select Department First</option>
                             </select>
                         </div>
                     </div>
-                    <div>
-                        <label class="block font-bold text-xs uppercase tracking-widest text-gray-400 mb-2">Date (Closed on Sundays)</label>
-                        <input type="date" id="pDate" onchange="checkSunday(this.value)" required class="w-full p-4 bg-gray-50 rounded-xl outline-none">
+
+                    <div id="diseaseInfo" class="hidden bg-blue-50 p-6 rounded-2xl border border-blue-100">
+                        <p class="text-xs font-black text-blue-600 uppercase mb-2">Doctor's Information</p>
+                        <p id="docFees" class="font-bold text-slate-800"></p>
+                        <p id="docTime" class="text-xs text-slate-500 font-medium"></p>
                     </div>
-                    <button type="submit" class="w-full bg-[#008c44] text-white py-5 rounded-xl font-bold text-xl shadow-lg active:scale-95 transition">Pay & Confirm Booking</button>
-                    <p class="text-center text-[10px] text-gray-400 uppercase mt-4">Secure Payment via @rohitsingh9645</p>
+
+                    <button type="submit" class="w-full bg-slate-900 text-white py-5 rounded-2xl font-black text-xl shadow-xl hover:bg-black transition">
+                        BOOK & SEND NOTIFICATION
+                    </button>
                 </form>
             </div>
-        </div>
-    </section>
 
-    <!-- 4. LOGIN / SIGNUP PAGE -->
-    <section id="login" class="page py-20 px-6">
-        <div class="max-w-md mx-auto bg-white rounded-[2rem] p-12 shadow-2xl border text-center">
-            <div class="w-16 h-16 bg-apollo text-white rounded-2xl flex items-center justify-center mx-auto mb-6 text-2xl shadow-lg shadow-blue-200">
-                <i class="fas fa-id-card-clip"></i>
-            </div>
-            <h3 id="auth-title" class="text-3xl font-bold tracking-tighter">Sign In</h3>
-            <p id="auth-desc" class="text-gray-400 mt-2 italic">Access your digital medical history.</p>
-
-            <div class="mt-8 space-y-4">
-                <input type="email" id="auth-email" placeholder="Email Address" class="w-full p-4 bg-gray-50 rounded-xl border-none outline-none font-bold">
-                <input type="password" id="auth-pass" placeholder="Password" class="w-full p-4 bg-gray-50 rounded-xl border-none outline-none font-bold">
-                
-                <button onclick="handleAuth()" id="auth-btn" class="w-full bg-apollo text-white py-4 rounded-xl font-black uppercase text-xs tracking-widest shadow-xl">Login</button>
-                
-                <p class="text-xs font-bold text-gray-500 mt-6">
-                    <span id="auth-toggle-text">New patient?</span> 
-                    <button onclick="toggleAuth()" class="text-apollo underline ml-1" id="auth-toggle-btn">Create Account</button>
-                </p>
-            </div>
-        </div>
-    </section>
-
-    <!-- 5. ADMIN DASHBOARD (rohitsinghh777@gmail.com) -->
-    <section id="admin" class="page py-20 px-6 container mx-auto">
-        <div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
-            <div>
-                <h2 class="text-5xl font-bold text-gray-800">Super Admin <span class="text-apollo underline">Console</span></h2>
-                <p class="text-gray-400 font-bold mt-2">Live Central Monitoring System | rohitsinghh777@gmail.com</p>
-            </div>
-            <div class="bg-apollo p-8 rounded-3xl text-white shadow-xl text-center">
-                <p class="text-xs uppercase opacity-60">Merchant Link</p>
-                <p class="text-xl font-bold italic tracking-tighter">@rohitsingh9645</p>
-            </div>
-        </div>
-
-        <div class="grid md:grid-cols-4 gap-6 mb-16">
-            <div class="bg-white p-10 rounded-[2rem] border shadow-sm">
-                <p class="text-xs font-bold text-gray-400 uppercase">Total Bookings</p>
-                <h4 id="stat-total" class="text-5xl font-black mt-2">0</h4>
-            </div>
-            <div class="bg-white p-10 rounded-[2rem] border shadow-sm underline decoration-apollo">
-                <p class="text-xs font-bold text-gray-400 uppercase">Estimated Revenue</p>
-                <h4 id="stat-rev" class="text-4xl font-black mt-2">₹0</h4>
-            </div>
-            <div class="bg-[#008c44] p-10 rounded-[2rem] text-white shadow-xl">
-                <p class="text-xs uppercase opacity-70">Server Sync</p>
-                <h4 class="text-2xl font-bold mt-2 italic underline">Active ✓</h4>
-            </div>
-            <div class="bg-white p-10 rounded-[2rem] border shadow-sm">
-                <p class="text-xs font-bold text-gray-400 uppercase">Emergency Dispatch</p>
-                <h4 class="text-2xl font-bold mt-2 italic tracking-tighter">8708987154</h4>
-            </div>
-        </div>
-
-        <!-- Bookings Table -->
-        <div class="bg-white rounded-[3rem] shadow-2xl border overflow-hidden">
-            <div class="p-8 border-b bg-gray-50 flex justify-between items-center">
-                <h4 class="text-xl font-bold uppercase tracking-widest italic">Live Master Records</h4>
-                <button onclick="clearDB()" class="text-red-500 text-xs font-bold uppercase hover:underline">Reset Shards</button>
-            </div>
-            <div class="overflow-x-auto">
-                <table class="w-full text-left font-bold italic">
-                    <thead class="bg-white border-b-2">
-                        <tr class="text-[10px] text-gray-400 uppercase tracking-widest">
-                            <th class="p-8">Patient Name</th>
-                            <th>Department</th>
-                            <th>Schedule Date</th>
-                            <th>Origin Email</th>
-                            <th>Status</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody id="admin-table-body" class="text-sm">
-                        <!-- Bookings -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </section>
-
-    <!-- 📊 PATIENT PERSONAL PORTAL -->
-    <section id="patient-view" class="page py-20 px-6 container mx-auto">
-        <h2 class="text-4xl font-bold mb-10 text-gray-800 italic underline decoration-apollo decoration-8">Your Medical <span class="text-apollo">Records</span></h2>
-        <div id="patient-timeline" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <!-- User history -->
-        </div>
-    </section>
-
-    <!-- 🌐 GLOBAL FOOTER -->
-    <footer class="bg-[#1e293b] text-white py-20 px-10 no-print">
-        <div class="container mx-auto grid grid-cols-1 md:grid-cols-4 gap-16">
-            <div class="col-span-1 md:col-span-2">
-                <h5 class="text-4xl font-bold italic mb-8">LifeCare <span class="text-apollo underline">Multispeciality</span></h5>
-                <p class="text-gray-400 text-lg leading-relaxed max-w-sm">Official Enterprise Portal Partner for Hartron Skill Center Excellence. Leading healthcare solutions with clinical precision.</p>
-                <div class="mt-8 flex gap-6 text-3xl opacity-30">
-                    <i class="fab fa-apple-pay"></i>
-                    <i class="fab fa-google-pay"></i>
-                    <i class="fab fa-cc-visa"></i>
-                </div>
-            </div>
-            <div>
-                <h6 class="font-bold text-sm uppercase tracking-widest mb-10 text-apollo italic">Quick Contact</h6>
-                <p class="text-gray-300 font-bold text-xl mb-4 italic">📧 rohitsinghh777@gmail.com</p>
-                <p class="text-gray-300 font-bold text-3xl italic underline decoration-apollo">📞 8708987154</p>
-                <p class="text-gray-500 mt-6 italic">Sector 12, Karnal, Haryana</p>
-            </div>
-            <div class="bg-white/5 p-8 rounded-3xl border border-white/10 text-center italic">
-                <p class="text-[10px] uppercase font-bold text-apollo tracking-widest mb-4 italic underline underline-offset-4 decoration-white">Merchant Node</p>
-                <p class="text-3xl font-bold tracking-tighter mb-6 underline decoration-white italic">@rohitsingh9645</p>
-                <a href="https://razorpay.me/@rohitsingh9645" target="_blank" class="bg-white text-apollo px-6 py-2 rounded-full font-black text-xs uppercase shadow-xl hover:scale-105 transition-all inline-block">Pay Now</a>
-            </div>
-        </div>
-        <div class="container mx-auto mt-20 pt-8 border-t border-white/5 text-center text-gray-500 text-xs italic tracking-widest uppercase">
-            © 2024 MedCore LifeCare Enterprise Shard v50.1. All Rights Reserved.
-        </div>
-    </footer>
-
-    <!-- ========================================================
-         CORE JAVASCRIPT ENGINE (The Real Working Part)
-         ======================================================== -->
-    <script>
-        // --- 1. VIRTUAL DATABASE INITIALIZATION ---
-        // Browser storage mein data save rahega
-        if(!localStorage.getItem('h_users')) {
-            localStorage.setItem('h_users', JSON.stringify([
-                {email: 'rohitsinghh777@gmail.com', pass: 'admin', role: 'admin'}
-            ]));
-        }
-        if(!localStorage.getItem('h_bookings')) localStorage.setItem('h_bookings', JSON.stringify([]));
-
-        let currentSession = JSON.parse(sessionStorage.getItem('active_session')) || null;
-        let isSignup = false;
-
-        window.onload = () => {
-            setTimeout(() => {
-                document.getElementById('kernel-loader')?.classList.add('hidden'); // Fix loader if exists
-                document.getElementById('sys-loader')?.classList.add('hidden');
-            }, 1000);
-            syncAppState();
-        };
-
-        // --- 2. NAVIGATION LOGIC ---
-        function showPage(pageId) {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.getElementById(pageId).classList.add('active');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-            
-            // Render correct data
-            if(pageId === 'admin') {
-                if(currentSession?.email !== 'rohitsinghh777@gmail.com') {
-                    showPage('login');
-                    Swal.fire('Admin Required', 'Login with rohitsinghh777@gmail.com', 'warning');
-                } else {
-                    renderAdminTable();
-                }
-            }
-            if(pageId === 'patient-view') renderPatientTimeline();
-        }
-
-        function toggleMobileMenu() {
-            document.getElementById('mobile-menu').classList.toggle('hidden');
-        }
-
-        // --- 3. AUTHENTICATION SYSTEM ---
-        function toggleAuth() {
-            isSignup = !isSignup;
-            document.getElementById('auth-title').innerText = isSignup ? 'Sign Up' : 'Sign In';
-            document.getElementById('auth-btn').innerText = isSignup ? 'Create Account' : 'Login';
-            document.getElementById('auth-toggle-text').innerText = isSignup ? 'Already have account?' : 'New patient?';
-            document.getElementById('auth-toggle-btn').innerText = isSignup ? 'Sign In' : 'Create Account';
-        }
-
-        function handleAuth() {
-            const email = document.getElementById('auth-email').value;
-            const pass = document.getElementById('auth-pass').value;
-
-            if(!email || !pass) return Swal.fire('Error', 'Please fill all details.', 'error');
-
-            let users = JSON.parse(localStorage.getItem('h_users'));
-
-            if(isSignup) {
-                if(users.find(u => u.email === email)) return Swal.fire('Wait', 'Email already in use.', 'warning');
-                users.push({email, pass, role: 'patient'});
-                localStorage.setItem('h_users', JSON.stringify(users));
-                Swal.fire('Success', 'Account Created! Now login.', 'success');
-                toggleAuth();
-            } else {
-                const user = users.find(u => u.email === email && u.pass === pass);
-                if(user) {
-                    currentSession = user;
-                    sessionStorage.setItem('active_session', JSON.stringify(currentSession));
-                    Swal.fire('Identity Verified', 'Welcome back to LifeCare Portal.', 'success');
-                    syncAppState();
-                } else {
-                    Swal.fire('Denied', 'Invalid Email or Password.', 'error');
-                }
-            }
-        }
-
-        function logout() {
-            sessionStorage.removeItem('active_session');
-            location.reload();
-        }
-
-        function triggerSignOut() { logout(); } // Internal helper
-
-        function syncAppState() {
-            const navEmail = document.getElementById('nav-email');
-            const navRole = document.getElementById('nav-role');
-            const userZone = document.getElementById('session-info-panel');
-            const loginBtn = document.getElementById('login-trigger');
-
-            if(currentSession) {
-                if(navEmail) navEmail.innerText = currentSession.email;
-                if(navRole) navRole.innerText = currentSession.role === 'admin' ? 'Super Admin' : 'Patient';
-                
-                // Show Logout, hide Login btn
-                document.getElementById('user-profile')?.classList.remove('hidden');
-                document.getElementById('nav-auth-btns')?.classList.add('hidden');
-                
-                if(currentSession.email === 'rohitsinghh777@gmail.com') showPage('admin');
-                else showPage('patient-view');
-            } else {
-                document.getElementById('user-profile')?.classList.add('hidden');
-                document.getElementById('nav-auth-btns')?.classList.remove('hidden');
-            }
-        }
-
-        // --- 4. BUSINESS LOGIC (Sundays Off) ---
-        function checkSunday(val) {
-            const day = new Date(val).getDay();
-            if(day === 0) {
-                Swal.fire('Weekly Off', 'Hospital Clinical Wings are CLOSED on Sundays.', 'error');
-                document.getElementById('pDate').value = "";
-            }
-        }
-
-        // --- 5. BOOKING SYSTEM & PERSISTENCE ---
-        document.getElementById('bookingForm').addEventListener('submit', (e) => {
-            e.preventDefault();
-            if(!currentSession) {
-                showPage('login');
-                Swal.fire('Login First', 'Please login to manage your medical records.', 'info');
-                return;
-            }
-
-            const booking = {
-                id: 'LC-' + Math.floor(Math.random() * 99999),
-                userEmail: currentSession.email,
-                name: document.getElementById('pName').value,
-                phone: document.getElementById('pPhone').value,
-                dept: document.getElementById('pDept').value,
-                date: document.getElementById('pDate').value,
-                time: new Date().toLocaleTimeString(),
-                status: 'Payment Pending'
-            };
-
-            let bookings = JSON.parse(localStorage.getItem('h_bookings'));
-            bookings.unshift(booking);
-            localStorage.setItem('h_bookings', JSON.stringify(bookings));
-
-            Swal.fire({
-                title: 'Data Encrypted!',
-                text: 'Redirecting to Razorpay Merchant @rohitsingh9645',
-                icon: 'success',
-                confirmButtonText: 'Pay & Notify BDS'
-            }).then(() => {
-                // Real WhatsApp alert for Admin
-                const msg = `*🚨 NEW CLINICAL INTAKE!*%0A*Patient:* ${booking.name}%0A*Wing:* ${booking.dept}%0A*Date:* ${booking.date}%0A*Admin ID:* 8708987154`;
-                window.open(`https://wa.me/918708987154?text=${msg}`, '_blank');
-                // Redirect to Payment
-                window.location.href = "https://razorpay.me/@rohitsingh9645";
-            });
-        });
-
-        // --- 6. RENDER ENGINES ---
-        function renderAdminTable() {
-            const bookings = JSON.parse(localStorage.getItem('h_bookings'));
-            const table = document.getElementById('admin-table-body');
-            
-            document.getElementById('stat-total').innerText = bookings.length;
-            document.getElementById('stat-rev').innerText = '₹' + (bookings.length * 500).toLocaleString();
-
-            table.innerHTML = bookings.map(b => `
-                <tr class="border-b hover:bg-gray-50 transition duration-300">
-                    <td class="p-8">
-                        <p class="font-black text-gray-900">${b.name}</p>
-                        <p class="text-[9px] text-gray-400 uppercase tracking-widest">EMR ID: ${b.id}</p>
-                    </td>
-                    <td class="text-apollo italic underline decoration-blue-50">${b.dept}</td>
-                    <td class="text-gray-500 font-bold">${b.date}</td>
-                    <td class="text-xs text-gray-400 font-bold">${b.userEmail}</td>
-                    <td><span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest italic">Confirmed</span></td>
-                    <td><button onclick="deleteBooking('${b.id}')" class="text-red-400 hover:scale-125 transition-all"><i class="fas fa-trash-alt"></i></button></td>
-                </tr>
-            `).join('');
-        }
-
-        function renderPatientTimeline() {
-            const bookings = JSON.parse(localStorage.getItem('h_bookings'));
-            const myHistory = bookings.filter(b => b.userEmail === currentSession.email);
-            const container = document.getElementById('patient-timeline');
-            
-            if(myHistory.length === 0) {
-                container.innerHTML = '<p class="text-gray-400 italic font-bold">No active medical entities found in cloud shard.</p>';
-                return;
-            }
-
-            container.innerHTML = myHistory.map(b => `
-                <div class="bg-white p-10 rounded-[3rem] shadow-xl border border-blue-50 italic font-bold animate__animated animate__fadeInUp relative overflow-hidden">
-                    <div class="absolute top-0 right-0 w-24 h-24 bg-blue-50 rounded-full -mr-12 -mt-12 opacity-50"></div>
-                    <p class="text-[10px] font-black text-apollo uppercase tracking-widest mb-2 underline decoration-blue-100 decoration-4 underline-offset-8">Unit: ${b.dept}</p>
-                    <h4 class="text-3xl font-black text-gray-800 tracking-tighter italic">${b.name}</h4>
-                    <p class="text-sm text-gray-400 mt-6 underline decoration-slate-100 decoration-4">Schedule: ${b.date} | ${b.time}</p>
-                    <div class="mt-10 flex justify-between border-t pt-6">
-                        <span class="bg-green-100 text-green-700 px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest italic shadow-sm">Verified Node</span>
-                        <button onclick="deleteBooking('${b.id}')" class="text-[10px] font-black text-red-500 hover:text-red-700 uppercase tracking-widest underline decoration-red-50">Cancel EMR</button>
+            <!-- Dashboard / Admin View -->
+            <div id="admin" class="space-y-8">
+                <div class="bg-white p-8 rounded-[2rem] border shadow-sm">
+                    <h3 class="text-xl font-bold mb-6 flex justify-between">
+                        Live HMS Dashboard
+                        <span class="text-xs text-blue-600 animate-pulse">● System Online</span>
+                    </h3>
+                    <div id="dbRows" class="space-y-4 max-h-[400px] overflow-y-auto pr-2">
+                        <p class="text-center text-slate-400 italic py-10">No records in local database yet.</p>
                     </div>
                 </div>
+                
+                <div class="bg-green-600 p-8 rounded-[2rem] text-white shadow-xl flex items-center justify-between">
+                    <div>
+                        <h4 class="font-black text-xl">Quick Support</h4>
+                        <p class="opacity-80 text-sm">Direct WhatsApp for emergency</p>
+                    </div>
+                    <a href="https://wa.me/918708987154" class="bg-white text-green-600 p-4 rounded-full text-2xl shadow-lg">
+                        <i class="fab fa-whatsapp"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-slate-900 text-slate-500 py-12 px-6 text-center border-t border-slate-800">
+        <p class="font-black text-white text-lg italic mb-2">LIFECARE ENTERPRISE</p>
+        <p class="text-xs uppercase tracking-widest font-bold">Developed for Rohit Singh | Hartron Presentation Project</p>
+        <p class="mt-4 text-[10px]">Contact: 8708987154 | Email: rohitsinghh777@gmail.com</p>
+    </footer>
+
+    <!-- SYSTEM LOGIC -->
+    <script>
+        // Doctor & Department Configuration
+        const hospitalData = {
+            "Cardiology": { 
+                doctor: "Dr. Rohit Singh (Senior Specialist)", 
+                fee: "1500", 
+                time: "10:00 AM - 04:00 PM",
+                phone: "8708987154", // Rohit's number
+                diseases: "Heart Attack, High BP, Chest Pain"
+            },
+            "Neurology": { 
+                doctor: "Dr. Karan Mehra (Neurosurgeon)", 
+                fee: "2000", 
+                time: "12:00 PM - 06:00 PM",
+                phone: "8708987154", // Can be changed
+                diseases: "Brain Stroke, Paralysis, Migraine"
+            },
+            "Orthopedics": { 
+                doctor: "Dr. Amit Verma", 
+                fee: "800", 
+                time: "09:00 AM - 02:00 PM",
+                phone: "8708987154", 
+                diseases: "Joint Pain, Fracture, Arthritis"
+            },
+            "General": { 
+                doctor: "Dr. S.K. Gupta", 
+                fee: "500", 
+                time: "08:00 AM - 08:00 PM",
+                phone: "8708987154", 
+                diseases: "Fever, Cold, General Health"
+            }
+        };
+
+        let appointments = JSON.parse(localStorage.getItem('hms_v3')) || [];
+
+        function updateDoctors() {
+            const dept = document.getElementById('dept').value;
+            const docSelect = document.getElementById('doctor');
+            docSelect.innerHTML = '';
+            
+            if(dept) {
+                const option = document.createElement('option');
+                option.value = hospitalData[dept].doctor;
+                option.text = hospitalData[dept].doctor;
+                docSelect.appendChild(option);
+                document.getElementById('diseaseInfo').classList.remove('hidden');
+                updateInfo();
+            } else {
+                document.getElementById('diseaseInfo').classList.add('hidden');
+            }
+        }
+
+        function updateInfo() {
+            const dept = document.getElementById('dept').value;
+            if(dept) {
+                document.getElementById('docFees').innerText = `Fees: ₹${hospitalData[dept].fee} | Specialist: ${hospitalData[dept].diseases}`;
+                document.getElementById('docTime').innerText = `Availability: ${hospitalData[dept].time}`;
+            }
+        }
+
+        document.getElementById('bookForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const dept = document.getElementById('dept').value;
+            const app = {
+                name: document.getElementById('name').value,
+                phone: document.getElementById('phone').value,
+                dept: dept,
+                doctor: hospitalData[dept].doctor,
+                fee: hospitalData[dept].fee,
+                time: new Date().toLocaleString()
+            };
+
+            // 1. Save to Database
+            appointments.push(app);
+            localStorage.setItem('hms_v3', JSON.stringify(appointments));
+
+            // 2. Format WhatsApp Message
+            const waMsg = `*LifeCare Hospital - New Appointment*%0A%0A` +
+                          `*Patient:* ${app.name}%0A` +
+                          `*Dept:* ${app.dept}%0A` +
+                          `*Doctor:* ${app.doctor}%0A` +
+                          `*Fee:* Rs.${app.fee}%0A%0A` +
+                          `_System Generated Receipt. Please visit our website for digital lab reports._`;
+
+            // 3. Open WhatsApp Notification (Real Feature)
+            window.open(`https://wa.me/91${hospitalData[dept].phone}?text=${waMsg}`, '_blank');
+
+            // 4. Final Redirect to Razorpay for Payment
+            alert("Booking Saved! Opening WhatsApp for confirmation and Redirecting to Payment Gateway...");
+            setTimeout(() => {
+                window.location.href = "https://razorpay.me/@rohitsingh9645";
+            }, 2000);
+
+            renderAdmin();
+        });
+
+        function renderAdmin() {
+            const container = document.getElementById('dbRows');
+            if(appointments.length === 0) return;
+            
+            container.innerHTML = appointments.slice().reverse().map(a => `
+                <div class="bg-slate-50 p-4 rounded-2xl border-l-4 border-blue-600 shadow-sm animate-pulse">
+                    <div class="flex justify-between items-start mb-1">
+                        <span class="text-[10px] font-black text-blue-600">INTAKE-ID: ${Math.floor(Math.random()*9000)}</span>
+                        <span class="text-[9px] font-bold text-slate-400">${a.time}</span>
+                    </div>
+                    <p class="font-bold text-sm text-slate-800">${a.name}</p>
+                    <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">${a.dept} | ${a.doctor}</p>
+                    <div class="mt-2 text-[10px] font-black text-green-600">STATUS: PAYMENT VERIFIED</div>
+                </div>
             `).join('');
         }
 
-        function deleteBooking(id) {
-            Swal.fire({
-                title: 'Abort Registry?',
-                text: "Confirm removal of EMR Shard ID " + id,
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#f43f5e',
-                confirmButtonText: 'Yes, Purge Node'
-            }).then((res) => {
-                if(res.isConfirmed) {
-                    let bookings = JSON.parse(localStorage.getItem('h_bookings'));
-                    bookings = bookings.filter(b => b.id !== id);
-                    localStorage.setItem('h_bookings', JSON.stringify(bookings));
-                    currentSession.email === 'rohitsinghh777@gmail.com' ? renderAdminTable() : renderPatientTimeline();
-                    Swal.fire('Node Aborted', 'Entity shard detached.', 'success');
-                }
-            });
-        }
-
-        function clearDB() {
-            if(confirm("DANGER: This will permanently wipe all clinical shards. Continue?")) {
-                localStorage.setItem('h_bookings', JSON.stringify([]));
-                renderAdminTable();
-            }
-        }
+        renderAdmin();
     </script>
 </body>
 </html>

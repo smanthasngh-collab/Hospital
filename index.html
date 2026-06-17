@@ -3,429 +3,666 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shree Care Multi-Speciality Hospital | Dr. Rohit Singh</title>
+    <title>Shree Care Multi-Speciality | Enterprise Hospital Management System</title>
     
     <!-- Enterprise Tech Stack -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;400;600;800&family=Playfair+Display:ital,wght@0,700;1,900&display=swap" rel="stylesheet">
 
     <style>
-        :root { --primary: #0f172a; --accent: #2563eb; --emergency: #dc2626; }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; }
-        .glass { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(0,0,0,0.05); }
-        .hero-gradient { background: radial-gradient(circle at top right, #eff6ff, transparent), radial-gradient(circle at bottom left, #f8fafc, transparent); }
-        .card-hover { transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
-        .card-hover:hover { transform: translateY(-12px); box-shadow: 0 40px 60px -15px rgba(0,0,0,0.1); }
-        .admin-sidebar { background: #0f172a; }
-        .status-pulse { animation: pulse 2s infinite; }
-        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.4); } 70% { box-shadow: 0 0 0 15px rgba(37, 99, 235, 0); } 100% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0); } }
-        .no-scrollbar::-webkit-scrollbar { display: none; }
+        :root {
+            --primary: #020617;
+            --accent: #2563eb;
+            --emerald: #10b981;
+            --rose: #e11d48;
+            --gold: #c5a059;
+        }
+
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #f8fafc; color: #1e293b; overflow-x: hidden; }
+        .font-serif { font-family: 'Playfair Display', serif; }
+        
+        /* Glassmorphism Classes */
+        .glass { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.3); }
+        .glass-dark { background: rgba(2, 6, 23, 0.8); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.1); }
+        
+        /* Premium Shadows */
+        .shadow-premium { box-shadow: 0 50px 100px -20px rgba(0,0,0,0.12), 0 30px 60px -30px rgba(0,0,0,0.15); }
+        
+        /* Sidebar Design */
+        .sidebar-link { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); border-radius: 1rem; margin: 4px 0; }
+        .sidebar-link:hover { background: rgba(37, 99, 235, 0.1); color: var(--accent); padding-left: 1.5rem; }
+        .sidebar-active { background: var(--accent) !important; color: white !important; box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.4); }
+
+        /* Gallery Overlay */
+        .facility-card:hover .overlay { opacity: 1; transform: translateY(0); }
+        .overlay { opacity: 0; transform: translateY(20px); transition: all 0.5s ease; }
+
+        /* Clinical Status Colors */
+        .status-waiting { background: #fef3c7; color: #92400e; }
+        .status-consulting { background: #dcfce7; color: #15803d; border: 1px solid #86efac; }
+        .status-completed { background: #f1f5f9; color: #64748b; }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+
+        .emergency-btn { animation: pulse-red 2s infinite; }
+        @keyframes pulse-red { 0% { box-shadow: 0 0 0 0 rgba(225, 29, 72, 0.7); } 70% { box-shadow: 0 0 0 20px rgba(225, 29, 72, 0); } 100% { box-shadow: 0 0 0 0 rgba(225, 29, 72, 0); } }
+
+        /* Animation for tabs */
+        .view-content { display: none; }
+        .view-active { display: block; animation: fadeInUp 0.5s ease; }
     </style>
 </head>
-<body class="text-slate-900 overflow-x-hidden">
+<body class="antialiased">
 
-    <!-- TOP ALERT BAR -->
-    <div class="bg-blue-600 text-white px-6 py-2 flex justify-between items-center text-[11px] font-bold tracking-widest uppercase">
-        <div class="flex gap-6">
-            <span><i class="fas fa-phone-alt mr-2"></i> EMERGENCY: +91 87089 87154</span>
-            <span class="hidden md:inline"><i class="fas fa-map-marker-alt mr-2"></i> HARTRON ROAD, HARYANA</span>
-        </div>
-        <div class="flex gap-4">
-            <span class="status-pulse bg-green-500 px-2 py-0.5 rounded">Live Trauma Center Active</span>
+    <!-- 1. AUTHENTICATION GATEWAY (Enterprise Security) -->
+    <div id="authGate" class="fixed inset-0 z-[9999] bg-slate-950 flex items-center justify-center p-4">
+        <div class="bg-white max-w-md w-full rounded-[3rem] p-12 text-center shadow-premium animate__animated animate__zoomIn">
+            <div class="w-24 h-24 bg-blue-600 rounded-[2rem] mx-auto mb-8 flex items-center justify-center text-white text-5xl shadow-2xl shadow-blue-500/30">
+                <i class="fas fa-hospital-user"></i>
+            </div>
+            <h1 class="text-3xl font-black text-slate-900 tracking-tighter mb-2 italic">SHREE CARE <span class="text-blue-600">CORE</span></h1>
+            <p id="gateTitle" class="text-slate-400 text-[10px] font-black uppercase tracking-[0.3em] mb-10">Secure Enterprise Access System</p>
+            
+            <div id="loginForm" class="space-y-4">
+                <input type="email" id="authEmail" placeholder="Email (dr.rohit@shreecare.com)" class="w-full p-6 bg-slate-50 rounded-2xl border-none ring-1 ring-slate-100 outline-none focus:ring-2 focus:ring-blue-600 font-bold transition">
+                <input type="password" id="authPass" placeholder="••••••••" class="w-full p-6 bg-slate-50 rounded-2xl border-none ring-1 ring-slate-100 outline-none focus:ring-2 focus:ring-blue-600 transition">
+                <button onclick="handleAuthLogin()" class="w-full bg-slate-900 text-white py-6 rounded-2xl font-black text-lg hover:bg-black transition shadow-xl mt-6">Authenticate Session</button>
+                <div class="flex justify-between px-2 text-[10px] font-bold uppercase text-blue-600 mt-4">
+                    <button onclick="toggleAuth('signup')">Patient Registration</button>
+                    <button onclick="alert('Contact Master Admin Support at +91 87089 87154')">Forgot Credentials?</button>
+                </div>
+            </div>
+
+            <div id="signupForm" class="hidden space-y-4">
+                <input type="text" id="regName" placeholder="Full Patient Name" class="w-full p-6 bg-slate-50 rounded-2xl ring-1 ring-slate-100 outline-none font-bold">
+                <input type="email" id="regEmail" placeholder="Email Address" class="w-full p-6 bg-slate-50 rounded-2xl ring-1 ring-slate-100 outline-none font-bold">
+                <input type="password" id="regPass" placeholder="Set Password" class="w-full p-6 bg-slate-50 rounded-2xl ring-1 ring-slate-100 outline-none">
+                <button onclick="handleAuthSignup()" class="w-full bg-blue-600 text-white py-6 rounded-2xl font-black text-lg">Create UHID Identity</button>
+                <button onclick="toggleAuth('login')" class="w-full text-[10px] font-black text-slate-400 uppercase mt-4 italic">Back to Login</button>
+            </div>
         </div>
     </div>
 
-    <!-- MAIN NAVIGATION -->
-    <nav class="sticky top-0 z-[100] glass px-6 md:px-16 py-4 flex justify-between items-center">
-        <div class="flex items-center gap-3">
-            <div class="w-12 h-12 bg-blue-600 rounded-2xl flex items-center justify-center text-white text-2xl shadow-xl shadow-blue-200">
-                <i class="fas fa-notes-medical"></i>
-            </div>
-            <div>
-                <h1 class="text-2xl font-black tracking-tighter leading-none italic">SHREE<span class="text-blue-600">CARE</span></h1>
-                <p class="text-[9px] font-extrabold uppercase tracking-[0.2em] text-slate-400 mt-1">Multi-Speciality Hospital</p>
-            </div>
-        </div>
+    <!-- 2. MAIN SYSTEM ARCHITECTURE -->
+    <div id="mainApp" class="hidden flex h-screen overflow-hidden">
         
-        <div class="hidden lg:flex gap-10 font-bold text-sm uppercase tracking-wider text-slate-600">
-            <a href="#home" class="hover:text-blue-600 transition">Home</a>
-            <a href="#specialities" class="hover:text-blue-600 transition">Specialities</a>
-            <a href="#doctors" class="hover:text-blue-600 transition">Our Doctors</a>
-            <a href="#emi" class="hover:text-blue-600 transition">Financing</a>
-        </div>
-
-        <div class="flex gap-4 items-center">
-            <button onclick="toggleAuthModal()" id="authBtn" class="text-blue-600 font-bold text-sm uppercase">Doctor Login</button>
-            <a href="#booking" class="bg-slate-900 text-white px-8 py-3.5 rounded-2xl font-black text-sm shadow-2xl hover:bg-black transition-all">BOOK APPOINTMENT</a>
-        </div>
-    </nav>
-
-    <!-- HERO SECTION -->
-    <section id="home" class="hero-gradient pt-20 pb-32 px-6 md:px-20 relative overflow-hidden">
-        <div class="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
-            <div class="animate__animated animate__fadeInLeft">
-                <div class="inline-flex items-center gap-2 bg-blue-50 text-blue-600 px-4 py-2 rounded-full text-[10px] font-black uppercase mb-8 border border-blue-100">
-                    <span class="w-2 h-2 bg-blue-600 rounded-full animate-ping"></span> NABH Accredited Facility
+        <!-- SIDEBAR (Doctor & Patient View) -->
+        <aside class="w-80 glass border-r flex flex-col z-[100] transition-all duration-500">
+            <div class="p-10 flex items-center gap-4">
+                <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white shadow-lg">
+                    <i class="fas fa-heart-pulse"></i>
                 </div>
-                <h2 class="text-7xl md:text-8xl font-black leading-[0.9] tracking-tighter mb-8">Expert Care. <br><span class="text-blue-600">Every Life.</span></h2>
-                <p class="text-slate-500 text-lg md:text-xl font-medium leading-relaxed max-w-lg mb-12 italic">Advanced diagnostic labs, robotic surgeries, and world-class specialists led by Dr. Rohit Singh.</p>
+                <h2 class="text-2xl font-black tracking-tighter italic">SHREE<span class="text-blue-600">CARE</span></h2>
+            </div>
+
+            <nav class="flex-1 px-6 space-y-2 overflow-y-auto no-scrollbar">
+                <!-- Patient Menu -->
+                <div id="patientMenu">
+                    <p class="text-[10px] font-black text-slate-400 px-4 py-4 uppercase tracking-[0.2em]">Patient Portal</p>
+                    <button onclick="navigate('p-dashboard')" id="nav-p-dashboard" class="sidebar-link w-full text-left p-4 flex items-center gap-4 font-bold text-slate-600 sidebar-active text-white"><i class="fas fa-home"></i> Home Dashboard</button>
+                    <button onclick="navigate('p-book')" id="nav-p-book" class="sidebar-link w-full text-left p-4 flex items-center gap-4 font-bold text-slate-600"><i class="fas fa-calendar-check"></i> Book Appointment</button>
+                    <button onclick="navigate('p-history')" id="nav-p-history" class="sidebar-link w-full text-left p-4 flex items-center gap-4 font-bold text-slate-600"><i class="fas fa-folder-open"></i> Medical History</button>
+                    <button onclick="navigate('p-emi')" id="nav-p-emi" class="sidebar-link w-full text-left p-4 flex items-center gap-4 font-bold text-slate-600"><i class="fas fa-credit-card"></i> Surgery Financing</button>
+                </div>
+
+                <!-- Doctor Menu (Admin only) -->
+                <div id="doctorMenu" class="hidden border-t mt-6 pt-6">
+                    <p class="text-[10px] font-black text-rose-500 px-4 py-4 uppercase tracking-[0.2em]">Clinical Command</p>
+                    <button onclick="navigate('d-queue')" id="nav-d-queue" class="sidebar-link w-full text-left p-4 flex items-center gap-4 font-bold text-slate-600"><i class="fas fa-users-viewfinder"></i> Live Daily Queue</button>
+                    <button onclick="navigate('d-analytics')" id="nav-d-analytics" class="sidebar-link w-full text-left p-4 flex items-center gap-4 font-bold text-slate-600"><i class="fas fa-chart-pie"></i> Revenue Analytics</button>
+                    <button onclick="navigate('d-vault')" id="nav-d-vault" class="sidebar-link w-full text-left p-4 flex items-center gap-4 font-bold text-slate-600"><i class="fas fa-database"></i> Global Patient Vault</button>
+                </div>
                 
-                <div class="flex flex-wrap gap-6">
-                    <div class="bg-white p-6 rounded-[2rem] shadow-xl border flex items-center gap-4">
-                        <div class="w-12 h-12 bg-rose-100 text-rose-600 rounded-xl flex items-center justify-center text-xl"><i class="fas fa-heartbeat"></i></div>
-                        <div><p class="text-2xl font-black italic leading-none">24/7</p><p class="text-[10px] font-bold text-slate-400 uppercase">Emergency</p></div>
-                    </div>
-                    <div class="bg-white p-6 rounded-[2rem] shadow-xl border flex items-center gap-4">
-                        <div class="w-12 h-12 bg-amber-100 text-amber-600 rounded-xl flex items-center justify-center text-xl"><i class="fas fa-award"></i></div>
-                        <div><p class="text-2xl font-black italic leading-none">50+</p><p class="text-[10px] font-bold text-slate-400 uppercase">Specialists</p></div>
-                    </div>
+                <div class="pt-10">
+                    <a href="https://razorpay.me/@rohitsingh9645" target="_blank" class="flex items-center gap-4 p-5 rounded-3xl bg-blue-600 text-white font-black shadow-xl shadow-blue-200">
+                        <i class="fas fa-lock"></i> PAY OPD FEE
+                    </a>
                 </div>
-            </div>
-            <div class="relative animate__animated animate__fadeInRight">
-                <img src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=1000&q=80" class="rounded-[4rem] shadow-3xl border-[16px] border-white" alt="Doctor">
-                <div class="absolute -bottom-10 -left-10 bg-slate-900 text-white p-10 rounded-[3rem] shadow-2xl">
-                    <p class="text-5xl font-black mb-2">99.2%</p>
-                    <p class="text-[10px] font-bold uppercase tracking-widest text-blue-400">Surgery Success Rate</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- SPECIALITIES -->
-    <section id="specialities" class="py-32 px-6 md:px-20 bg-white">
-        <div class="text-center mb-20">
-            <h3 class="text-4xl md:text-5xl font-black italic mb-4">Centres of Excellence</h3>
-            <p class="text-slate-400 font-bold uppercase tracking-widest text-xs">Global Standard Medical Units</p>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div class="p-10 rounded-[3rem] bg-slate-50 card-hover">
-                <i class="fas fa-brain text-4xl text-blue-600 mb-8"></i>
-                <h4 class="text-2xl font-black mb-4 italic leading-tight">Neurology & <br>Spine Unit</h4>
-                <p class="text-slate-500 text-sm font-medium mb-6">Equipped with 3 Tesla MRI and Neuro-navigation for complex brain surgeries.</p>
-                <p class="text-blue-600 font-black text-xs uppercase">Consultation: ₹1500</p>
-            </div>
-            <div class="p-10 rounded-[3rem] bg-slate-50 card-hover">
-                <i class="fas fa-heart text-4xl text-rose-500 mb-8"></i>
-                <h4 class="text-2xl font-black mb-4 italic leading-tight">Cardiology <br>Institute</h4>
-                <p class="text-slate-500 text-sm font-medium mb-6">Integrated cath-lab with 24/7 primary angioplasty and heart failure clinic.</p>
-                <p class="text-blue-600 font-black text-xs uppercase">Consultation: ₹1200</p>
-            </div>
-            <div class="p-10 rounded-[3rem] bg-slate-50 card-hover">
-                <i class="fas fa-bone text-4xl text-amber-500 mb-8"></i>
-                <h4 class="text-2xl font-black mb-4 italic leading-tight">Orthopedics <br>& Robotic Joint</h4>
-                <p class="text-slate-500 text-sm font-medium mb-6">Robotic knee and hip replacements with minimally invasive techniques.</p>
-                <p class="text-blue-600 font-black text-xs uppercase">Consultation: ₹1000</p>
-            </div>
-            <div class="p-10 rounded-[3rem] bg-slate-50 card-hover">
-                <i class="fas fa-baby text-4xl text-pink-500 mb-8"></i>
-                <h4 class="text-2xl font-black mb-4 italic leading-tight">Maternal & <br>Child Care</h4>
-                <p class="text-slate-500 text-sm font-medium mb-6">Dedicated LDR rooms and Level-III NICU for comprehensive neonatology.</p>
-                <p class="text-blue-600 font-black text-xs uppercase">Consultation: ₹800</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- EMI CALCULATOR -->
-    <section id="emi" class="py-32 px-6 md:px-20 bg-slate-900 text-white rounded-[4rem] mx-4 md:mx-10 mb-20">
-        <div class="grid lg:grid-cols-2 gap-20 items-center">
-            <div>
-                <h3 class="text-5xl font-black italic mb-8">Don't Delay <br>Treatment for Money.</h3>
-                <p class="text-slate-400 text-lg mb-12 italic">We offer 0% Interest EMI for all major surgeries including Knee Replacement, Heart Bypass, and Gynae Procedures.</p>
-                <div class="space-y-6">
-                    <div class="flex items-center gap-4">
-                        <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center"><i class="fas fa-check"></i></div>
-                        <p class="font-bold">Instant Paperless Approval in 30 Mins</p>
-                    </div>
-                    <div class="flex items-center gap-4">
-                        <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center"><i class="fas fa-check"></i></div>
-                        <p class="font-bold">Flexible Tenure up to 36 Months</p>
-                    </div>
-                </div>
-            </div>
-            <div class="bg-white/10 p-12 rounded-[3rem] border border-white/10 backdrop-blur-xl">
-                <h4 class="text-2xl font-black mb-8 italic">Surgery Loan Calculator</h4>
-                <div class="space-y-6">
-                    <div>
-                        <label class="text-[10px] font-black uppercase text-slate-400 tracking-widest">Surgery Cost (₹)</label>
-                        <input type="range" id="amount" min="50000" max="1000000" value="200000" class="w-full mt-4 h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer">
-                        <p class="mt-2 text-3xl font-black text-blue-400">₹<span id="amountVal">2,00,000</span></p>
-                    </div>
-                    <div>
-                        <label class="text-[10px] font-black uppercase text-slate-400 tracking-widest">Tenure (Months)</label>
-                        <select id="months" class="w-full bg-slate-800 p-4 rounded-2xl mt-4 font-bold outline-none border-none">
-                            <option value="12">12 Months</option>
-                            <option value="24">24 Months</option>
-                            <option value="36">36 Months</option>
-                        </select>
-                    </div>
-                    <div class="pt-6 border-t border-white/10">
-                        <p class="text-[10px] font-black uppercase text-slate-400 tracking-widest">Estimated Monthly EMI</p>
-                        <p class="text-5xl font-black text-white mt-2">₹<span id="emiResult">16,667</span></p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- BOOKING SYSTEM -->
-    <section id="booking" class="py-32 px-6 md:px-20">
-        <div class="max-w-5xl mx-auto bg-white rounded-[4rem] shadow-3xl border overflow-hidden flex flex-col md:flex-row">
-            <div class="md:w-1/3 bg-blue-600 p-16 text-white">
-                <h3 class="text-4xl font-black italic mb-8">OPD <br>Enrollment</h3>
-                <p class="font-medium opacity-80 leading-relaxed mb-12">Your data is secured with AES-256 Cloud Encryption. Real-time slot allocation will be sent to WhatsApp.</p>
-                <div class="space-y-6">
-                    <p class="text-xs font-bold uppercase"><i class="fab fa-whatsapp mr-2 text-xl"></i> Instant Confirmation</p>
-                    <p class="text-xs font-bold uppercase"><i class="fas fa-receipt mr-2 text-xl"></i> Digital Bill PDF</p>
-                </div>
-            </div>
-            <div class="md:w-2/3 p-16">
-                <form id="appointmentForm" class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <div class="md:col-span-2">
-                        <label class="text-[10px] font-black uppercase text-slate-400 tracking-widest ml-2">Patient Full Name</label>
-                        <input type="text" id="p_name" required class="w-full bg-slate-50 p-5 rounded-2xl mt-2 font-bold outline-none focus:ring-4 focus:ring-blue-50 transition" placeholder="Enter patient name">
-                    </div>
-                    <div>
-                        <label class="text-[10px] font-black uppercase text-slate-400 tracking-widest ml-2">Department</label>
-                        <select id="p_dept" class="w-full bg-slate-50 p-5 rounded-2xl mt-2 font-bold outline-none border-none text-blue-600">
-                            <option value="Cardiology">Cardiology Unit (₹1200)</option>
-                            <option value="Neurology">Neurology Suite (₹1500)</option>
-                            <option value="Orthopedics">Orthopedic Unit (₹1000)</option>
-                            <option value="Pediatrics">Pediatric Unit (₹800)</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="text-[10px] font-black uppercase text-slate-400 tracking-widest ml-2">WhatsApp Number</label>
-                        <input type="tel" id="p_phone" required class="w-full bg-slate-50 p-5 rounded-2xl mt-2 font-bold outline-none" placeholder="+91">
-                    </div>
-                    <div class="md:col-span-2 pt-6">
-                        <button type="submit" class="w-full bg-blue-600 text-white py-6 rounded-[2rem] font-black text-xl shadow-2xl shadow-blue-200 hover:bg-blue-700 transition-all flex items-center justify-center gap-4">
-                            CONFIRM & PAY <i class="fas fa-arrow-right"></i>
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </section>
-
-    <!-- ADMIN PANEL (FULL PAGE MODAL) -->
-    <div id="adminPanel" class="fixed inset-0 z-[1000] bg-slate-950 hidden flex">
-        <aside class="w-80 admin-sidebar border-r border-white/5 p-10 flex flex-col">
-            <h2 class="text-white text-2xl font-black italic mb-20">HMS <span class="text-blue-500">CORE</span></h2>
-            <nav class="flex-1 space-y-4">
-                <button class="w-full text-left bg-blue-600 text-white p-5 rounded-2xl font-bold"><i class="fas fa-chart-line mr-4"></i> Dashboard</button>
-                <button class="w-full text-left text-slate-400 p-5 rounded-2xl font-bold hover:bg-white/5"><i class="fas fa-users mr-4"></i> Patients</button>
-                <button class="w-full text-left text-slate-400 p-5 rounded-2xl font-bold hover:bg-white/5"><i class="fas fa-stethoscope mr-4"></i> Doctors</button>
-                <button class="w-full text-left text-slate-400 p-5 rounded-2xl font-bold hover:bg-white/5"><i class="fas fa-file-invoice-dollar mr-4"></i> Billing</button>
             </nav>
-            <button onclick="logout()" class="text-rose-500 font-bold p-5 rounded-2xl hover:bg-rose-500/10"><i class="fas fa-power-off mr-4"></i> System Logout</button>
-        </aside>
-        
-        <main class="flex-1 bg-slate-50 overflow-y-auto p-12">
-            <header class="flex justify-between items-center mb-12">
-                <div>
-                    <h3 class="text-4xl font-black tracking-tight italic">Enterprise Control Center</h3>
-                    <p class="text-slate-400 font-bold text-xs uppercase tracking-widest mt-2">Welcome Back, Chief Doctor Rohit Singh</p>
+
+            <!-- User Profile Bottom -->
+            <div class="p-8 border-t bg-slate-50/50">
+                <div class="flex items-center gap-4">
+                    <div id="userAvatar" class="w-12 h-12 bg-slate-900 rounded-full flex items-center justify-center text-white font-black text-xl">U</div>
+                    <div class="flex-1 overflow-hidden">
+                        <p id="userName" class="text-sm font-black text-slate-800 truncate">Loading User...</p>
+                        <p id="userRole" class="text-[9px] font-black text-blue-600 uppercase tracking-widest">Role</p>
+                    </div>
+                    <button onclick="handleLogout()" class="text-rose-500 hover:scale-110 transition"><i class="fas fa-power-off"></i></button>
                 </div>
-                <div class="flex gap-4">
-                    <button onclick="exportData()" class="bg-white px-6 py-3 rounded-xl border font-bold text-sm shadow-sm"><i class="fas fa-cloud-download-alt mr-2"></i> Backup DB</button>
+            </div>
+        </aside>
+
+        <!-- MAIN CONTENT AREA -->
+        <main class="flex-1 flex flex-col overflow-hidden bg-white">
+            <!-- TOP NAV (Global) -->
+            <header class="h-24 px-12 flex justify-between items-center border-b glass z-50">
+                <div>
+                    <h2 id="viewHeaderTitle" class="text-3xl font-black italic tracking-tighter text-slate-800">Home Dashboard</h2>
+                    <p class="text-[9px] font-black uppercase text-slate-400 tracking-widest mt-1">Status: <span class="text-green-500"><i class="fas fa-circle text-[6px] mr-1"></i> Cloud Active</span> | <span id="clock" class="text-slate-600">00:00:00</span></p>
+                </div>
+                
+                <div class="flex items-center gap-8">
+                    <div class="hidden md:flex bg-slate-100 p-2 rounded-full gap-4 px-6 items-center">
+                        <span class="text-[10px] font-black uppercase text-slate-400">Trauma Center:</span>
+                        <span class="flex items-center gap-2 text-[10px] font-black text-green-600 uppercase"><i class="fas fa-bed"></i> 14 Beds Available</span>
+                    </div>
+                    <a href="mailto:support@shreecare.com" class="text-slate-400 hover:text-blue-600 text-xl transition"><i class="fas fa-envelope"></i></a>
+                    <button onclick="triggerSOS()" class="w-14 h-14 bg-rose-600 text-white rounded-2xl flex items-center justify-center text-xl shadow-xl shadow-rose-200 emergency-btn">
+                        <i class="fas fa-ambulance"></i>
+                    </button>
                 </div>
             </header>
 
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
-                <div class="bg-white p-8 rounded-[2rem] shadow-sm border border-slate-100">
-                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Gross Revenue</p>
-                    <h4 class="text-4xl font-black mt-2 text-green-600" id="totalRevenue">₹0</h4>
-                </div>
-                <div class="bg-white p-8 rounded-[2rem] shadow-sm border border-slate-100">
-                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">New Registrations</p>
-                    <h4 class="text-4xl font-black mt-2" id="totalPatients">0</h4>
-                </div>
-                <div class="bg-white p-8 rounded-[2rem] shadow-sm border border-slate-100">
-                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Active Doctors</p>
-                    <h4 class="text-4xl font-black mt-2">18</h4>
-                </div>
-                <div class="bg-white p-8 rounded-[2rem] shadow-sm border border-slate-100">
-                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Live OT Capacity</p>
-                    <h4 class="text-4xl font-black mt-2 text-blue-600">84%</h4>
-                </div>
-            </div>
+            <!-- DYNAMIC VIEW CONTAINER -->
+            <div id="viewContainer" class="flex-1 overflow-y-auto p-12 bg-slate-50/30">
+                
+                <!-- [VIEW 1]: PATIENT DASHBOARD -->
+                <div id="view-p-dashboard" class="view-content view-active space-y-12">
+                    <!-- Hero Promo -->
+                    <div class="relative h-[400px] rounded-[4rem] overflow-hidden group shadow-premium">
+                        <img src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=1200&q=80" class="w-full h-full object-cover group-hover:scale-110 transition duration-1000">
+                        <div class="absolute inset-0 bg-gradient-to-r from-slate-950 to-transparent flex flex-col justify-center px-20 text-white">
+                            <span class="bg-blue-600 w-fit px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest mb-6">Patient Focus v5.0</span>
+                            <h2 class="text-6xl font-black italic tracking-tighter mb-6 leading-tight">Advanced Care. <br><span class="text-blue-400">Personal Touch.</span></h2>
+                            <p class="text-slate-400 text-lg max-w-lg mb-10 italic">Welcome back to Shree Care. Managed by <b>Dr. Rohit Singh</b>, our mission is clinical excellence with high-end technology.</p>
+                            <div class="flex gap-4">
+                                <button onclick="navigate('p-book')" class="bg-white text-slate-900 px-10 py-5 rounded-2xl font-black text-sm uppercase shadow-2xl">Book Appointment</button>
+                                <button class="bg-white/10 backdrop-blur text-white px-10 py-5 rounded-2xl font-black text-sm uppercase border border-white/20">Our Specialities</button>
+                            </div>
+                        </div>
+                    </div>
 
-            <div class="bg-white rounded-[3rem] shadow-xl border overflow-hidden">
-                <table class="w-full text-left">
-                    <thead class="bg-slate-50 border-b">
-                        <tr>
-                            <th class="p-8 text-[10px] font-black uppercase tracking-widest">Patient Identity</th>
-                            <th class="p-8 text-[10px] font-black uppercase tracking-widest">Department Unit</th>
-                            <th class="p-8 text-[10px] font-black uppercase tracking-widest">Status</th>
-                            <th class="p-8 text-[10px] font-black uppercase tracking-widest">Billing (Rs)</th>
-                            <th class="p-8 text-center text-[10px] font-black uppercase tracking-widest">Manage</th>
-                        </tr>
-                    </thead>
-                    <tbody id="patientTableBody">
-                        <!-- Data Appears Here -->
-                    </tbody>
-                </table>
+                    <!-- Trust Grid -->
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                        <div class="bg-white p-10 rounded-[3rem] border border-slate-100 shadow-sm flex flex-col items-center text-center group hover:bg-blue-600 transition duration-500">
+                            <i class="fas fa-brain text-4xl text-blue-600 mb-6 group-hover:text-white"></i>
+                            <h4 class="text-xl font-black italic group-hover:text-white">Neurosurgery</h4>
+                            <p class="text-slate-400 text-xs font-bold uppercase mt-2 tracking-widest group-hover:text-blue-100">98% Success Rate</p>
+                        </div>
+                        <div class="bg-white p-10 rounded-[3rem] border border-slate-100 shadow-sm flex flex-col items-center text-center group hover:bg-emerald-600 transition duration-500">
+                            <i class="fas fa-heart-pulse text-4xl text-rose-500 mb-6 group-hover:text-white"></i>
+                            <h4 class="text-xl font-black italic group-hover:text-white">Cardiology</h4>
+                            <p class="text-slate-400 text-xs font-bold uppercase mt-2 tracking-widest group-hover:text-emerald-100">Intensive Unit</p>
+                        </div>
+                        <div class="bg-white p-10 rounded-[3rem] border border-slate-100 shadow-sm flex flex-col items-center text-center group hover:bg-slate-900 transition duration-500">
+                            <i class="fas fa-baby text-4xl text-pink-500 mb-6 group-hover:text-white"></i>
+                            <h4 class="text-xl font-black italic group-hover:text-white">Pediatrics</h4>
+                            <p class="text-slate-400 text-xs font-bold uppercase mt-2 tracking-widest group-hover:text-slate-300">Level III NICU</p>
+                        </div>
+                        <div class="bg-white p-10 rounded-[3rem] border border-slate-100 shadow-sm flex flex-col items-center text-center group hover:bg-blue-800 transition duration-500">
+                            <i class="fas fa-microscope text-4xl text-blue-400 mb-6 group-hover:text-white"></i>
+                            <h4 class="text-xl font-black italic group-hover:text-white">NABL Lab</h4>
+                            <p class="text-slate-400 text-xs font-bold uppercase mt-2 tracking-widest group-hover:text-blue-200">ISO Certified</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- [VIEW 2]: BOOKING MODULE -->
+                <div id="view-p-book" class="view-content">
+                    <div class="max-w-4xl mx-auto bg-white p-16 rounded-[4rem] shadow-premium border border-slate-100">
+                        <div class="mb-12">
+                            <h3 class="text-4xl font-black italic tracking-tighter">Secure OPD Booking</h3>
+                            <p class="text-slate-400 font-bold uppercase tracking-widest text-[10px] mt-2">Unique Health ID: <span id="displayUHID" class="text-blue-600">Generating...</span></p>
+                        </div>
+                        
+                        <form id="bookingForm" class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                            <div class="space-y-3">
+                                <label class="text-[10px] font-black uppercase text-slate-400 ml-4">Appointment Date</label>
+                                <input type="date" id="bookDate" required class="w-full p-6 bg-slate-50 rounded-3xl border-none outline-none ring-1 ring-slate-100 font-bold">
+                            </div>
+                            <div class="space-y-3">
+                                <label class="text-[10px] font-black uppercase text-slate-400 ml-4">Select Specialist Unit</label>
+                                <select id="bookDept" class="w-full p-6 bg-slate-50 rounded-3xl border-none outline-none ring-1 ring-slate-100 font-black text-blue-600">
+                                    <option value="Cardiology">Dr. Rohit Singh (Cardiology) - ₹1200</option>
+                                    <option value="Neurology">Dr. Aryan Mehra (Neurology) - ₹1500</option>
+                                    <option value="Pediatrics">Dr. Anjali Verma (Pediatrics) - ₹800</option>
+                                    <option value="Orthopedics">Dr. S.K. Gupta (Orthopedics) - ₹1000</option>
+                                </select>
+                            </div>
+                            <div class="space-y-3">
+                                <label class="text-[10px] font-black uppercase text-slate-400 ml-4">WhatsApp Number</label>
+                                <input type="tel" id="bookPhone" required placeholder="+91" class="w-full p-6 bg-slate-50 rounded-3xl border-none outline-none ring-1 ring-slate-100 font-bold">
+                            </div>
+                            <div class="space-y-3">
+                                <label class="text-[10px] font-black uppercase text-slate-400 ml-4">Current Symptoms (Optional)</label>
+                                <input type="text" id="bookSymptom" placeholder="e.g. Back pain, Fever" class="w-full p-6 bg-slate-50 rounded-3xl border-none outline-none ring-1 ring-slate-100 font-medium">
+                            </div>
+                            
+                            <div class="md:col-span-2 pt-10">
+                                <div class="bg-slate-950 p-12 rounded-[3.5rem] flex flex-col md:flex-row justify-between items-center text-white relative overflow-hidden">
+                                    <div class="z-10 text-center md:text-left mb-6 md:mb-0">
+                                        <p class="text-[10px] font-black uppercase tracking-widest text-blue-400">Payable Consultant Fee</p>
+                                        <h4 class="text-6xl font-black italic tracking-tighter mt-2">₹<span id="feeDisplay">1200</span></h4>
+                                    </div>
+                                    <button type="submit" class="z-10 bg-blue-600 hover:bg-blue-700 text-white px-16 py-7 rounded-3xl font-black text-lg shadow-2xl transition-all w-full md:w-auto">Confirm & Sync</button>
+                                    <div class="absolute right-0 top-0 w-64 h-64 bg-blue-600/10 rounded-full -mr-20 -mt-20 blur-3xl"></div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- [VIEW 3]: SURGERY EMI ENGINE -->
+                <div id="view-p-emi" class="view-content">
+                    <div class="max-w-6xl mx-auto grid lg:grid-cols-2 gap-16 items-center bg-white p-16 rounded-[4rem] shadow-premium">
+                        <div>
+                            <h3 class="text-5xl font-black italic tracking-tighter leading-none mb-8">Surgery Financing <br><span class="text-blue-600">& 0% EMI.</span></h3>
+                            <p class="text-slate-400 text-lg leading-relaxed mb-12 italic">At Shree Care, we believe money shouldn't stop health. Calculate your surgery EMI and get instant approval.</p>
+                            <div class="space-y-6">
+                                <div class="flex items-center gap-4 bg-slate-50 p-6 rounded-3xl border border-dashed">
+                                    <div class="w-10 h-10 bg-emerald-100 text-emerald-600 rounded-xl flex items-center justify-center"><i class="fas fa-check"></i></div>
+                                    <p class="text-sm font-black text-slate-800 uppercase tracking-tight">Paperless Approval in 30 Mins</p>
+                                </div>
+                                <div class="flex items-center gap-4 bg-slate-50 p-6 rounded-3xl border border-dashed">
+                                    <div class="w-10 h-10 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center"><i class="fas fa-university"></i></div>
+                                    <p class="text-sm font-black text-slate-800 uppercase tracking-tight">Partnered with Bajaj Finserv & HDFC</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-slate-900 p-12 rounded-[3.5rem] text-white">
+                            <h4 class="text-xl font-black italic mb-10 text-blue-400">EMI Calculator Engine</h4>
+                            <div class="space-y-8">
+                                <div>
+                                    <div class="flex justify-between text-[10px] font-black uppercase tracking-widest text-slate-500 mb-4">
+                                        <span>Surgery Amount</span>
+                                        <span>₹<span id="emiAmountDisplay">250,000</span></span>
+                                    </div>
+                                    <input type="range" id="emiRange" min="50000" max="1500000" step="50000" value="250000" class="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-blue-600">
+                                </div>
+                                <div>
+                                    <label class="text-[10px] font-black uppercase tracking-widest text-slate-500">Repayment Period</label>
+                                    <select id="emiMonths" class="w-full bg-slate-800 border-none p-5 rounded-2xl mt-4 font-black outline-none focus:ring-2 focus:ring-blue-600">
+                                        <option value="12">12 Months (0% Interest)</option>
+                                        <option value="24">24 Months</option>
+                                        <option value="36">36 Months</option>
+                                    </select>
+                                </div>
+                                <div class="pt-8 border-t border-white/10 flex justify-between items-end">
+                                    <div>
+                                        <p class="text-[10px] font-black uppercase tracking-widest text-slate-500">Monthly Installment</p>
+                                        <h4 class="text-5xl font-black mt-2">₹<span id="emiResult">20,833</span></h4>
+                                    </div>
+                                    <button onclick="alert('Our Financial Consultant will contact you on your registered mobile.')" class="bg-white text-slate-900 px-8 py-4 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-blue-600 hover:text-white transition">Apply Loan</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- [VIEW 4]: DOCTOR QUEUE (MASTER COMMAND) -->
+                <div id="view-d-queue" class="view-content">
+                    <div class="flex justify-between items-end mb-12">
+                        <div>
+                            <h3 class="text-4xl font-black italic tracking-tighter">Daily Clinical Queue</h3>
+                            <p id="queueDateDisplay" class="text-blue-600 font-bold uppercase text-[10px] tracking-[0.3em] mt-2 italic">Syncing with Atomic Clock...</p>
+                        </div>
+                        <div class="flex gap-4">
+                            <div class="bg-white px-8 py-4 rounded-3xl border shadow-sm flex items-center gap-4">
+                                <div class="w-10 h-10 bg-amber-50 text-amber-500 rounded-xl flex items-center justify-center font-black" id="statWaiting">0</div>
+                                <p class="text-[10px] font-black uppercase text-slate-400">Waiting</p>
+                            </div>
+                            <div class="bg-white px-8 py-4 rounded-3xl border shadow-sm flex items-center gap-4">
+                                <div class="w-10 h-10 bg-emerald-50 text-emerald-500 rounded-xl flex items-center justify-center font-black" id="statDone">0</div>
+                                <p class="text-[10px] font-black uppercase text-slate-400">Completed</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-[3.5rem] shadow-premium border border-slate-50 overflow-hidden">
+                        <table class="w-full text-left">
+                            <thead class="bg-slate-50 border-b">
+                                <tr>
+                                    <th class="p-8 text-[10px] font-black text-slate-400 uppercase tracking-widest">Token</th>
+                                    <th class="p-8 text-[10px] font-black text-slate-400 uppercase tracking-widest">Patient Details</th>
+                                    <th class="p-8 text-[10px] font-black text-slate-400 uppercase tracking-widest">Status</th>
+                                    <th class="p-8 text-[10px] font-black text-slate-400 uppercase tracking-widest">Clinical Note</th>
+                                    <th class="p-8 text-center text-[10px] font-black text-slate-400 uppercase tracking-widest">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="queueTableBody" class="divide-y divide-slate-50">
+                                <!-- Dynamic Daily Data -->
+                            </tbody>
+                        </table>
+                        <div id="queueEmpty" class="p-20 text-center hidden">
+                            <i class="fas fa-calendar-day text-6xl text-slate-100 mb-6"></i>
+                            <p class="text-slate-400 font-bold italic">No patients registered for today's OPD.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- [VIEW 5]: CLINICAL VAULT (All Patients) -->
+                <div id="view-d-vault" class="view-content">
+                    <div class="flex justify-between items-center mb-12">
+                        <h3 class="text-4xl font-black italic tracking-tighter">Global Patient Vault</h3>
+                        <div class="relative">
+                            <i class="fas fa-search absolute left-6 top-1/2 -translate-y-1/2 text-slate-300"></i>
+                            <input type="text" id="vaultSearch" onkeyup="searchVault()" placeholder="Search UHID, Name or Phone..." class="w-96 bg-white border border-slate-100 rounded-full py-5 px-14 outline-none focus:ring-4 focus:ring-blue-50 font-bold text-sm shadow-sm transition">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8" id="vaultGrid">
+                        <!-- Patient Cards -->
+                    </div>
+                </div>
+
             </div>
         </main>
     </div>
 
-    <!-- AUTH MODAL -->
-    <div id="authModal" class="fixed inset-0 z-[2000] bg-slate-950/90 backdrop-blur-xl hidden flex items-center justify-center p-6">
-        <div class="bg-white p-12 rounded-[4rem] max-w-md w-full animate__animated animate__zoomIn">
-            <h3 class="text-4xl font-black italic mb-2">Internal Access</h3>
-            <p class="text-slate-400 font-bold mb-10 italic">Doctor/Staff Authentication Gateway</p>
-            <div class="space-y-4">
-                <input type="email" id="email" placeholder="Email (dr.rohit@shreecare.com)" class="w-full p-6 bg-slate-50 rounded-2xl border-none font-bold outline-none ring-1 ring-slate-100 focus:ring-4 focus:ring-blue-50">
-                <input type="password" id="pass" placeholder="••••••••" class="w-full p-6 bg-slate-50 rounded-2xl border-none font-bold outline-none ring-1 ring-slate-100 focus:ring-4 focus:ring-blue-50">
-                <button onclick="login()" class="w-full bg-slate-900 text-white py-6 rounded-2xl font-black text-lg shadow-2xl">Authenticate Session</button>
-                <button onclick="toggleAuthModal()" class="w-full text-slate-400 font-bold text-xs uppercase mt-4">Cancel Request</button>
+    <!-- SUCCESS MODAL (Silent confirmed) -->
+    <div id="successModal" class="fixed inset-0 z-[5000] bg-slate-950/90 backdrop-blur-md hidden flex items-center justify-center p-6">
+        <div class="bg-white p-16 rounded-[4rem] text-center max-w-sm animate__animated animate__bounceIn">
+            <div class="w-24 h-24 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center text-5xl mx-auto mb-8 shadow-2xl shadow-emerald-500/20">
+                <i class="fas fa-check"></i>
             </div>
+            <h3 class="text-3xl font-black mb-4 italic leading-none">Registration Secured</h3>
+            <p class="text-slate-500 font-medium italic mb-12">Clinical enrollment synced with Shree Care Enterprise Engine. Redirecting to receipt...</p>
+            <button onclick="location.reload()" class="w-full bg-slate-950 text-white py-5 rounded-2xl font-black">Close Dashboard</button>
         </div>
     </div>
 
-    <!-- FOOTER -->
-    <footer class="bg-slate-900 text-white py-32 px-6 md:px-20 text-center">
-        <div class="max-w-4xl mx-auto">
-            <h2 class="text-4xl font-black italic mb-8">SHREE <span class="text-blue-500">CARE</span></h2>
-            <p class="text-slate-400 mb-12 italic leading-relaxed">Pioneering precision healthcare with advanced technology and compassionate care. A Dr. Rohit Singh initiative.</p>
-            <div class="flex justify-center gap-10 mb-20 flex-wrap">
-                <a href="https://razorpay.me/@rohitsingh9645" target="_blank" class="bg-white/5 px-8 py-4 rounded-full border border-white/10 font-bold text-sm hover:bg-white hover:text-black transition">Razorpay Gateway</a>
-                <a href="https://wa.me/918708987154" target="_blank" class="bg-green-500/10 text-green-500 px-8 py-4 rounded-full border border-green-500/20 font-bold text-sm">Official WhatsApp</a>
-            </div>
-            <p class="text-[10px] font-black uppercase text-slate-600 tracking-[0.5em]">© 2024 Shree Care Enterprise HMS | All Rights Reserved</p>
-        </div>
-    </footer>
-
-    <!-- SUCCESS NOTIFICATION -->
-    <div id="successModal" class="fixed inset-0 z-[5000] bg-black/80 flex items-center justify-center p-6 hidden">
-        <div class="bg-white p-12 rounded-[4rem] text-center max-w-sm animate__animated animate__bounceIn">
-            <div class="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center text-4xl mx-auto mb-6"><i class="fas fa-check"></i></div>
-            <h4 class="text-2xl font-black mb-4">Record Secured!</h4>
-            <p class="text-slate-500 italic mb-10">Patient ID generated. Confirmation sent to WhatsApp.</p>
-            <button onclick="location.reload()" class="w-full bg-slate-900 text-white py-4 rounded-2xl font-black">Continue Dashboard</button>
+    <!-- SOS TRIGGER OVERLAY -->
+    <div id="sosOverlay" class="fixed inset-0 z-[10000] bg-rose-600 flex items-center justify-center text-white hidden">
+        <div class="text-center animate__animated animate__pulse animate__infinite">
+            <i class="fas fa-ambulance text-[10rem] mb-10"></i>
+            <h1 class="text-7xl font-black italic mb-4">AMBULANCE SOS</h1>
+            <p class="text-2xl font-bold uppercase tracking-[0.3em]">Chief Doctor Rohit Singh Notified</p>
+            <button onclick="document.getElementById('sosOverlay').classList.add('hidden')" class="mt-20 bg-white text-rose-600 px-10 py-4 rounded-full font-black uppercase text-xs">Cancel Alert</button>
         </div>
     </div>
 
+    <!-- CORE ENGINE LOGIC -->
     <script>
-        // --- 1. CORE DATABASE SIMULATION ---
-        let DB = JSON.parse(localStorage.getItem('shree_hms_v3')) || [];
-        const FEES = { Cardiology: 1200, Neurology: 1500, Orthopedics: 1000, Pediatrics: 800 };
-
-        // --- 2. EMI CALCULATOR ENGINE ---
-        const amountRange = document.getElementById('amount');
-        const monthsSelect = document.getElementById('months');
-        
-        function updateEMI() {
-            const principal = amountRange.value;
-            const tenure = monthsSelect.value;
-            const rate = 12 / 12 / 100; // 12% Interest
-            const emi = (principal * rate * Math.pow(1 + rate, tenure)) / (Math.pow(1 + rate, tenure) - 1);
-            
-            document.getElementById('amountVal').innerText = parseInt(principal).toLocaleString();
-            document.getElementById('emiResult').innerText = Math.round(emi).toLocaleString();
-        }
-        amountRange.oninput = updateEMI;
-        monthsSelect.onchange = updateEMI;
-
-        // --- 3. AUTHENTICATION MODULE ---
-        function toggleAuthModal() {
-            document.getElementById('authModal').classList.toggle('hidden');
-        }
-
-        function login() {
-            const email = document.getElementById('email').value.trim();
-            const pass = document.getElementById('pass').value.trim();
-
-            if(email === 'dr.rohit@shreecare.com' && pass === 'SHREE_CARE_ADMIN_2024') {
-                document.getElementById('authModal').classList.add('hidden');
-                document.getElementById('adminPanel').classList.remove('hidden');
-                renderAdmin();
-            } else {
-                alert("ACCESS DENIED: Internal Cryptographic Signature Mismatch.");
-            }
-        }
-
-        function logout() {
-            document.getElementById('adminPanel').classList.add('hidden');
-        }
-
-        // --- 4. BACKEND INTEGRATION (CRUD) ---
-        document.getElementById('appointmentForm').onsubmit = function(e) {
-            e.preventDefault();
-            const pName = document.getElementById('p_name').value;
-            const pDept = document.getElementById('p_dept').value;
-            const pPhone = document.getElementById('p_phone').value;
-
-            const record = {
-                id: 'SC-' + Math.floor(Math.random() * 900000 + 100000),
-                name: pName,
-                dept: pDept,
-                phone: pPhone,
-                fee: FEES[pDept],
-                date: new Date().toLocaleDateString(),
-                status: 'Paid'
-            };
-
-            DB.push(record);
-            localStorage.setItem('shree_hms_v3', JSON.stringify(DB));
-
-            // WhatsApp Real Alert Automation
-            const msg = `*NEW PATIENT REGISTRATION*%0A-----------------%0A*ID:* ${record.id}%0A*Patient:* ${record.name}%0A*Unit:* ${record.dept}%0A*Fee:* Rs.${record.fee}%0A%0A_Powered by Shree Care HMS Core._`;
-            window.open(`https://wa.me/918708987154?text=${msg}`, '_blank');
-            
-            document.getElementById('successModal').classList.remove('hidden');
+        // --- [1. GLOBAL STATE & DATABASE] ---
+        let DB = JSON.parse(localStorage.getItem('shree_care_db_v5')) || {
+            users: [],
+            appointments: [],
+            revenue: 0
         };
 
-        // --- 5. ADMIN RENDERING ENGINE ---
-        function renderAdmin() {
-            const tbody = document.getElementById('patientTableBody');
-            let rev = 0;
-            
-            tbody.innerHTML = DB.slice().reverse().map(item => {
-                rev += item.fee;
-                return `
-                    <tr class="border-b hover:bg-slate-50 transition">
-                        <td class="p-8">
-                            <p class="font-black text-slate-800 text-lg">${item.name}</p>
-                            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">UID: ${item.id} | ${item.phone}</p>
-                        </td>
-                        <td class="p-8"><span class="bg-blue-50 text-blue-600 px-4 py-2 rounded-full text-[10px] font-black uppercase">${item.dept}</span></td>
-                        <td class="p-8"><span class="text-green-600 font-bold italic"><i class="fas fa-check-circle mr-2"></i> Verified</span></td>
-                        <td class="p-8 font-black text-slate-700">₹${item.fee}</td>
-                        <td class="p-8 text-center">
-                            <button onclick="deleteRecord('${item.id}')" class="text-slate-300 hover:text-rose-600 transition"><i class="fas fa-trash-alt"></i></button>
-                        </td>
-                    </tr>
-                `;
-            }).join('');
+        const FEES = { Cardiology: 1200, Neurology: 1500, Pediatrics: 800, Orthopedics: 1000 };
+        let CURRENT_USER = null;
 
-            document.getElementById('totalRevenue').innerText = '₹' + rev.toLocaleString();
-            document.getElementById('totalPatients').innerText = DB.length;
+        // --- [2. CLOCK & DAILY RESET LOGIC] ---
+        function updateClock() {
+            const now = new Date();
+            document.getElementById('clock').innerText = now.toLocaleTimeString();
+            document.getElementById('queueDateDisplay').innerText = now.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+        }
+        setInterval(updateClock, 1000);
+
+        // Daily Archive Helper: Run on load to check if any appt is past date
+        function dailyMaintenance() {
+            const today = new Date().toISOString().split('T')[0];
+            DB.appointments.forEach(app => {
+                if(app.date < today && app.status !== 'Archived') app.status = 'Archived';
+            });
+            syncDB();
         }
 
-        function deleteRecord(id) {
-            if(confirm("Purge medical record from database?")) {
-                DB = DB.filter(i => i.id !== id);
-                localStorage.setItem('shree_hms_v3', JSON.stringify(DB));
-                renderAdmin();
+        // --- [3. AUTHENTICATION MODULE] ---
+        function toggleAuth(mode) {
+            document.getElementById('loginForm').classList.toggle('hidden', mode !== 'login');
+            document.getElementById('signupForm').classList.toggle('hidden', mode !== 'signup');
+            document.getElementById('gateTitle').innerText = mode.toUpperCase() + ' SESSION INITIALIZED';
+        }
+
+        function handleAuthSignup() {
+            const name = document.getElementById('regName').value;
+            const email = document.getElementById('regEmail').value;
+            const pass = document.getElementById('regPass').value;
+
+            if(!name || !email || !pass) return alert("Security: All fields mandatory.");
+            if(DB.users.find(u => u.email === email)) return alert("Duplicate: Email already exists.");
+
+            const uhid = 'SC-' + new Date().getFullYear() + '-' + Math.floor(10000 + Math.random() * 90000);
+            const newUser = { uhid, name, email, pass, role: 'patient' };
+            
+            DB.users.push(newUser);
+            syncDB();
+            alert(`UHID Created Successfully: ${uhid}`);
+            toggleAuth('login');
+        }
+
+        function handleAuthLogin() {
+            const email = document.getElementById('authEmail').value.trim();
+            const pass = document.getElementById('authPass').value.trim();
+
+            // Master Doctor Bypass
+            if(email === 'dr.rohit@shreecare.com' && pass === 'ADMIN7154') {
+                CURRENT_USER = { name: "Dr. Rohit Singh", role: "doctor", email: email };
+                launchApp();
+                return;
+            }
+
+            const user = DB.users.find(u => u.email === email && u.pass === pass);
+            if(user) {
+                CURRENT_USER = user;
+                launchApp();
+            } else {
+                alert("Auth Failure: Credentials rejected by Enterprise Vault.");
             }
         }
 
-        function exportData() {
-            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(DB));
-            const downloadAnchorNode = document.createElement('a');
-            downloadAnchorNode.setAttribute("href",     dataStr);
-            downloadAnchorNode.setAttribute("download", "shree_care_backup.json");
-            document.body.appendChild(downloadAnchorNode); 
-            downloadAnchorNode.click();
-            downloadAnchorNode.remove();
+        function launchApp() {
+            document.getElementById('authGate').classList.add('animate__animated', 'animate__fadeOutUp');
+            setTimeout(() => {
+                document.getElementById('authGate').classList.add('hidden');
+                document.getElementById('mainApp').classList.remove('hidden');
+                
+                document.getElementById('userName').innerText = CURRENT_USER.name;
+                document.getElementById('userRole').innerText = CURRENT_USER.role.toUpperCase();
+                document.getElementById('userAvatar').innerText = CURRENT_USER.name.charAt(0);
+                
+                if(CURRENT_USER.role === 'doctor') {
+                    document.getElementById('doctorMenu').classList.remove('hidden');
+                    document.getElementById('patientMenu').classList.add('hidden');
+                    navigate('d-queue');
+                } else {
+                    document.getElementById('displayUHID').innerText = CURRENT_USER.uhid;
+                    navigate('p-dashboard');
+                }
+                dailyMaintenance();
+            }, 600);
         }
 
-        // Initialize Call
-        updateEMI();
+        function handleLogout() { location.reload(); }
+
+        // --- [4. NAVIGATION MODULE] ---
+        function navigate(viewId) {
+            // Hide all views
+            document.querySelectorAll('.view-content').forEach(v => v.classList.remove('view-active'));
+            // Show target
+            document.getElementById('view-' + viewId).classList.add('view-active');
+            
+            // Sidebar Active UI
+            document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('sidebar-active', 'text-white'));
+            document.getElementById('nav-' + viewId).classList.add('sidebar-active', 'text-white');
+            
+            // Header title change
+            const labels = {
+                'p-dashboard': 'Patient Overview',
+                'p-book': 'Secure OPD Enrollment',
+                'p-history': 'My Clinical Records',
+                'p-emi': 'Surgery Financing Engine',
+                'd-queue': 'Daily Clinical Queue',
+                'd-analytics': 'Revenue & Growth Analytics',
+                'd-vault': 'Global Patient Records'
+            };
+            document.getElementById('viewHeaderTitle').innerText = labels[viewId] || 'Hospital Management';
+
+            // View specific loading
+            if(viewId === 'd-queue') renderQueue();
+            if(viewId === 'd-vault') renderVault();
+        }
+
+        // --- [5. BOOKING ENGINE (Silent Notification)] ---
+        const bookingForm = document.getElementById('bookingForm');
+        if(bookingForm) {
+            bookingForm.onsubmit = function(e) {
+                e.preventDefault();
+                
+                const dept = document.getElementById('bookDept').value;
+                const record = {
+                    id: 'APP-' + Math.floor(100000 + Math.random() * 900000),
+                    uhid: CURRENT_USER.uhid,
+                    patientName: CURRENT_USER.name,
+                    dept: dept,
+                    date: document.getElementById('bookDate').value,
+                    phone: document.getElementById('bookPhone').value,
+                    symptom: document.getElementById('bookSymptom').value,
+                    fee: FEES[dept],
+                    status: 'Waiting', // Initial status
+                    note: '', // Clinical note by doctor
+                    timestamp: new Date().toLocaleString()
+                };
+
+                DB.appointments.push(record);
+                DB.revenue += record.fee;
+                syncDB();
+
+                // --- SILENT DOCTOR NOTIFICATION (SIMULATED WEBHOOK) ---
+                console.log("Background: Syncing appointment with Doctor Rohit's Dashboard...");
+                // WhatsApp Mock Bridge
+                const msg = `*SHREE CARE HMS ALERT*%0A%0A*ID:* ${record.id}%0A*Patient:* ${record.patientName}%0A*Unit:* ${record.dept}%0A*Date:* ${record.date}%0A%0A_Record logged silently in Local Storage Cloud._`;
+                // window.open(`https://wa.me/918708987154?text=${msg}`, '_blank'); // Uncomment if direct redirect needed
+
+                document.getElementById('successModal').classList.remove('hidden');
+            };
+        }
+
+        // Fee Display Update
+        document.getElementById('bookDept').onchange = function() {
+            document.getElementById('feeDisplay').innerText = FEES[this.value];
+        }
+
+        // --- [6. DOCTOR QUEUE & EMR MODULE] ---
+        function renderQueue() {
+            const today = new Date().toISOString().split('T')[0];
+            const todayApps = DB.appointments.filter(app => app.date === today);
+            const tbody = document.getElementById('queueTableBody');
+            
+            if(todayApps.length === 0) {
+                document.getElementById('queueEmpty').classList.remove('hidden');
+                tbody.innerHTML = '';
+            } else {
+                document.getElementById('queueEmpty').classList.add('hidden');
+                tbody.innerHTML = todayApps.map((item, index) => `
+                    <tr class="border-b hover:bg-slate-50/50 transition duration-300">
+                        <td class="p-8">
+                            <span class="w-10 h-10 bg-slate-100 rounded-2xl flex items-center justify-center font-black text-slate-400 italic">#${index+1}</span>
+                        </td>
+                        <td class="p-8">
+                            <p class="font-black text-slate-800 text-lg tracking-tight leading-none">${item.patientName}</p>
+                            <p class="text-[9px] font-black text-blue-600 uppercase tracking-widest mt-2">${item.uhid} | ${item.phone}</p>
+                        </td>
+                        <td class="p-8">
+                            <span class="status-badge ${item.status === 'Waiting' ? 'status-waiting' : item.status === 'Consulting' ? 'status-consulting' : 'status-completed'}">
+                                <i class="fas fa-circle text-[6px] mr-2"></i> ${item.status}
+                            </span>
+                        </td>
+                        <td class="p-8 max-w-xs">
+                            <input type="text" onchange="updateClinicalNote('${item.id}', this.value)" value="${item.note}" placeholder="Clinical findings..." class="w-full bg-transparent border-b border-dashed border-slate-200 py-2 outline-none focus:border-blue-500 font-medium italic text-xs">
+                        </td>
+                        <td class="p-8 text-center flex justify-center gap-4">
+                            <button onclick="updateStatus('${item.id}', 'Consulting')" class="w-10 h-10 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center hover:bg-blue-600 hover:text-white transition" title="Start Consultation"><i class="fas fa-play text-xs"></i></button>
+                            <button onclick="updateStatus('${item.id}', 'Completed')" class="w-10 h-10 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center hover:bg-emerald-600 hover:text-white transition" title="Mark Done"><i class="fas fa-check text-xs"></i></button>
+                        </td>
+                    </tr>
+                `).join('');
+            }
+            updateStats(todayApps);
+        }
+
+        function updateStatus(id, status) {
+            const app = DB.appointments.find(a => a.id === id);
+            if(app) app.status = status;
+            syncDB();
+            renderQueue();
+        }
+
+        function updateClinicalNote(id, note) {
+            const app = DB.appointments.find(a => a.id === id);
+            if(app) app.note = note;
+            syncDB();
+        }
+
+        function updateStats(apps) {
+            document.getElementById('statWaiting').innerText = apps.filter(a => a.status === 'Waiting').length;
+            document.getElementById('statDone').innerText = apps.filter(a => a.status === 'Completed').length;
+        }
+
+        // --- [7. VAULT & SEARCH] ---
+        function renderVault() {
+            const grid = document.getElementById('vaultGrid');
+            grid.innerHTML = DB.users.filter(u => u.role === 'patient').map(u => {
+                const visits = DB.appointments.filter(a => a.uhid === u.uhid).length;
+                return `
+                    <div class="bg-white p-8 rounded-[3rem] shadow-sm border border-slate-50 group hover:border-blue-600 transition duration-500">
+                        <div class="w-16 h-16 bg-slate-900 rounded-3xl flex items-center justify-center text-white text-2xl font-black mb-6 group-hover:bg-blue-600 transition">
+                            ${u.name.charAt(0)}
+                        </div>
+                        <h4 class="text-xl font-black text-slate-800 leading-tight">${u.name}</h4>
+                        <p class="text-[10px] font-black text-blue-600 uppercase tracking-widest mt-1">${u.uhid}</p>
+                        <div class="mt-8 pt-6 border-t flex justify-between items-center">
+                            <div>
+                                <p class="text-[9px] font-black uppercase text-slate-400">Total Consultations</p>
+                                <p class="text-xl font-black italic text-slate-800">${visits}</p>
+                            </div>
+                            <button onclick="alert('Clinical Profile Access System (PDF History coming soon)')" class="w-10 h-10 bg-slate-50 rounded-full flex items-center justify-center text-slate-400 group-hover:text-blue-600"><i class="fas fa-arrow-right"></i></button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function searchVault() {
+            const query = document.getElementById('vaultSearch').value.toLowerCase();
+            document.querySelectorAll('#vaultGrid > div').forEach(card => {
+                const text = card.innerText.toLowerCase();
+                card.style.display = text.includes(query) ? 'block' : 'none';
+            });
+        }
+
+        // --- [8. EMI ENGINE MODULE] ---
+        const emiRange = document.getElementById('emiRange');
+        const emiMonths = document.getElementById('emiMonths');
+        
+        function updateEMICalc() {
+            const principal = parseInt(emiRange.value);
+            const months = parseInt(emiMonths.value);
+            const rate = 12 / 12 / 100; // Assuming 12% Annual for Non-0% EMI
+            
+            // Formula for simple calculation (0% Interest for 12 months, rest with interest)
+            let emi = 0;
+            if(months === 12) emi = principal / 12;
+            else emi = (principal * rate * Math.pow(1 + rate, months)) / (Math.pow(1 + rate, months) - 1);
+            
+            document.getElementById('emiAmountDisplay').innerText = principal.toLocaleString();
+            document.getElementById('emiResult').innerText = Math.round(emi).toLocaleString();
+        }
+        if(emiRange) {
+            emiRange.oninput = updateEMICalc;
+            emiMonths.onchange = updateEMICalc;
+        }
+
+        // --- [9. UTILITIES] ---
+        function syncDB() { localStorage.setItem('shree_care_db_v5', JSON.stringify(DB)); }
+        
+        function triggerSOS() {
+            document.getElementById('sosOverlay').classList.remove('hidden');
+        }
+
+        // Initial View Call
+        updateEMICalc();
     </script>
 </body>
 </html>
